@@ -12,11 +12,14 @@ namespace SpriteGenerator
 {
     public class Sprite : IDisposable
     {
+        private const string CssSpriteDeclarationFormat = ".{1} {{ background-image: url('{0}'); background-color: transparent; background-repeat: no-repeat; }}";
+        private const string CssLineDeclarationFormat = ".{0} {{ width: {1}px; height: {2}px; background-position: {3}px {4}px; }}";
+
         private readonly LayoutProperties _layoutProp;
         private Dictionary<int, string> _cssClassNames;
-        private Dictionary<int, Image> _images;
 
         private bool _disposed;
+        private Dictionary<int, Image> _images;
 
         public Sprite(LayoutProperties layoutProp)
         {
@@ -65,7 +68,11 @@ namespace SpriteGenerator
 
             using (var cssFile = File.CreateText(_layoutProp.OutputCssFilePath))
             {
-                cssFile.WriteLine(".sprite {{ background-image: url('{0}'); background-color: transparent; background-repeat: no-repeat; }}", RelativeSpriteImagePath(_layoutProp.OutputSpriteFilePath, _layoutProp.OutputCssFilePath));
+                cssFile.WriteLine(
+                    CssSpriteDeclarationFormat,
+                    RelativeSpriteImagePath(_layoutProp.OutputSpriteFilePath, _layoutProp.OutputCssFilePath),
+                    "sprite"
+                );
 
                 switch (_layoutProp.Layout)
                 {
@@ -128,7 +135,7 @@ namespace SpriteGenerator
         // CSS line
         private static string CssLine(string cssClassName, Rectangle rectangle)
         {
-            var line = string.Format(".{0} {{ width: {1}px; height: {2}px; background-position: {3}px {4}px; }}",
+            var line = string.Format(CssLineDeclarationFormat,
                 cssClassName,
                 rectangle.Width.ToString(CultureInfo.InvariantCulture),
                 rectangle.Height.ToString(CultureInfo.InvariantCulture),
