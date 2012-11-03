@@ -52,6 +52,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GenerationConditions.cs" />
     <Compile Include="SpritesForm.cs">
       <SubType>Form</SubType>
     </Compile>

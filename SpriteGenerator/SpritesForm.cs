@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -10,13 +11,17 @@ namespace SpriteGenerator
 {
     public partial class SpritesForm : Form
     {
-        private readonly bool[] _canGenerate = new bool[3];
         private readonly LayoutProperties _layoutProp = new LayoutProperties();
-        public bool Done = false;
+        private readonly GenerationConditions _ready = new GenerationConditions();
 
         public SpritesForm()
         {
             InitializeComponent();
+
+            _ready.PropertyChanged += delegate
+            {
+                btGenerate.Enabled = _ready.IsOK;
+            };
         }
 
         protected bool Working
@@ -35,24 +40,13 @@ namespace SpriteGenerator
             }
         }
 
-        private void SpritesForm_Load(object sender, EventArgs e)
-        {
+        private void SpritesForm_Load(object sender, EventArgs e) {
             _layoutProp.Layout = SpriteLayoutUtil.FromString(rbAutomaticLayout.Text);
 
-            var settings = Properties.Settings.Default;
-
-            if (string.IsNullOrEmpty(settings.LastDirectory))
-            {
-                return;
-            }
-
-            tbInputDirectoryPath.Text = folderBrowserDialog.SelectedPath = settings.LastDirectory;
-
-            if (!CheckImagesDirectory(true))
-            {
-                tbInputDirectoryPath.Text = folderBrowserDialog.SelectedPath = settings.LastDirectory = "";
-            }
+            LoadLastSettings();
         }
+
+
 
         // Generate button click event. Start generating output image and CSS file.
         private void BtGenerate_Click(object sender, EventArgs e)
@@ -105,16 +99,7 @@ namespace SpriteGenerator
                 return;
             }
 
-            if (_canGenerate[2] && tbOutputCSSFilePath.Text[0] != saveFileDialogOutputImage.FileName[0])
-            {
-                MessageBox.Show("Output image and CSS file must be on the same drive.");
-            }
-            else
-            {
-                tbOutputImageFilePath.Text = saveFileDialogOutputImage.FileName;
-                _canGenerate[1] = true;
-                btGenerate.Enabled = _canGenerate.All(element => element);
-            }
+            CheckOutputImagePath(false);
         }
 
         // Select output CSS file path.
@@ -127,16 +112,7 @@ namespace SpriteGenerator
                 return;
             }
 
-            if (_canGenerate[1] && tbOutputImageFilePath.Text[0] != saveFileDialogOutputCss.FileName[0])
-            {
-                MessageBox.Show("Output image and CSS file must be on the same drive.");
-            }
-            else
-            {
-                tbOutputCSSFilePath.Text = saveFileDialogOutputCss.FileName;
-                _canGenerate[2] = true;
-                btGenerate.Enabled = _canGenerate.All(_ => _);
-            }
+            CheckOutputCssPath(false);
         }
 
         // Rectangular layout radiobutton checked change.
@@ -151,7 +127,7 @@ namespace SpriteGenerator
                 ndpImagesInColumn.Enabled = true;
                 labelX.Enabled = true;
                 lbSprites.Enabled = true;
-                ndpImagesInRow.Maximum = _layoutProp.InputFilePaths.Length;
+                ndpImagesInRow.Maximum = _layoutProp.InputFilePaths.Count;
             }
             else // Disabling numericupdowns
             {
@@ -177,7 +153,7 @@ namespace SpriteGenerator
         // Sprites in row numericupdown value changed event
         private void NdpImagesInRowValue_Changed(object sender, EventArgs e)
         {
-            var numberOfFiles = _layoutProp.InputFilePaths.Length;
+            var numberOfFiles = _layoutProp.InputFilePaths.Count;
 
             //Setting sprites in column numericupdown value
             ndpImagesInColumn.Minimum = numberOfFiles / (int)ndpImagesInRow.Value;
@@ -193,6 +169,57 @@ namespace SpriteGenerator
             Application.Exit();
         }
 
+        private void LoadLastSettings()
+        {
+            var settings = Properties.Settings.Default;
+
+            if (string.IsNullOrEmpty(settings.LastDirectory))
+            {
+                return;
+            }
+
+            tbInputDirectoryPath.Text = folderBrowserDialog.SelectedPath = settings.LastDirectory;
+
+            if (!CheckImagesDirectory(true))
+            {
+                tbInputDirectoryPath.Text = folderBrowserDialog.SelectedPath = settings.LastDirectory = "";
+            }
+        }
+
+        private bool CheckOutputImagePath(bool beSilent)
+        {
+            if (_ready.OutputCssPathOK && tbOutputCSSFilePath.Text[0] != saveFileDialogOutputImage.FileName[0])
+            {
+                if(!beSilent) {
+                    MessageBox.Show("Output image and CSS file must be on the same drive.");                    
+                }
+                _ready.OutputImagePathOK = false;
+                return false;
+            }
+
+            _ready.OutputImagePathOK = true;
+            tbOutputImageFilePath.Text = saveFileDialogOutputImage.FileName;
+
+            return true;
+        }
+
+        private bool CheckOutputCssPath(bool beSilent)
+        {
+            if (_ready.OutputImagePathOK && tbOutputImageFilePath.Text[0] != saveFileDialogOutputCss.FileName[0])
+            {
+                if (!beSilent)
+                {
+                    MessageBox.Show("Output image and CSS file must be on the same drive.");
+                }
+                _ready.OutputCssPathOK = false;
+                return false;
+            }
+
+            tbOutputCSSFilePath.Text = saveFileDialogOutputCss.FileName;
+            _ready.OutputCssPathOK = true;
+            return true;
+        }
+
         private bool CheckImagesDirectory(bool beSilent)
         {
             string[] filters = {
@@ -204,23 +231,23 @@ namespace SpriteGenerator
                 from file in Directory.GetFiles(folderBrowserDialog.SelectedPath)
                 where file.EndsWith(filter)
                 select file
-            ).ToArray();
+            ).ToList();
 
             // If there is no file with the enabled formats in the choosen directory.
-            if (_layoutProp.InputFilePaths.Length == 0)
+            if (_layoutProp.InputFilePaths.Count == 0)
             {
                 if (!beSilent)
                 {
                     MessageBox.Show("This directory does not contain image files.");
                 }
+                _ready.ImagePathOK = false;
                 return false;
             }
 
             // If there are files with the enabled formats in the choosen directory.
             tbInputDirectoryPath.Text = folderBrowserDialog.SelectedPath;
 
-            _canGenerate[0] = true;
-            btGenerate.Enabled = _canGenerate.All(_ => _);
+            _ready.ImagePathOK = true;
 
             rbAutomaticLayout.Checked = true;
 
@@ -277,7 +304,7 @@ namespace SpriteGenerator
                 if (rbRectangularLayout.Enabled)
                 {
                     ndpImagesInRow.Minimum = 1;
-                    ndpImagesInRow.Maximum = _layoutProp.InputFilePaths.Length;
+                    ndpImagesInRow.Maximum = _layoutProp.InputFilePaths.Count;
                     _layoutProp.ImagesInRow = (int)ndpImagesInRow.Value;
                     _layoutProp.ImagesInColumn = (int)ndpImagesInColumn.Value;
                 }

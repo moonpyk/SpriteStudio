@@ -545,7 +545,7 @@
             // 
             this.mnExit.Name = "mnExit";
             this.mnExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-            this.mnExit.Size = new System.Drawing.Size(152, 22);
+            this.mnExit.Size = new System.Drawing.Size(135, 22);
             this.mnExit.Text = "E&xit";
             this.mnExit.Click += new System.EventHandler(this.MnExit_Click);
             // 

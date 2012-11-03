@@ -113,7 +113,7 @@ namespace SpriteGenerator
             var images = new Dictionary<int, Image>();
             var cssClassNames = new Dictionary<int, string>();
 
-            for (var i = 0; i < _layoutProp.InputFilePaths.Length; i++)
+            for (var i = 0; i < _layoutProp.InputFilePaths.Count; i++)
             {
                 images.Add(i, Image.FromFile(_layoutProp.InputFilePaths[i]));
 
