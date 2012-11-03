@@ -1,14 +1,14 @@
 ﻿namespace SpriteGenerator.Utility
 {
-    //Bit struct. In reference, DFS-order is stored in a 0-1 sequence, 
-    //this struct has been created to follow terminology.
+    // Bit struct. In reference, DFS-order is stored in a 0-1 sequence, 
+    // this struct has been created to follow terminology.
     struct Bit
     {
-        private bool bit;
+        private readonly bool _bit;
 
         private Bit(int n)
         {
-            this.bit = (n == 1) ? true : false;
+            _bit = (n == 1);
         }
 
         public static implicit operator Bit(int n)
@@ -19,44 +19,40 @@
         public override bool Equals(object obj)
         {
             if (obj is Bit)
+            {
                 return this == ((Bit)obj);
-            else if (obj is int)
+            }
+            if (obj is int)
+            {
                 return this == (int)obj;
+            }
 
             return false;
         }
 
         public override int GetHashCode()
         {
-            return bit.GetHashCode();
+            return _bit.GetHashCode();
         }
 
         public static bool operator ==(Bit b, int n)
         {
-            if ((b.bit == true && n == 1) || (b.bit == false && n == 0))
-                return true;
-            else return false;
+            return (b._bit && n == 1) || (b._bit == false && n == 0);
         }
 
         public static bool operator !=(Bit b, int n)
         {
-            if (!((b.bit == true && n == 1) || (b.bit == false && n == 0)))
-                return true;
-            else return false;
+            return !((b._bit && n == 1) || (b._bit == false && n == 0));
         }
 
         public static bool operator ==(Bit b1, Bit b2)
         {
-            if ((b1.bit == true && b2.bit == true) || (b1.bit == false && b2.bit == false))
-                return true;
-            else return false;
+            return (b1._bit && b2._bit) || (b1._bit == false && b2._bit == false);
         }
 
         public static bool operator !=(Bit b1, Bit b2)
         {
-            if (!((b1.bit == true && b2.bit == true) || (b1.bit == false && b2.bit == false)))
-                return true;
-            else return false;
+            return !((b1._bit && b2._bit) || (b1._bit == false && b2._bit == false));
         }
     }
 }

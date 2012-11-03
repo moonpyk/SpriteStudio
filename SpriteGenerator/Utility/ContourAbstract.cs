@@ -8,7 +8,7 @@ namespace SpriteGenerator.Utility
     //Contour is the list of the modules on the top (horizontal contour) or on the right (vertical contour) of the 
     //placement. It is needed for linear time computation of the modules coordinates. It is easier to understand 
     //it from some figure. See reference.
-    abstract class Contour
+    abstract class ContourAbstract
     {
         protected List<Module> moduleSequence;
         protected int insertationIndex;
@@ -16,8 +16,10 @@ namespace SpriteGenerator.Utility
 
         protected void Construct(Module root)
         {
-            moduleSequence = new List<Module>();
-            moduleSequence.Add(root);
+            moduleSequence = new List<Module> {
+                root
+            };
+
             whereMax = root;
             insertationIndex = -1;
         }

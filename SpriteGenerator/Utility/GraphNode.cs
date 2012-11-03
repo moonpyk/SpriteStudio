@@ -7,13 +7,13 @@ namespace SpriteGenerator.Utility
 {
     class GraphNode
     {
-        public Dictionary<int, int> incomingEdges;
-        public Dictionary<int, int> outgoingEdges;
+        public Dictionary<int, int> IncomingEdges;
+        public Dictionary<int, int> OutgoingEdges;
 
         public void InitializeEdges()
         {
-            incomingEdges = new Dictionary<int, int>();
-            outgoingEdges = new Dictionary<int, int>();
+            IncomingEdges = new Dictionary<int, int>();
+            OutgoingEdges = new Dictionary<int, int>();
         }
     }
 }

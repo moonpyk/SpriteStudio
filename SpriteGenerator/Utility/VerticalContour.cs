@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SpriteGenerator.Utility
 {
-    class VerticalContour : Contour
+    class VerticalContour : ContourAbstract
     {
         /// <summary>
         /// Contour class for quick computation of x-coordinates during working with vertical O-Tree.
@@ -23,9 +23,10 @@ namespace SpriteGenerator.Utility
         /// <returns></returns>
         public override int FindMax(int to)
         {
-            int max = 0;
+            var max = 0;
+            
             //Actual module does not need to be checked.
-            int indexFrom = insertationIndex + 1;
+            var indexFrom = insertationIndex + 1;
 
             //Checking modules in contour.
             while (indexFrom < moduleSequence.Count && moduleSequence[indexFrom].Y < to)

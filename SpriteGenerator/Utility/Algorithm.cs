@@ -10,9 +10,9 @@ namespace SpriteGenerator.Utility
         /// <summary>
         /// Greedy algorithm.
         /// </summary>
-        /// <param name="_modules">List of modules that represent the images that need to be inserted into the sprite.</param>
+        /// <param name="modules">List of modules that represent the images that need to be inserted into the sprite.</param>
         /// <returns>Near optimal placement.</returns>
-        public static Placement Greedy(List<Module> _modules)
+        public static Placement Greedy(List<Module> modules)
         {
             //Empty O-Tree code.
             OTree oTree = new OTree();
@@ -21,7 +21,7 @@ namespace SpriteGenerator.Utility
             List<Module> moduleList = new List<Module>();
 
             //For each module which needs to be inserted.
-            foreach (Module module in _modules)
+            foreach (Module module in modules)
             {
                 OTree bestOTree = null;
                 //Add module to the list of already packed modules.

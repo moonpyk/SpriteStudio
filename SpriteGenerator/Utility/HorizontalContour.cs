@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SpriteGenerator.Utility
 {
-    class HorizontalContour : Contour
+    class HorizontalContour : ContourAbstract
     {
         /// <summary>
         /// Contour class for quick computation of y-coordinates during working with horizontal O-Tree.
@@ -42,9 +42,10 @@ namespace SpriteGenerator.Utility
                 {
                     moduleSequence.RemoveAt(indexFrom);
                 }
-
                 else
+                {
                     indexFrom++;
+                }
             }
 
             return max;

@@ -9,11 +9,11 @@ namespace SpriteGenerator
 {
     public class Placement
     {
-        private List<Module> modules;
+        private readonly List<Module> _modules;
 
-        public Placement(List<Module> _modules)
+        public Placement(List<Module> modules)
         {
-            modules = _modules;
+            _modules = modules;
         }
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace SpriteGenerator
         /// </summary>
         public int Perimeter
         {
-            get { return modules.Max(m => m.X + m.Width) + modules.Max(m => m.Y + m.Height); }
+            get { return _modules.Max(m => m.X + m.Width) + _modules.Max(m => m.Y + m.Height); }
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace SpriteGenerator
         /// </summary>
         public int Width
         {
-            get { return modules.Max(m => m.X + m.Width); }
+            get { return _modules.Max(m => m.X + m.Width); }
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace SpriteGenerator
         /// </summary>
         public int Height
         {
-            get { return modules.Max(m => m.Y + m.Height); }
+            get { return _modules.Max(m => m.Y + m.Height); }
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace SpriteGenerator
         /// </summary>
         public List<Module> Modules
         {
-            get { return modules; }
+            get { return _modules; }
         }
     }
 }

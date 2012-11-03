@@ -59,7 +59,7 @@ namespace SpriteGenerator.Utility
             Module child;
 
             //Horizontal contour for quick y-coordinate calculation
-            Contour contour = new HorizontalContour(root);
+            ContourAbstract contour = new HorizontalContour(root);
 
             //Index of child module in ModuleSequence
             int childIndex = 0;
@@ -128,7 +128,7 @@ namespace SpriteGenerator.Utility
             Module child;
 
             //Vertical contour for quick x-coordinate calculation
-            Contour contour = new VerticalContour(root);
+            ContourAbstract contour = new VerticalContour(root);
 
             //Index of child module in ModuleSequence
             int childIndex = 0;

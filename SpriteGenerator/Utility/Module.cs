@@ -5,37 +5,38 @@ namespace SpriteGenerator.Utility
 {
     public class Module
     {
-        private int name;
-        private int width;
-        private int height;
-        private int whiteSpace;
-        private int xCoordinate;
-        private int yCoordinate;
-        private Image image;
+        private readonly int _name;
+        private readonly int _width;
+        private readonly int _height;
+        private readonly int _whiteSpace;
+        private readonly Image _image;
+
+        private int _xCoordinate;
+        private int _yCoordinate;
 
         /// <summary>
         /// Module class representing an image and it's size including white space around the image.
         /// </summary>
-        /// <param name="_name"></param>
-        /// <param name="_image"></param>
-        /// <param name="_whiteSpace">Width of white space around the image.</param>
-        public Module(int _name, Image _image, int _whiteSpace)
+        /// <param name="name"></param>
+        /// <param name="image"></param>
+        /// <param name="whiteSpace">Width of white space around the image.</param>
+        public Module(int name, Image image, int whiteSpace)
         {
-            name = _name;
+            _name = name;
 
-            if (_image != null)
+            if (image != null)
             {
-                width = _image.Width + _whiteSpace;
-                height = _image.Height + _whiteSpace;
+                _width = image.Width + whiteSpace;
+                _height = image.Height + whiteSpace;
             }
             //Empty module
             else
-                width = height = 0;
+            { _width = _height = 0; }
 
-            whiteSpace = _whiteSpace;
-            xCoordinate = 0;
-            yCoordinate = 0; 
-            image = _image;
+            _whiteSpace = whiteSpace;
+            _xCoordinate = 0;
+            _yCoordinate = 0;
+            _image = image;
         }
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace SpriteGenerator.Utility
         /// </summary>
         public int Width
         {
-            get { return width; }
+            get { return _width; }
         }
 
         /// <summary>
@@ -51,7 +52,7 @@ namespace SpriteGenerator.Utility
         /// </summary>
         public int Height
         {
-            get { return height; }
+            get { return _height; }
         }
 
         /// <summary>
@@ -59,8 +60,8 @@ namespace SpriteGenerator.Utility
         /// </summary>
         public int X
         {
-            get { return xCoordinate; }
-            set { xCoordinate = value; }
+            get { return _xCoordinate; }
+            set { _xCoordinate = value; }
         }
 
         /// <summary>
@@ -68,8 +69,8 @@ namespace SpriteGenerator.Utility
         /// </summary>
         public int Y
         {
-            get { return yCoordinate; }
-            set { yCoordinate = value; }
+            get { return _yCoordinate; }
+            set { _yCoordinate = value; }
         }
 
         /// <summary>
@@ -77,7 +78,7 @@ namespace SpriteGenerator.Utility
         /// </summary>
         public int Name
         {
-            get { return name; }
+            get { return _name; }
         }
 
         /// <summary>
@@ -85,8 +86,8 @@ namespace SpriteGenerator.Utility
         /// </summary>
         public void ClearCoordinates()
         {
-            xCoordinate = 0;
-            yCoordinate = 0;
+            _xCoordinate = 0;
+            _yCoordinate = 0;
         }
 
         /// <summary>
@@ -95,9 +96,11 @@ namespace SpriteGenerator.Utility
         /// <returns></returns>
         public Module Copy()
         {
-            Module copy = new Module(name, image, whiteSpace);
-            copy.xCoordinate = xCoordinate;
-            copy.yCoordinate = yCoordinate;
+            var copy = new Module(_name, _image, _whiteSpace)
+            {
+                _xCoordinate = _xCoordinate,
+                _yCoordinate = _yCoordinate
+            };
             return copy;
         }
 
@@ -108,8 +111,8 @@ namespace SpriteGenerator.Utility
         /// <param name="marginWidth">Margin width around the sprite.</param>
         public void Draw(Graphics graphics, int marginWidth)
         {
-            graphics.DrawImage(image, xCoordinate + marginWidth, yCoordinate + marginWidth, 
-                image.Width, image.Height);
+            graphics.DrawImage(_image, _xCoordinate + marginWidth, _yCoordinate + marginWidth,
+                _image.Width, _image.Height);
         }
     }
 }

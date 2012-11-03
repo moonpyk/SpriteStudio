@@ -7,25 +7,25 @@ namespace SpriteGenerator
 {
     class LayoutProperties
     {
-        public string[] inputFilePaths; 
-        public string outputSpriteFilePath;
-        public string outputCssFilePath;
-        public string layout;
-        public int distanceBetweenImages; 
-        public int marginWidth;
-        public int imagesInRow;
-        public int imagesInColumn;
+        public string[] InputFilePaths;
+        public string OutputSpriteFilePath;
+        public string OutputCssFilePath;
+        public string Layout;
+        public int DistanceBetweenImages;
+        public int MarginWidth;
+        public int ImagesInRow;
+        public int ImagesInColumn;
 
         public LayoutProperties()
         {
-            inputFilePaths = null;
-            outputSpriteFilePath = "";
-            outputCssFilePath = "";
-            layout = "";
-            distanceBetweenImages = 0;
-            marginWidth = 0;
-            imagesInRow = 0;
-            imagesInColumn = 0;
+            InputFilePaths = null;
+            OutputSpriteFilePath = "";
+            OutputCssFilePath = "";
+            Layout = "";
+            DistanceBetweenImages = 0;
+            MarginWidth = 0;
+            ImagesInRow = 0;
+            ImagesInColumn = 0;
         }
     }
 }

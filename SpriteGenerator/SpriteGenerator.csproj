@@ -81,7 +81,7 @@
     <Compile Include="Sprite.cs" />
     <Compile Include="Utility\Algorithm.cs" />
     <Compile Include="Utility\Bit.cs" />
-    <Compile Include="Utility\Contour.cs" />
+    <Compile Include="Utility\ContourAbstract.cs" />
     <Compile Include="Utility\Graph.cs" />
     <Compile Include="Utility\GraphNode.cs" />
     <Compile Include="Utility\HorizontalContour.cs" />
