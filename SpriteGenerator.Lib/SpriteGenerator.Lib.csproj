@@ -46,7 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImageCssMap.cs" />
     <Compile Include="LayoutProperties.cs" />
+    <Compile Include="SpriteLayout.cs" />
     <Compile Include="Placement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sprite.cs" />

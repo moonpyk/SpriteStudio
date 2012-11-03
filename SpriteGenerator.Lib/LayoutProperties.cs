@@ -5,7 +5,7 @@
         public string[] InputFilePaths;
         public string OutputSpriteFilePath;
         public string OutputCssFilePath;
-        public string Layout;
+        public SpriteLayout Layout;
         public int DistanceBetweenImages;
         public int MarginWidth;
         public int ImagesInRow;
@@ -16,7 +16,7 @@
             InputFilePaths = null;
             OutputSpriteFilePath = "";
             OutputCssFilePath = "";
-            Layout = "";
+            Layout = SpriteLayout.None;
             DistanceBetweenImages = 0;
             MarginWidth = 0;
             ImagesInRow = 0;

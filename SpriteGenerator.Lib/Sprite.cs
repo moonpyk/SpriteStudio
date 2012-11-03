@@ -10,75 +10,112 @@ using SpriteGenerator.Utility;
 
 namespace SpriteGenerator
 {
-    public class Sprite
+    public class Sprite : IDisposable
     {
-        private Dictionary<int, Image> _images;
-        private Dictionary<int, string> _cssClassNames;
         private readonly LayoutProperties _layoutProp;
+        private Dictionary<int, string> _cssClassNames;
+        private Dictionary<int, Image> _images;
+
+        private bool _disposed;
 
         public Sprite(LayoutProperties layoutProp)
         {
-            _images = new Dictionary<int, Image>();
-            _cssClassNames = new Dictionary<int, string>();
             _layoutProp = layoutProp;
         }
 
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            if (_images != null)
+            {
+                foreach (var i in _images)
+                {
+                    i.Value.Dispose();
+                }
+                _images.Clear();
+                _images = null;
+            }
+
+
+            if (_cssClassNames != null)
+            {
+                _cssClassNames.Clear();
+                _cssClassNames = null;
+            }
+
+            _disposed = true;
+        }
+
+        #endregion
+
         public void Create()
         {
-            GetData(out _images, out _cssClassNames);
+            var tuple = PopulateData();
 
-            var cssFile = File.CreateText(_layoutProp.OutputCssFilePath);
+            _images = tuple.Images;
+            _cssClassNames = tuple.CssClassesNames;
 
             Image resultSprite = null;
 
-            cssFile.WriteLine(".sprite {{ background-image: url('{0}'); background-color: transparent; background-repeat: no-repeat; }}", RelativeSpriteImagePath(_layoutProp.OutputSpriteFilePath, _layoutProp.OutputCssFilePath));
-
-            switch (_layoutProp.Layout)
+            using (var cssFile = File.CreateText(_layoutProp.OutputCssFilePath))
             {
-                case "Automatic":
-                    resultSprite = GenerateAutomaticLayout(cssFile);
-                    break;
+                cssFile.WriteLine(".sprite {{ background-image: url('{0}'); background-color: transparent; background-repeat: no-repeat; }}", RelativeSpriteImagePath(_layoutProp.OutputSpriteFilePath, _layoutProp.OutputCssFilePath));
 
-                case "Horizontal":
-                    resultSprite = GenerateHorizontalLayout(cssFile);
-                    break;
+                switch (_layoutProp.Layout)
+                {
+                    case SpriteLayout.Automatic:
+                        resultSprite = GenerateAutomaticLayout(cssFile);
+                        break;
 
-                case "Vertical":
-                    resultSprite = GenerateVerticalLayout(cssFile);
-                    break;
+                    case SpriteLayout.Horizontal:
+                        resultSprite = GenerateHorizontalLayout(cssFile);
+                        break;
 
-                case "Rectangular":
-                    resultSprite = GenerateRectangularLayout(cssFile);
-                    break;
+                    case SpriteLayout.Vertical:
+                        resultSprite = GenerateVerticalLayout(cssFile);
+                        break;
+
+                    case SpriteLayout.Rectangular:
+                        resultSprite = GenerateRectangularLayout(cssFile);
+                        break;
+                }
+
+                cssFile.Close();
             }
 
-            cssFile.Close();
-            var outputSpriteFile = new FileStream(_layoutProp.OutputSpriteFilePath, FileMode.Create);
+            using (var outputSpriteFile = new FileStream(_layoutProp.OutputSpriteFilePath, FileMode.Create))
+            {
+                // FIXME : ReThrow
+                Debug.Assert(resultSprite != null, "resultSprite != null");
 
-            // FIXME : ReThrow
-            Debug.Assert(resultSprite != null, "resultSprite != null");
-
-            resultSprite.Save(outputSpriteFile, ImageFormat.Png);
-            outputSpriteFile.Close();
+                resultSprite.Save(outputSpriteFile, ImageFormat.Png);
+                outputSpriteFile.Close();
+            }
         }
 
         /// <summary>
         /// Creates dictionary of images from the given paths and dictionary of CSS classnames from the image filenames.
         /// </summary> 
-        /// <param name="images">Dictionary of images to be inserted into the output sprite.</param>
-        /// <param name="cssClassNames">Dictionary of CSS classnames.</param>
-        private void GetData(out Dictionary<int, Image> images, out Dictionary<int, string> cssClassNames)
+        private ImageCssMap PopulateData()
         {
-            images = new Dictionary<int, Image>();
-            cssClassNames = new Dictionary<int, string>();
+            var images = new Dictionary<int, Image>();
+            var cssClassNames = new Dictionary<int, string>();
 
             for (var i = 0; i < _layoutProp.InputFilePaths.Length; i++)
             {
-                var img = Image.FromFile(_layoutProp.InputFilePaths[i]);
-                images.Add(i, img);
+                images.Add(i, Image.FromFile(_layoutProp.InputFilePaths[i]));
+
                 var splittedFilePath = _layoutProp.InputFilePaths[i].Split('\\');
                 cssClassNames.Add(i, splittedFilePath[splittedFilePath.Length - 1].Split('.')[0]);
             }
+
+            return new ImageCssMap(images, cssClassNames);
         }
 
         private IEnumerable<Module> CreateModules()
@@ -98,6 +135,7 @@ namespace SpriteGenerator
                 (-1 * rectangle.X).ToString(CultureInfo.InvariantCulture),
                 (-1 * rectangle.Y).ToString(CultureInfo.InvariantCulture)
             );
+
             return line;
         }
 
@@ -132,11 +170,9 @@ namespace SpriteGenerator
         }
 
         // Automatic layout
-        private Image GenerateAutomaticLayout(StreamWriter cssFile)
+        private Image GenerateAutomaticLayout(TextWriter cssFile)
         {
-            var sortedByArea = from m in CreateModules()
-                               orderby m.Width * m.Height descending
-                               select m;
+            var sortedByArea = CreateModules().OrderByDescending(m => m.Width * m.Height);
 
             var moduleList = sortedByArea.ToList();
             var placement = Algorithm.Greedy(moduleList);
@@ -168,7 +204,7 @@ namespace SpriteGenerator
         }
 
         // Horizontal layout
-        private Image GenerateHorizontalLayout(StreamWriter cssFile)
+        private Image GenerateHorizontalLayout(TextWriter cssFile)
         {
             // Calculating result image dimension.
             var width = _images.Values.Sum(_ => _.Width + _layoutProp.DistanceBetweenImages);
@@ -177,15 +213,15 @@ namespace SpriteGenerator
 
             var height = _images[0].Height + 2 * _layoutProp.MarginWidth;
 
-            //Creating an empty result image.
+            // Creating an empty result image.
             var resultSprite = new Bitmap(width, height);
             var graphics = Graphics.FromImage(resultSprite);
 
-            //Initial coordinates.
+            // Initial coordinates.
             var actualXCoordinate = _layoutProp.MarginWidth;
             var yCoordinate = _layoutProp.MarginWidth;
 
-            //Drawing images into the result image, writing CSS lines and increasing X coordinate.
+            // Drawing images into the result image, writing CSS lines and increasing X coordinate.
             foreach (var i in _images.Keys)
             {
                 var rectangle = new Rectangle(
@@ -223,7 +259,13 @@ namespace SpriteGenerator
             // Drawing images into the result image, writing CSS lines and increasing Y coordinate.
             foreach (var i in _images.Keys)
             {
-                var rectangle = new Rectangle(xCoordinate, actualYCoordinate, _images[i].Width, _images[i].Height);
+                var rectangle = new Rectangle(
+                    xCoordinate,
+                    actualYCoordinate,
+                    _images[i].Width,
+                    _images[i].Height
+                );
+
                 graphics.DrawImage(_images[i], rectangle);
                 cssFile.WriteLine(CssLine(_cssClassNames[i], rectangle));
                 actualYCoordinate += _images[i].Height + _layoutProp.DistanceBetweenImages;
@@ -257,7 +299,13 @@ namespace SpriteGenerator
             {
                 for (var j = 0; (i * _layoutProp.ImagesInRow) + j < _images.Count && j < _layoutProp.ImagesInRow; j++)
                 {
-                    var rectangle = new Rectangle(actualXCoordinate, actualYCoordinate, imageWidth, imageHeight);
+                    var rectangle = new Rectangle(
+                        actualXCoordinate,
+                        actualYCoordinate,
+                        imageWidth,
+                        imageHeight
+                    );
+
                     graphics.DrawImage(_images[i * _layoutProp.ImagesInRow + j], rectangle);
                     cssFile.WriteLine(CssLine(_cssClassNames[i * _layoutProp.ImagesInRow + j], rectangle));
 

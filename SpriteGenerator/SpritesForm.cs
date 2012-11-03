@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace SpriteGenerator
         public SpritesForm()
         {
             InitializeComponent();
-            _layoutProp.Layout = radioButtonAutomaticLayout.Text;
+            _layoutProp.Layout = SpriteLayoutUtil.FromString(radioButtonAutomaticLayout.Text);
         }
 
         //Generate button click event. Start generating output image and CSS file.
@@ -28,6 +29,7 @@ namespace SpriteGenerator
             _layoutProp.MarginWidth = (int)numericUpDownMarginWidth.Value;
 
             progressWork.Visible = true;
+
             Task.Factory.StartNew(() =>
             {
                 var sprite = new Sprite(_layoutProp);
@@ -57,9 +59,7 @@ namespace SpriteGenerator
             {
                 MessageBox.Show("This directory does not contain image files.");
             }
-
-            //If there are files with the enabled formats in the choosen directory.
-            else
+            else //If there are files with the enabled formats in the choosen directory.
             {
                 textBoxInputDirectoryPath.Text = folderBrowserDialog.SelectedPath;
 
@@ -81,11 +81,25 @@ namespace SpriteGenerator
                 // Maybe long operation, depends of how many images you have
                 Task.Factory.StartNew(() =>
                 {
-                    // Horizontal layout radiobutton is enabled only when all image heights are the same.
-                    canHorizontal = _layoutProp.InputFilePaths.All(file => Image.FromFile(file).Height == height);
+#if PARA
+                    var allImages = _layoutProp.InputFilePaths.AsParallel()
+                        .Select(Image.FromFile)
+                        .ToList();
+#else
+                    var allImages = _layoutProp.InputFilePaths.Select(Image.FromFile).ToList();
+#endif
+
+                    // Horizontal layout radiobutton is enabled only when all image heights are the same.                    
+                    canHorizontal = allImages.All(_ => _.Height == height);
 
                     // Vertical layout radiobutton is enabled only when all image widths are the same.
-                    canVertical = _layoutProp.InputFilePaths.All(file => Image.FromFile(file).Width == width);
+                    canVertical = allImages.All(_ => _.Width == width);
+
+#if PARA
+                    allImages.AsParallel().ForAll(i => i.Dispose());
+#else
+                    allImages.ForEach(i => i.Dispose());
+#endif
                 })
                 .ContinueWith(obj =>
                 {
@@ -93,10 +107,10 @@ namespace SpriteGenerator
                     radioButtonVerticalLayout.Enabled = canVertical;
 
                     // Rectangular layout radiobutton is enabled only when all image heights and all image widths are the same.
-                    radioButtonRectangularLayout.Enabled = radioButtonHorizontalLayout.Enabled &&
-                                                           radioButtonVerticalLayout.Enabled;
+                    radioButtonRectangularLayout.Enabled = canHorizontal && canVertical;
+                    radioButtonAutomaticLayout.Enabled = !radioButtonRectangularLayout.Enabled;
 
-                    //Setting rectangular layout dimensions.
+                    // Setting rectangular layout dimensions.
                     if (radioButtonRectangularLayout.Enabled)
                     {
                         numericUpDownImagesInRow.Minimum = 1;
@@ -121,7 +135,8 @@ namespace SpriteGenerator
         private void ButtonSelectOutputImageFilePathClick(object sender, EventArgs e)
         {
             saveFileDialogOutputImage.ShowDialog();
-            if (saveFileDialogOutputImage.FileName == "")
+
+            if (string.IsNullOrEmpty(saveFileDialogOutputImage.FileName))
             {
                 return;
             }
@@ -188,10 +203,10 @@ namespace SpriteGenerator
         {
             var rd = sender as RadioButton;
 
-            //Setting layout field value.
+            // Setting layout field value.
             if (rd != null && rd.Checked)
             {
-                _layoutProp.Layout = rd.Text;
+                _layoutProp.Layout = SpriteLayoutUtil.FromString(rd.Text);
             }
         }
 
