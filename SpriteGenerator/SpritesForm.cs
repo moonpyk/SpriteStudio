@@ -17,24 +17,52 @@ namespace SpriteGenerator
         public SpritesForm()
         {
             InitializeComponent();
-            _layoutProp.Layout = SpriteLayoutUtil.FromString(radioButtonAutomaticLayout.Text);
         }
 
-        //Generate button click event. Start generating output image and CSS file.
+        private void SpritesFormLoad(object sender, EventArgs e)
+        {
+            _layoutProp.Layout = SpriteLayoutUtil.FromString(rbAutomaticLayout.Text);
+
+            var settings = Properties.Settings.Default;
+
+            if (string.IsNullOrEmpty(settings.LastDirectory))
+            {
+                return;
+            }
+
+            tbInputDirectoryPath.Text = folderBrowserDialog.SelectedPath = settings.LastDirectory;
+
+            if (!CheckImagesDirectory(true))
+            {
+                tbInputDirectoryPath.Text = folderBrowserDialog.SelectedPath = settings.LastDirectory = "";
+            }
+        }
+
+        // Generate button click event. Start generating output image and CSS file.
         private void ButtonGenerateClick(object sender, EventArgs e)
         {
-            _layoutProp.OutputSpriteFilePath = textBoxOutputImageFilePath.Text;
-            _layoutProp.OutputCssFilePath = textBoxOutputCSSFilePath.Text;
-            _layoutProp.DistanceBetweenImages = (int)numericUpDownDistanceBetweenImages.Value;
-            _layoutProp.MarginWidth = (int)numericUpDownMarginWidth.Value;
+            _layoutProp.OutputSpriteFilePath = tbOutputImageFilePath.Text;
+            _layoutProp.OutputCssFilePath = tbOutputCSSFilePath.Text;
+            _layoutProp.DistanceBetweenImages = (int)ndpDistanceBetweenImages.Value;
+            _layoutProp.MarginWidth = (int)ndpMarginWidth.Value;
 
             progressWork.Visible = true;
 
             Task.Factory.StartNew(() =>
             {
-                var sprite = new Sprite(_layoutProp);
-                sprite.Create();
-            }).ContinueWith(o => Close(), TaskScheduler.FromCurrentSynchronizationContext());
+                using (var sprite = new Sprite(_layoutProp))
+                {
+                    sprite.Create();
+                }
+            }).ContinueWith(o =>
+            {
+                var settings = Properties.Settings.Default;
+
+                settings.LastDirectory = tbInputDirectoryPath.Text;
+                settings.Save();
+
+                progressWork.Visible = false;
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         // Browse input images folder.
@@ -45,7 +73,14 @@ namespace SpriteGenerator
                 return;
             }
 
-            string[] filters = { ".png", ".jpg", ".jpeg", ".gif" };
+            CheckImagesDirectory(false);
+        }
+
+        private bool CheckImagesDirectory(bool beSilent)
+        {
+            string[] filters = {
+                ".png", ".jpg", ".jpeg", ".gif"
+            };
 
             _layoutProp.InputFilePaths = (
                 from filter in filters
@@ -54,81 +89,92 @@ namespace SpriteGenerator
                 select file
             ).ToArray();
 
-            //If there is no file with the enabled formats in the choosen directory.
+            // If there is no file with the enabled formats in the choosen directory.
             if (_layoutProp.InputFilePaths.Length == 0)
             {
-                MessageBox.Show("This directory does not contain image files.");
+                if (!beSilent)
+                {
+                    MessageBox.Show("This directory does not contain image files.");
+                }
+                return false;
             }
-            else //If there are files with the enabled formats in the choosen directory.
+
+            // If there are files with the enabled formats in the choosen directory.
+            tbInputDirectoryPath.Text = folderBrowserDialog.SelectedPath;
+
+            _buttonGenerateEnabled[0] = true;
+            btGenerate.Enabled = _buttonGenerateEnabled.All(element => element);
+
+            rbAutomaticLayout.Checked = true;
+
+            int width, height;
+
+            using (var firstImage = Image.FromFile(_layoutProp.InputFilePaths[0]))
             {
-                textBoxInputDirectoryPath.Text = folderBrowserDialog.SelectedPath;
-
-                _buttonGenerateEnabled[0] = true;
-                buttonGenerate.Enabled = _buttonGenerateEnabled.All(element => element);
-
-                radioButtonAutomaticLayout.Checked = true;
-
-                var width = Image.FromFile(_layoutProp.InputFilePaths[0]).Width;
-                var height = Image.FromFile(_layoutProp.InputFilePaths[0]).Height;
-
-                var canVertical = false;
-                var canHorizontal = false;
-
-                var sched = TaskScheduler.FromCurrentSynchronizationContext();
-
-                progressWork.Visible = true;
-
-                // Maybe long operation, depends of how many images you have
-                Task.Factory.StartNew(() =>
-                {
-#if PARA
-                    var allImages = _layoutProp.InputFilePaths.AsParallel()
-                        .Select(Image.FromFile)
-                        .ToList();
-#else
-                    var allImages = _layoutProp.InputFilePaths.Select(Image.FromFile).ToList();
-#endif
-
-                    // Horizontal layout radiobutton is enabled only when all image heights are the same.                    
-                    canHorizontal = allImages.All(_ => _.Height == height);
-
-                    // Vertical layout radiobutton is enabled only when all image widths are the same.
-                    canVertical = allImages.All(_ => _.Width == width);
-
-#if PARA
-                    allImages.AsParallel().ForAll(i => i.Dispose());
-#else
-                    allImages.ForEach(i => i.Dispose());
-#endif
-                })
-                .ContinueWith(obj =>
-                {
-                    radioButtonHorizontalLayout.Enabled = canHorizontal;
-                    radioButtonVerticalLayout.Enabled = canVertical;
-
-                    // Rectangular layout radiobutton is enabled only when all image heights and all image widths are the same.
-                    radioButtonRectangularLayout.Enabled = canHorizontal && canVertical;
-                    radioButtonAutomaticLayout.Enabled = !radioButtonRectangularLayout.Enabled;
-
-                    // Setting rectangular layout dimensions.
-                    if (radioButtonRectangularLayout.Enabled)
-                    {
-                        numericUpDownImagesInRow.Minimum = 1;
-                        numericUpDownImagesInRow.Maximum = _layoutProp.InputFilePaths.Length;
-                        _layoutProp.ImagesInRow = (int)numericUpDownImagesInRow.Value;
-                        _layoutProp.ImagesInColumn = (int)numericUpDownImagesInColumn.Value;
-                    }
-                    else
-                    {
-                        numericUpDownImagesInRow.Minimum = 0;
-                        numericUpDownImagesInColumn.Minimum = 0;
-                        numericUpDownImagesInRow.Value = 0;
-                        numericUpDownImagesInColumn.Value = 0;
-                    }
-
-                    progressWork.Visible = false;
-                }, sched);
+                width = firstImage.Width;
+                height = firstImage.Height;
             }
+
+            bool canVertical = false,
+                 canHorizontal = false;
+
+            var sched = TaskScheduler.FromCurrentSynchronizationContext();
+
+            progressWork.Visible = true;
+
+            // Maybe long operation, depends of how many images you have
+            Task.Factory.StartNew(() =>
+            {
+#if PARA
+                var allImages = _layoutProp.InputFilePaths.AsParallel()
+                    .Select(Image.FromFile)
+                    .ToList();
+#else
+                var allImages = _layoutProp.InputFilePaths.Select(Image.FromFile).ToList();
+#endif
+
+                // Horizontal layout radiobutton is enabled only when all image heights are the same.                    
+                canHorizontal = allImages.All(_ => _.Height == height);
+
+                // Vertical layout radiobutton is enabled only when all image widths are the same.
+                canVertical = allImages.All(_ => _.Width == width);
+
+#if PARA
+                allImages.AsParallel().ForAll(i => i.Dispose());
+#else
+                allImages.ForEach(i => i.Dispose());
+#endif
+            })
+            .ContinueWith(obj =>
+            {
+                rbHorizontalLayout.Enabled = canHorizontal;
+                rbVerticalLayout.Enabled = canVertical;
+
+                // Rectangular layout radiobutton is enabled only when all image heights and all image widths are the same.
+                rbRectangularLayout.Enabled = canHorizontal && canVertical;
+                rbAutomaticLayout.Enabled = !rbRectangularLayout.Enabled;
+
+                // Setting rectangular layout dimensions.
+                if (rbRectangularLayout.Enabled)
+                {
+                    ndpImagesInRow.Minimum = 1;
+                    ndpImagesInRow.Maximum = _layoutProp.InputFilePaths.Length;
+                    _layoutProp.ImagesInRow = (int)ndpImagesInRow.Value;
+                    _layoutProp.ImagesInColumn = (int)ndpImagesInColumn.Value;
+                }
+                else
+                {
+                    ndpImagesInRow.Minimum = 0;
+                    ndpImagesInColumn.Minimum = 0;
+                    ndpImagesInRow.Value = 0;
+                    ndpImagesInColumn.Value = 0;
+                }
+
+                progressWork.Visible = false;
+
+            }, sched);
+
+            return true;
         }
 
         // Select output image file path.
@@ -141,15 +187,15 @@ namespace SpriteGenerator
                 return;
             }
 
-            if (_buttonGenerateEnabled[2] && textBoxOutputCSSFilePath.Text[0] != saveFileDialogOutputImage.FileName[0])
+            if (_buttonGenerateEnabled[2] && tbOutputCSSFilePath.Text[0] != saveFileDialogOutputImage.FileName[0])
             {
                 MessageBox.Show("Output image and CSS file must be on the same drive.");
             }
             else
             {
-                textBoxOutputImageFilePath.Text = saveFileDialogOutputImage.FileName;
+                tbOutputImageFilePath.Text = saveFileDialogOutputImage.FileName;
                 _buttonGenerateEnabled[1] = true;
-                buttonGenerate.Enabled = _buttonGenerateEnabled.All(element => element);
+                btGenerate.Enabled = _buttonGenerateEnabled.All(element => element);
             }
         }
 
@@ -157,21 +203,21 @@ namespace SpriteGenerator
         private void ButtonSelectOutputCssFilePathClick(object sender, EventArgs e)
         {
             saveFileDialogOutputCss.ShowDialog();
-            if (saveFileDialogOutputCss.FileName == "")
+
+            if (string.IsNullOrEmpty(saveFileDialogOutputCss.FileName))
             {
                 return;
             }
 
-            if (_buttonGenerateEnabled[1] &&
-                textBoxOutputImageFilePath.Text[0] != saveFileDialogOutputCss.FileName[0])
+            if (_buttonGenerateEnabled[1] && tbOutputImageFilePath.Text[0] != saveFileDialogOutputCss.FileName[0])
             {
                 MessageBox.Show("Output image and CSS file must be on the same drive.");
             }
             else
             {
-                textBoxOutputCSSFilePath.Text = saveFileDialogOutputCss.FileName;
+                tbOutputCSSFilePath.Text = saveFileDialogOutputCss.FileName;
                 _buttonGenerateEnabled[2] = true;
-                buttonGenerate.Enabled = _buttonGenerateEnabled.All(_ => _);
+                btGenerate.Enabled = _buttonGenerateEnabled.All(_ => _);
             }
         }
 
@@ -181,18 +227,18 @@ namespace SpriteGenerator
             RadioButtonLayoutCheckedChanged(sender, e);
 
             // Enabling numericupdowns to select layout dimension.
-            if (radioButtonRectangularLayout.Checked)
+            if (rbRectangularLayout.Checked)
             {
-                numericUpDownImagesInRow.Enabled = true;
-                numericUpDownImagesInColumn.Enabled = true;
+                ndpImagesInRow.Enabled = true;
+                ndpImagesInColumn.Enabled = true;
                 labelX.Enabled = true;
                 labelSprites.Enabled = true;
-                numericUpDownImagesInRow.Maximum = _layoutProp.InputFilePaths.Length;
+                ndpImagesInRow.Maximum = _layoutProp.InputFilePaths.Length;
             }
             else // Disabling numericupdowns
             {
-                numericUpDownImagesInRow.Enabled = false;
-                numericUpDownImagesInColumn.Enabled = false;
+                ndpImagesInRow.Enabled = false;
+                ndpImagesInColumn.Enabled = false;
                 labelX.Enabled = false;
                 labelSprites.Enabled = false;
             }
@@ -216,12 +262,12 @@ namespace SpriteGenerator
             var numberOfFiles = _layoutProp.InputFilePaths.Length;
 
             //Setting sprites in column numericupdown value
-            numericUpDownImagesInColumn.Minimum = numberOfFiles / (int)numericUpDownImagesInRow.Value;
-            numericUpDownImagesInColumn.Minimum += (numberOfFiles % (int)numericUpDownImagesInRow.Value) > 0 ? 1 : 0;
-            numericUpDownImagesInColumn.Maximum = numericUpDownImagesInColumn.Minimum;
+            ndpImagesInColumn.Minimum = numberOfFiles / (int)ndpImagesInRow.Value;
+            ndpImagesInColumn.Minimum += (numberOfFiles % (int)ndpImagesInRow.Value) > 0 ? 1 : 0;
+            ndpImagesInColumn.Maximum = ndpImagesInColumn.Minimum;
 
-            _layoutProp.ImagesInRow = (int)numericUpDownImagesInRow.Value;
-            _layoutProp.ImagesInColumn = (int)numericUpDownImagesInColumn.Value;
+            _layoutProp.ImagesInRow = (int)ndpImagesInRow.Value;
+            _layoutProp.ImagesInColumn = (int)ndpImagesInColumn.Value;
         }
     }
 }

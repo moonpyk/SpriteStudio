@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
@@ -64,7 +63,7 @@ namespace SpriteGenerator
             _images = tuple.Images;
             _cssClassNames = tuple.CssClassesNames;
 
-            Image resultSprite = null;
+            Image resultSprite;
 
             using (var cssFile = File.CreateText(_layoutProp.OutputCssFilePath))
             {
@@ -91,6 +90,9 @@ namespace SpriteGenerator
                     case SpriteLayout.Rectangular:
                         resultSprite = GenerateRectangularLayout(cssFile);
                         break;
+
+                    default:
+                        throw new InvalidOperationException("Invalid SpriteLayout mode selected.");
                 }
 
                 cssFile.Close();
@@ -98,9 +100,6 @@ namespace SpriteGenerator
 
             using (var outputSpriteFile = new FileStream(_layoutProp.OutputSpriteFilePath, FileMode.Create))
             {
-                // FIXME : ReThrow
-                Debug.Assert(resultSprite != null, "resultSprite != null");
-
                 resultSprite.Save(outputSpriteFile, ImageFormat.Png);
                 outputSpriteFile.Close();
             }
