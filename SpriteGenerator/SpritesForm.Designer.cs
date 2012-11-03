@@ -57,6 +57,7 @@
             this.groupBoxDistances = new System.Windows.Forms.GroupBox();
             this.numericUpDownMarginWidth = new System.Windows.Forms.NumericUpDown();
             this.labelMarginWidth = new System.Windows.Forms.Label();
+            this.progressWork = new System.Windows.Forms.ProgressBar();
             this.groupBoxPaths.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDistanceBetweenImages)).BeginInit();
             this.groupBoxLayout.SuspendLayout();
@@ -70,7 +71,7 @@
             // 
             this.buttonGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonGenerate.Enabled = false;
-            this.buttonGenerate.Location = new System.Drawing.Point(411, 311);
+            this.buttonGenerate.Location = new System.Drawing.Point(393, 293);
             this.buttonGenerate.Name = "buttonGenerate";
             this.buttonGenerate.Size = new System.Drawing.Size(75, 23);
             this.buttonGenerate.TabIndex = 3;
@@ -112,7 +113,7 @@
             this.textBoxInputDirectoryPath.Location = new System.Drawing.Point(132, 19);
             this.textBoxInputDirectoryPath.Name = "textBoxInputDirectoryPath";
             this.textBoxInputDirectoryPath.ReadOnly = true;
-            this.textBoxInputDirectoryPath.Size = new System.Drawing.Size(253, 20);
+            this.textBoxInputDirectoryPath.Size = new System.Drawing.Size(235, 20);
             this.textBoxInputDirectoryPath.TabIndex = 0;
             // 
             // textBoxOutputImageFilePath
@@ -122,7 +123,7 @@
             this.textBoxOutputImageFilePath.Location = new System.Drawing.Point(132, 45);
             this.textBoxOutputImageFilePath.Name = "textBoxOutputImageFilePath";
             this.textBoxOutputImageFilePath.ReadOnly = true;
-            this.textBoxOutputImageFilePath.Size = new System.Drawing.Size(253, 20);
+            this.textBoxOutputImageFilePath.Size = new System.Drawing.Size(235, 20);
             this.textBoxOutputImageFilePath.TabIndex = 1;
             // 
             // textBoxOutputCSSFilePath
@@ -132,7 +133,7 @@
             this.textBoxOutputCSSFilePath.Location = new System.Drawing.Point(132, 71);
             this.textBoxOutputCSSFilePath.Name = "textBoxOutputCSSFilePath";
             this.textBoxOutputCSSFilePath.ReadOnly = true;
-            this.textBoxOutputCSSFilePath.Size = new System.Drawing.Size(253, 20);
+            this.textBoxOutputCSSFilePath.Size = new System.Drawing.Size(235, 20);
             this.textBoxOutputCSSFilePath.TabIndex = 2;
             // 
             // saveFileDialogOutputImage
@@ -146,7 +147,7 @@
             // buttonBrowseFolder
             // 
             this.buttonBrowseFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonBrowseFolder.Location = new System.Drawing.Point(402, 17);
+            this.buttonBrowseFolder.Location = new System.Drawing.Point(384, 17);
             this.buttonBrowseFolder.Name = "buttonBrowseFolder";
             this.buttonBrowseFolder.Size = new System.Drawing.Size(75, 23);
             this.buttonBrowseFolder.TabIndex = 8;
@@ -157,7 +158,7 @@
             // buttonSelectOutputImageFilePath
             // 
             this.buttonSelectOutputImageFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSelectOutputImageFilePath.Location = new System.Drawing.Point(402, 43);
+            this.buttonSelectOutputImageFilePath.Location = new System.Drawing.Point(384, 43);
             this.buttonSelectOutputImageFilePath.Name = "buttonSelectOutputImageFilePath";
             this.buttonSelectOutputImageFilePath.Size = new System.Drawing.Size(75, 23);
             this.buttonSelectOutputImageFilePath.TabIndex = 9;
@@ -168,7 +169,7 @@
             // buttonSelectOutputCSSFilePath
             // 
             this.buttonSelectOutputCSSFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSelectOutputCSSFilePath.Location = new System.Drawing.Point(402, 69);
+            this.buttonSelectOutputCSSFilePath.Location = new System.Drawing.Point(384, 69);
             this.buttonSelectOutputCSSFilePath.Name = "buttonSelectOutputCSSFilePath";
             this.buttonSelectOutputCSSFilePath.Size = new System.Drawing.Size(75, 23);
             this.buttonSelectOutputCSSFilePath.TabIndex = 10;
@@ -191,7 +192,7 @@
             this.groupBoxPaths.Controls.Add(this.label3);
             this.groupBoxPaths.Location = new System.Drawing.Point(9, 12);
             this.groupBoxPaths.Name = "groupBoxPaths";
-            this.groupBoxPaths.Size = new System.Drawing.Size(483, 103);
+            this.groupBoxPaths.Size = new System.Drawing.Size(465, 103);
             this.groupBoxPaths.TabIndex = 11;
             this.groupBoxPaths.TabStop = false;
             this.groupBoxPaths.Text = "Paths";
@@ -199,7 +200,7 @@
             // numericUpDownDistanceBetweenImages
             // 
             this.numericUpDownDistanceBetweenImages.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDownDistanceBetweenImages.Location = new System.Drawing.Point(267, 24);
+            this.numericUpDownDistanceBetweenImages.Location = new System.Drawing.Point(249, 24);
             this.numericUpDownDistanceBetweenImages.Maximum = new decimal(new int[] {
             10,
             0,
@@ -245,7 +246,7 @@
             this.groupBoxLayout.Controls.Add(this.radioButtonRectangularLayout);
             this.groupBoxLayout.Location = new System.Drawing.Point(9, 121);
             this.groupBoxLayout.Name = "groupBoxLayout";
-            this.groupBoxLayout.Size = new System.Drawing.Size(162, 218);
+            this.groupBoxLayout.Size = new System.Drawing.Size(162, 200);
             this.groupBoxLayout.TabIndex = 16;
             this.groupBoxLayout.TabStop = false;
             this.groupBoxLayout.Text = "Layout";
@@ -347,7 +348,7 @@
             this.groupBoxDistances.Controls.Add(this.numericUpDownDistanceBetweenImages);
             this.groupBoxDistances.Location = new System.Drawing.Point(174, 121);
             this.groupBoxDistances.Name = "groupBoxDistances";
-            this.groupBoxDistances.Size = new System.Drawing.Size(318, 164);
+            this.groupBoxDistances.Size = new System.Drawing.Size(300, 146);
             this.groupBoxDistances.TabIndex = 17;
             this.groupBoxDistances.TabStop = false;
             this.groupBoxDistances.Text = "Distances";
@@ -355,7 +356,7 @@
             // numericUpDownMarginWidth
             // 
             this.numericUpDownMarginWidth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDownMarginWidth.Location = new System.Drawing.Point(267, 54);
+            this.numericUpDownMarginWidth.Location = new System.Drawing.Point(249, 54);
             this.numericUpDownMarginWidth.Maximum = new decimal(new int[] {
             10,
             0,
@@ -374,11 +375,23 @@
             this.labelMarginWidth.TabIndex = 15;
             this.labelMarginWidth.Text = "Margin width:";
             // 
+            // progressWork
+            // 
+            this.progressWork.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressWork.Location = new System.Drawing.Point(183, 292);
+            this.progressWork.Name = "progressWork";
+            this.progressWork.Size = new System.Drawing.Size(204, 23);
+            this.progressWork.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.progressWork.TabIndex = 18;
+            this.progressWork.Visible = false;
+            // 
             // SpritesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(501, 345);
+            this.ClientSize = new System.Drawing.Size(483, 327);
+            this.Controls.Add(this.progressWork);
             this.Controls.Add(this.groupBoxDistances);
             this.Controls.Add(this.groupBoxLayout);
             this.Controls.Add(this.groupBoxPaths);
@@ -430,6 +443,7 @@
         private System.Windows.Forms.NumericUpDown numericUpDownImagesInColumn;
         private System.Windows.Forms.NumericUpDown numericUpDownImagesInRow;
         private System.Windows.Forms.Label labelSprites;
+        private System.Windows.Forms.ProgressBar progressWork;
     }
 }
 

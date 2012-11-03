@@ -23,24 +23,25 @@ namespace SpriteGenerator.Utility
         /// <returns></returns>
         public override int FindMax(int to)
         {
-            int max = 0;
+            var max = 0;
+
             //Actual module does not need to be checked.
-            int indexFrom = insertationIndex + 1;
+            var indexFrom = InsertationIndex + 1;
 
             //Checking modules in contour.
-            while (indexFrom < moduleSequence.Count && moduleSequence[indexFrom].X < to)
+            while (indexFrom < ModuleSequence.Count && ModuleSequence[indexFrom].X < to)
             {
                 //Overwriting maximum.
-                if (max < moduleSequence[indexFrom].Y + moduleSequence[indexFrom].Height)
+                if (max < ModuleSequence[indexFrom].Y + ModuleSequence[indexFrom].Height)
                 {
-                    max = moduleSequence[indexFrom].Y + moduleSequence[indexFrom].Height;
-                    whereMax = moduleSequence[indexFrom];
+                    max = ModuleSequence[indexFrom].Y + ModuleSequence[indexFrom].Height;
+                    WhereMax = ModuleSequence[indexFrom];
                 }
 
                 //Removing modules, which are covered by the module will be isnserted.
-                if (moduleSequence[indexFrom].X + moduleSequence[indexFrom].Width <= to)
+                if (ModuleSequence[indexFrom].X + ModuleSequence[indexFrom].Width <= to)
                 {
-                    moduleSequence.RemoveAt(indexFrom);
+                    ModuleSequence.RemoveAt(indexFrom);
                 }
                 else
                 {

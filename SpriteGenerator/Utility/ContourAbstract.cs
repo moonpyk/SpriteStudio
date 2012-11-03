@@ -5,23 +5,21 @@ using System.Text;
 
 namespace SpriteGenerator.Utility
 {
-    //Contour is the list of the modules on the top (horizontal contour) or on the right (vertical contour) of the 
-    //placement. It is needed for linear time computation of the modules coordinates. It is easier to understand 
-    //it from some figure. See reference.
+    /// <summary>
+    /// Contour is the list of the modules on the top (horizontal contour) or on the right (vertical contour) of the
+    /// placement. It is needed for linear time computation of the modules coordinates. It is easier to understand 
+    /// it from some figure. See reference.
+    /// </summary>
     abstract class ContourAbstract
     {
-        protected List<Module> moduleSequence;
-        protected int insertationIndex;
-        protected Module whereMax;
-
         protected void Construct(Module root)
         {
-            moduleSequence = new List<Module> {
+            ModuleSequence = new List<Module> {
                 root
             };
 
-            whereMax = root;
-            insertationIndex = -1;
+            WhereMax = root;
+            InsertationIndex = -1;
         }
 
         /// <summary>
@@ -29,7 +27,8 @@ namespace SpriteGenerator.Utility
         /// </summary>
         public int InsertationIndex
         {
-            set { insertationIndex = value; }
+            get;
+            set;
         }
 
         /// <summary>
@@ -37,7 +36,8 @@ namespace SpriteGenerator.Utility
         /// </summary>
         public List<Module> ModuleSequence
         {
-            get { return moduleSequence; }
+            get;
+            set;
         }
 
         /// <summary>
@@ -46,7 +46,8 @@ namespace SpriteGenerator.Utility
         /// </summary>
         public Module WhereMax
         {
-            get { return whereMax; }
+            get;
+            set;
         }
 
         public abstract int FindMax(int to);
@@ -57,8 +58,8 @@ namespace SpriteGenerator.Utility
         /// <param name="module"></param>
         public void Update(Module module)
         {
-            moduleSequence.Insert(++insertationIndex, module);
-            whereMax = new Module(-1, null, 0);
+            ModuleSequence.Insert(++InsertationIndex, module);
+            WhereMax = new Module(-1, null, 0);
         }
     }
 }

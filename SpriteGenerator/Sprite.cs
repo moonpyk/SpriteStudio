@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -20,17 +20,18 @@ namespace SpriteGenerator
         {
             _images = new Dictionary<int, Image>();
             _cssClassNames = new Dictionary<int, string>();
-            this._layoutProp = layoutProp;
+            _layoutProp = layoutProp;
         }
 
         public void Create()
         {
             GetData(out _images, out _cssClassNames);
 
-            StreamWriter cssFile = File.CreateText(_layoutProp.OutputCssFilePath);
+            var cssFile = File.CreateText(_layoutProp.OutputCssFilePath);
+
             Image resultSprite = null;
 
-            cssFile.WriteLine(".sprite {{ background-image: url('{0}'); background-color: transparent; background-repeat: no-repeat; }}", relativeSpriteImagePath(_layoutProp.OutputSpriteFilePath, _layoutProp.OutputCssFilePath));
+            cssFile.WriteLine(".sprite {{ background-image: url('{0}'); background-color: transparent; background-repeat: no-repeat; }}", RelativeSpriteImagePath(_layoutProp.OutputSpriteFilePath, _layoutProp.OutputCssFilePath));
 
             switch (_layoutProp.Layout)
             {
@@ -53,6 +54,10 @@ namespace SpriteGenerator
 
             cssFile.Close();
             var outputSpriteFile = new FileStream(_layoutProp.OutputSpriteFilePath, FileMode.Create);
+
+            // FIXME : ReThrow
+            Debug.Assert(resultSprite != null, "resultSprite != null");
+
             resultSprite.Save(outputSpriteFile, ImageFormat.Png);
             outputSpriteFile.Close();
         }
@@ -60,7 +65,6 @@ namespace SpriteGenerator
         /// <summary>
         /// Creates dictionary of images from the given paths and dictionary of CSS classnames from the image filenames.
         /// </summary> 
-        /// <param name="inputFilePaths">Array of input file paths.</param>
         /// <param name="images">Dictionary of images to be inserted into the output sprite.</param>
         /// <param name="cssClassNames">Dictionary of CSS classnames.</param>
         private void GetData(out Dictionary<int, Image> images, out Dictionary<int, string> cssClassNames)
@@ -68,11 +72,11 @@ namespace SpriteGenerator
             images = new Dictionary<int, Image>();
             cssClassNames = new Dictionary<int, string>();
 
-            for (int i = 0; i < _layoutProp.InputFilePaths.Length; i++)
+            for (var i = 0; i < _layoutProp.InputFilePaths.Length; i++)
             {
-                Image img = Image.FromFile(_layoutProp.InputFilePaths[i]);
+                var img = Image.FromFile(_layoutProp.InputFilePaths[i]);
                 images.Add(i, img);
-                string[] splittedFilePath = _layoutProp.InputFilePaths[i].Split('\\');
+                var splittedFilePath = _layoutProp.InputFilePaths[i].Split('\\');
                 cssClassNames.Add(i, splittedFilePath[splittedFilePath.Length - 1].Split('.')[0]);
             }
         }
@@ -87,8 +91,8 @@ namespace SpriteGenerator
             return modules;
         }
 
-        //CSS line
-        private string CssLine(string cssClassName, Rectangle rectangle)
+        // CSS line
+        private static string CssLine(string cssClassName, Rectangle rectangle)
         {
             var line = string.Format(".{0} {{ width: {1}px; height: {2}px; background-position: {3}px {4}px; }}",
                 cssClassName,
@@ -100,8 +104,8 @@ namespace SpriteGenerator
             return line;
         }
 
-        //Relative sprite image file path
-        private string relativeSpriteImagePath(string outputSpriteFilePath, string outputCssFilePath)
+        // Relative sprite image file path
+        private static string RelativeSpriteImagePath(string outputSpriteFilePath, string outputCssFilePath)
         {
             var splittedOutputCssFilePath = outputCssFilePath.Split('\\');
             var splittedOutputSpriteFilePath = outputSpriteFilePath.Split('\\');
@@ -118,7 +122,7 @@ namespace SpriteGenerator
 
             var relativePath = "";
 
-            for (int i = 0; i < splittedOutputCssFilePath.Length - breakAt - 1; i++)
+            for (var i = 0; i < splittedOutputCssFilePath.Length - breakAt - 1; i++)
             {
                 relativePath += "../";
             }
@@ -127,12 +131,13 @@ namespace SpriteGenerator
             return relativePath;
         }
 
-        //Automatic layout
+        // Automatic layout
         private Image GenerateAutomaticLayout(StreamWriter cssFile)
         {
             var sortedByArea = from m in CreateModules()
                                orderby m.Width * m.Height descending
                                select m;
+
             var moduleList = sortedByArea.ToList();
             var placement = Algorithm.Greedy(moduleList);
 
@@ -145,7 +150,7 @@ namespace SpriteGenerator
             var graphics = Graphics.FromImage(resultSprite);
 
             //Drawing images into the result image in the original order and writing CSS lines.
-            foreach (Module m in placement.Modules)
+            foreach (var m in placement.Modules)
             {
                 m.Draw(graphics, _layoutProp.MarginWidth);
 
@@ -160,7 +165,7 @@ namespace SpriteGenerator
             return resultSprite;
         }
 
-        //Horizontal layout
+        // Horizontal layout
         private Image GenerateHorizontalLayout(StreamWriter cssFile)
         {
             //Calculating result image dimension.
@@ -195,28 +200,32 @@ namespace SpriteGenerator
             return resultSprite;
         }
 
-        //Vertical layout
+        // Vertical layout
         private Image GenerateVerticalLayout(StreamWriter cssFile)
         {
             //Calculating result image dimension.
-            int height = 0;
+            var height = 0;
+
             foreach (Image image in _images.Values)
+            {
                 height += image.Height + _layoutProp.DistanceBetweenImages;
+            }
+
             height = height - _layoutProp.DistanceBetweenImages + 2 * _layoutProp.MarginWidth;
-            int width = _images[0].Width + 2 * _layoutProp.MarginWidth;
+            var width = _images[0].Width + 2 * _layoutProp.MarginWidth;
 
             //Creating an empty result image.
-            Image resultSprite = new Bitmap(width, height);
-            Graphics graphics = Graphics.FromImage(resultSprite);
+            var resultSprite = new Bitmap(width, height);
+            var graphics = Graphics.FromImage(resultSprite);
 
             //Initial coordinates.
-            int actualYCoordinate = _layoutProp.MarginWidth;
-            int xCoordinate = _layoutProp.MarginWidth;
+            var actualYCoordinate = _layoutProp.MarginWidth;
+            var xCoordinate = _layoutProp.MarginWidth;
 
             //Drawing images into the result image, writing CSS lines and increasing Y coordinate.
             foreach (int i in _images.Keys)
             {
-                Rectangle rectangle = new Rectangle(xCoordinate, actualYCoordinate, _images[i].Width, _images[i].Height);
+                var rectangle = new Rectangle(xCoordinate, actualYCoordinate, _images[i].Width, _images[i].Height);
                 graphics.DrawImage(_images[i], rectangle);
                 cssFile.WriteLine(CssLine(_cssClassNames[i], rectangle));
                 actualYCoordinate += _images[i].Height + _layoutProp.DistanceBetweenImages;
@@ -225,32 +234,34 @@ namespace SpriteGenerator
             return resultSprite;
         }
 
-        private Image GenerateRectangularLayout(StreamWriter CSSFile)
+        private Image GenerateRectangularLayout(TextWriter cssFile)
         {
             //Calculating result image dimension.
-            int imageWidth = _images[0].Width;
-            int imageHeight = _images[0].Height;
-            int width = _layoutProp.ImagesInRow * (imageWidth + _layoutProp.DistanceBetweenImages) -
+            var imageWidth = _images[0].Width;
+            var imageHeight = _images[0].Height;
+
+            var width = _layoutProp.ImagesInRow * (imageWidth + _layoutProp.DistanceBetweenImages) -
                 _layoutProp.DistanceBetweenImages + 2 * _layoutProp.MarginWidth;
-            int height = _layoutProp.ImagesInColumn * (imageHeight + _layoutProp.DistanceBetweenImages) -
+
+            var height = _layoutProp.ImagesInColumn * (imageHeight + _layoutProp.DistanceBetweenImages) -
                 _layoutProp.DistanceBetweenImages + 2 * _layoutProp.MarginWidth;
 
             //Creating an empty result image.
-            Image resultSprite = new Bitmap(width, height);
-            Graphics graphics = Graphics.FromImage(resultSprite);
+            var resultSprite = new Bitmap(width, height);
+            var graphics = Graphics.FromImage(resultSprite);
 
             //Initial coordinates.
-            int actualYCoordinate = _layoutProp.MarginWidth;
-            int actualXCoordinate = _layoutProp.MarginWidth;
+            var actualYCoordinate = _layoutProp.MarginWidth;
+            var actualXCoordinate = _layoutProp.MarginWidth;
 
             //Drawing images into the result image, writing CSS lines and increasing coordinates.
-            for (int i = 0; i < _layoutProp.ImagesInColumn; i++)
+            for (var i = 0; i < _layoutProp.ImagesInColumn; i++)
             {
-                for (int j = 0; (i * _layoutProp.ImagesInRow) + j < _images.Count && j < _layoutProp.ImagesInRow; j++)
+                for (var j = 0; (i * _layoutProp.ImagesInRow) + j < _images.Count && j < _layoutProp.ImagesInRow; j++)
                 {
-                    Rectangle rectangle = new Rectangle(actualXCoordinate, actualYCoordinate, imageWidth, imageHeight);
+                    var rectangle = new Rectangle(actualXCoordinate, actualYCoordinate, imageWidth, imageHeight);
                     graphics.DrawImage(_images[i * _layoutProp.ImagesInRow + j], rectangle);
-                    CSSFile.WriteLine(CssLine(_cssClassNames[i * _layoutProp.ImagesInRow + j], rectangle));
+                    cssFile.WriteLine(CssLine(_cssClassNames[i * _layoutProp.ImagesInRow + j], rectangle));
                     actualXCoordinate += imageWidth + _layoutProp.DistanceBetweenImages;
                 }
                 actualYCoordinate += imageHeight + _layoutProp.DistanceBetweenImages;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -14,41 +15,49 @@ namespace SpriteGenerator.Utility
         /// <returns>Near optimal placement.</returns>
         public static Placement Greedy(List<Module> modules)
         {
-            //Empty O-Tree code.
-            OTree oTree = new OTree();
-            OT finalOT = null;
-            //Empty list of modules.
-            List<Module> moduleList = new List<Module>();
+            // Empty O-Tree code.
+            var oTree = new OTree();
+            OT finalOt = null;
 
-            //For each module which needs to be inserted.
-            foreach (Module module in modules)
+            // Empty list of modules.
+            var moduleList = new List<Module>();
+
+            // For each module which needs to be inserted.
+            foreach (var module in modules)
             {
                 OTree bestOTree = null;
-                //Add module to the list of already packed modules.
+
+                // Add module to the list of already packed modules.
                 moduleList.Add(module);
-                //Set the minimum perimeter of the placement to high.
-                int minPerimeter = Int32.MaxValue;
 
-                //Try all insertation point.
-                foreach (int insertationPoint in oTree.InsertationPoints())
+                // Set the minimum perimeter of the placement to high.
+                var minPerimeter = Int32.MaxValue;
+
+                // Try all insertation point.
+                Debug.Assert(oTree != null, "oTree != null");
+
+                foreach (var insertationPoint in oTree.InsertationPoints())
                 {
-                    OTree ot = oTree.Copy();
+                    var ot = oTree.Copy();
                     ot.Insert(module.Name, insertationPoint);
-                    OT oT = new OT(ot, moduleList);
-                    Placement pm = oT.Placement;
+                    var oT = new OT(ot, moduleList);
+                    var pm = oT.Placement;
 
-                    //Choose the one with the minimum perimeter.
-                    if (pm.Perimeter < minPerimeter)
+                    // Choose the one with the minimum perimeter.
+                    if (pm.Perimeter >= minPerimeter)
                     {
-                        finalOT = oT;
-                        bestOTree = ot;
-                        minPerimeter = pm.Perimeter;
+                        continue;
                     }
+
+                    finalOt = oT;
+                    bestOTree = ot;
+                    minPerimeter = pm.Perimeter;
                 }
                 oTree = bestOTree;
             }
 
-            return finalOT.Placement;
+            Debug.Assert(finalOt != null, "finalOt != null");
+            return finalOt.Placement;
         }
     }
 }
