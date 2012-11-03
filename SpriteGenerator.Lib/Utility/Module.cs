@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace SpriteGenerator.Utility
 {

@@ -16,25 +16,15 @@
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -68,8 +58,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LayoutProperties.cs" />
-    <Compile Include="Placement.cs" />
     <Compile Include="SpritesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,17 +66,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sprite.cs" />
-    <Compile Include="Utility\Algorithm.cs" />
-    <Compile Include="Utility\Bit.cs" />
-    <Compile Include="Utility\ContourAbstract.cs" />
-    <Compile Include="Utility\Graph.cs" />
-    <Compile Include="Utility\GraphNode.cs" />
-    <Compile Include="Utility\HorizontalContour.cs" />
-    <Compile Include="Utility\Module.cs" />
-    <Compile Include="Utility\OTHelper.cs" />
-    <Compile Include="Utility\OTree.cs" />
-    <Compile Include="Utility\VerticalContour.cs" />
     <EmbeddedResource Include="SpritesForm.resx">
       <DependentUpon>SpritesForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -135,6 +112,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="spritegenerator.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SpriteGenerator.Lib\SpriteGenerator.Lib.csproj">
+      <Project>{349174D7-027E-46AB-B928-3E14E5619E4D}</Project>
+      <Name>SpriteGenerator.Lib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
