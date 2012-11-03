@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SpriteGenerator.Utility
 {
-    static class Algorithm
+    public static class Algorithm
     {
         /// <summary>
         /// Greedy algorithm.
@@ -17,7 +17,7 @@ namespace SpriteGenerator.Utility
         {
             // Empty O-Tree code.
             var oTree = new OTree();
-            OT finalOt = null;
+            OTHelper finalOt = null;
 
             // Empty list of modules.
             var moduleList = new List<Module>();
@@ -40,7 +40,7 @@ namespace SpriteGenerator.Utility
                 {
                     var ot = oTree.Copy();
                     ot.Insert(module.Name, insertationPoint);
-                    var oT = new OT(ot, moduleList);
+                    var oT = new OTHelper(ot, moduleList);
                     var pm = oT.Placement;
 
                     // Choose the one with the minimum perimeter.

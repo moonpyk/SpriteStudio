@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using SpriteGenerator.Utility;
 
-namespace SpriteGenerator
+namespace SpriteGenerator.Utility
 {
     //Code class for O-Tree representation. O-Tree encodes a placement by a sequence of 
     //module labels and a 0-1 sequence describing the tree structure.
-    class OTree
+    public class OTree
     {
-        private List<int> moduleSequence;
-        private List<Bit> dfsSequence;
+        private List<int> _moduleSequence;
 
         /// <summary>
         /// Creates new instance of O-Tree code with empty sequences.
         /// </summary>
         public OTree()
         {
-            moduleSequence = new List<int>();
-            dfsSequence = new List<Bit>();
+            _moduleSequence = new List<int>();
+            DfsSequence = new List<Bit>();
         }
 
         /// <summary>
@@ -27,8 +23,14 @@ namespace SpriteGenerator
         /// </summary>
         public List<int> ModuleSequence
         {
-            get { return moduleSequence; }
-            set { moduleSequence = value; }
+            get
+            {
+                return _moduleSequence;
+            }
+            set
+            {
+                _moduleSequence = value;
+            }
         }
 
         /// <summary>
@@ -36,18 +38,20 @@ namespace SpriteGenerator
         /// </summary>
         public List<Bit> DfsSequence
         {
-            get { return dfsSequence; }
+            get;
+            private set;
         }
 
         /// <summary>
         /// Deep copy.
         /// </summary>
-        /// <returns></returns>
         public OTree Copy()
         {
-            OTree ot = new OTree();
-            ot.moduleSequence = new List<int>(moduleSequence);
-            ot.dfsSequence = new List<Bit>(dfsSequence);
+            var ot = new OTree
+            {
+                _moduleSequence = new List<int>(_moduleSequence),
+                DfsSequence = new List<Bit>(DfsSequence)
+            };
 
             return ot;
         }
@@ -59,8 +63,10 @@ namespace SpriteGenerator
         /// can be inserted.</returns>
         public IEnumerable<int> InsertationPoints()
         {
-            for (int i = 0; i <= dfsSequence.Count; i++)
+            for (var i = 0; i <= DfsSequence.Count; i++)
+            {
                 yield return i;
+            }
         }
 
         /// <summary>
@@ -70,13 +76,13 @@ namespace SpriteGenerator
         /// <param name="dfsIndex">DFS-sequence index.</param>
         public void Insert(int item, int dfsIndex)
         {
-            //Inserting 0 and 1 into DFS sequence representing a forth and a back step.
-            dfsSequence.InsertRange(dfsIndex, new Bit[] { 0, 1 });
+            // Inserting 0 and 1 into DFS sequence representing a forth and a back step.
+            DfsSequence.InsertRange(dfsIndex, new Bit[] { 0, 1 });
 
-            //Calculating index of module label in moduleSequence.
-            //Every forth step in DFS traversing before dfsIndex belong to a previous module in moduleSequence.
-            int moduleIndex = dfsSequence.GetRange(0, dfsIndex).Count(b => b == 0);
-            moduleSequence.Insert(moduleIndex, item);
+            // Calculating index of module label in moduleSequence.
+            // Every forth step in DFS traversing before dfsIndex belong to a previous module in moduleSequence.
+            var moduleIndex = DfsSequence.GetRange(0, dfsIndex).Count(b => b == 0);
+            _moduleSequence.Insert(moduleIndex, item);
         }
     }
 }

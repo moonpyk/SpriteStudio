@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using SpriteGenerator.Utility;
 
 namespace SpriteGenerator
 {
-    class Sprite
+    public class Sprite
     {
         private Dictionary<int, Image> _images;
         private Dictionary<int, string> _cssClassNames;
@@ -81,14 +81,11 @@ namespace SpriteGenerator
             }
         }
 
-        private List<Module> CreateModules()
+        private IEnumerable<Module> CreateModules()
         {
-            var modules = new List<Module>();
-            foreach (int i in _images.Keys)
-            {
-                modules.Add(new Module(i, _images[i], _layoutProp.DistanceBetweenImages));
-            }
-            return modules;
+            return _images.Keys
+                .Select(i => new Module(i, _images[i], _layoutProp.DistanceBetweenImages))
+                .ToList();
         }
 
         // CSS line
@@ -113,11 +110,13 @@ namespace SpriteGenerator
             var breakAt = 0;
             for (var i = 0; i < splittedOutputCssFilePath.Length; i++)
             {
-                if (i < splittedOutputSpriteFilePath.Length && splittedOutputCssFilePath[i] != splittedOutputSpriteFilePath[i])
+                if (i >= splittedOutputSpriteFilePath.Length || splittedOutputCssFilePath[i] == splittedOutputSpriteFilePath[i])
                 {
-                    breakAt = i;
-                    break;
+                    continue;
                 }
+
+                breakAt = i;
+                break;
             }
 
             var relativePath = "";
@@ -126,6 +125,7 @@ namespace SpriteGenerator
             {
                 relativePath += "../";
             }
+
             relativePath += String.Join("/", splittedOutputSpriteFilePath, breakAt, splittedOutputSpriteFilePath.Length - breakAt);
 
             return relativePath;
@@ -141,7 +141,7 @@ namespace SpriteGenerator
             var moduleList = sortedByArea.ToList();
             var placement = Algorithm.Greedy(moduleList);
 
-            //Creating an empty result image.
+            // Creating an empty result image.
             Image resultSprite = new Bitmap(
                 placement.Width - _layoutProp.DistanceBetweenImages + 2 * _layoutProp.MarginWidth,
                 placement.Height - _layoutProp.DistanceBetweenImages + 2 * _layoutProp.MarginWidth
@@ -149,14 +149,16 @@ namespace SpriteGenerator
 
             var graphics = Graphics.FromImage(resultSprite);
 
-            //Drawing images into the result image in the original order and writing CSS lines.
+            // Drawing images into the result image in the original order and writing CSS lines.
             foreach (var m in placement.Modules)
             {
                 m.Draw(graphics, _layoutProp.MarginWidth);
 
                 var rectangle = new Rectangle(
-                    m.X + _layoutProp.MarginWidth, m.Y + _layoutProp.MarginWidth,
-                    m.Width - _layoutProp.DistanceBetweenImages, m.Height - _layoutProp.DistanceBetweenImages
+                    m.X + _layoutProp.MarginWidth,
+                    m.Y + _layoutProp.MarginWidth,
+                    m.Width - _layoutProp.DistanceBetweenImages,
+                    m.Height - _layoutProp.DistanceBetweenImages
                 );
 
                 cssFile.WriteLine(CssLine(_cssClassNames[m.Name], rectangle));
@@ -168,30 +170,31 @@ namespace SpriteGenerator
         // Horizontal layout
         private Image GenerateHorizontalLayout(StreamWriter cssFile)
         {
-            //Calculating result image dimension.
-            int width = 0;
-
-            foreach (Image image in _images.Values)
-            {
-                width += image.Width + _layoutProp.DistanceBetweenImages;
-            }
+            // Calculating result image dimension.
+            var width = _images.Values.Sum(_ => _.Width + _layoutProp.DistanceBetweenImages);
 
             width = width - _layoutProp.DistanceBetweenImages + 2 * _layoutProp.MarginWidth;
 
             var height = _images[0].Height + 2 * _layoutProp.MarginWidth;
 
             //Creating an empty result image.
-            Image resultSprite = new Bitmap(width, height);
-            Graphics graphics = Graphics.FromImage(resultSprite);
+            var resultSprite = new Bitmap(width, height);
+            var graphics = Graphics.FromImage(resultSprite);
 
             //Initial coordinates.
-            int actualXCoordinate = _layoutProp.MarginWidth;
-            int yCoordinate = _layoutProp.MarginWidth;
+            var actualXCoordinate = _layoutProp.MarginWidth;
+            var yCoordinate = _layoutProp.MarginWidth;
 
             //Drawing images into the result image, writing CSS lines and increasing X coordinate.
-            foreach (int i in _images.Keys)
+            foreach (var i in _images.Keys)
             {
-                Rectangle rectangle = new Rectangle(actualXCoordinate, yCoordinate, _images[i].Width, _images[i].Height);
+                var rectangle = new Rectangle(
+                    actualXCoordinate,
+                    yCoordinate,
+                    _images[i].Width,
+                    _images[i].Height
+                );
+
                 graphics.DrawImage(_images[i], rectangle);
                 cssFile.WriteLine(CssLine(_cssClassNames[i], rectangle));
                 actualXCoordinate += _images[i].Width + _layoutProp.DistanceBetweenImages;
@@ -201,29 +204,24 @@ namespace SpriteGenerator
         }
 
         // Vertical layout
-        private Image GenerateVerticalLayout(StreamWriter cssFile)
+        private Image GenerateVerticalLayout(TextWriter cssFile)
         {
-            //Calculating result image dimension.
-            var height = 0;
-
-            foreach (Image image in _images.Values)
-            {
-                height += image.Height + _layoutProp.DistanceBetweenImages;
-            }
+            // Calculating result image dimension.
+            var height = _images.Values.Sum(image => image.Height + _layoutProp.DistanceBetweenImages);
 
             height = height - _layoutProp.DistanceBetweenImages + 2 * _layoutProp.MarginWidth;
             var width = _images[0].Width + 2 * _layoutProp.MarginWidth;
 
-            //Creating an empty result image.
+            // Creating an empty result image.
             var resultSprite = new Bitmap(width, height);
             var graphics = Graphics.FromImage(resultSprite);
 
-            //Initial coordinates.
+            // Initial coordinates.
             var actualYCoordinate = _layoutProp.MarginWidth;
             var xCoordinate = _layoutProp.MarginWidth;
 
-            //Drawing images into the result image, writing CSS lines and increasing Y coordinate.
-            foreach (int i in _images.Keys)
+            // Drawing images into the result image, writing CSS lines and increasing Y coordinate.
+            foreach (var i in _images.Keys)
             {
                 var rectangle = new Rectangle(xCoordinate, actualYCoordinate, _images[i].Width, _images[i].Height);
                 graphics.DrawImage(_images[i], rectangle);
@@ -236,7 +234,7 @@ namespace SpriteGenerator
 
         private Image GenerateRectangularLayout(TextWriter cssFile)
         {
-            //Calculating result image dimension.
+            // Calculating result image dimension.
             var imageWidth = _images[0].Width;
             var imageHeight = _images[0].Height;
 
@@ -246,15 +244,15 @@ namespace SpriteGenerator
             var height = _layoutProp.ImagesInColumn * (imageHeight + _layoutProp.DistanceBetweenImages) -
                 _layoutProp.DistanceBetweenImages + 2 * _layoutProp.MarginWidth;
 
-            //Creating an empty result image.
+            // Creating an empty result image.
             var resultSprite = new Bitmap(width, height);
             var graphics = Graphics.FromImage(resultSprite);
 
-            //Initial coordinates.
+            // Initial coordinates.
             var actualYCoordinate = _layoutProp.MarginWidth;
             var actualXCoordinate = _layoutProp.MarginWidth;
 
-            //Drawing images into the result image, writing CSS lines and increasing coordinates.
+            // Drawing images into the result image, writing CSS lines and increasing coordinates.
             for (var i = 0; i < _layoutProp.ImagesInColumn; i++)
             {
                 for (var j = 0; (i * _layoutProp.ImagesInRow) + j < _images.Count && j < _layoutProp.ImagesInRow; j++)
@@ -262,8 +260,10 @@ namespace SpriteGenerator
                     var rectangle = new Rectangle(actualXCoordinate, actualYCoordinate, imageWidth, imageHeight);
                     graphics.DrawImage(_images[i * _layoutProp.ImagesInRow + j], rectangle);
                     cssFile.WriteLine(CssLine(_cssClassNames[i * _layoutProp.ImagesInRow + j], rectangle));
+
                     actualXCoordinate += imageWidth + _layoutProp.DistanceBetweenImages;
                 }
+
                 actualYCoordinate += imageHeight + _layoutProp.DistanceBetweenImages;
                 actualXCoordinate = _layoutProp.MarginWidth;
             }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SpriteGenerator.Utility
 {
-    class GraphNode
+    public class GraphNode
     {
         public Dictionary<int, int> IncomingEdges;
         public Dictionary<int, int> OutgoingEdges;

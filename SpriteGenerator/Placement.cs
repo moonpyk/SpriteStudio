@@ -21,7 +21,10 @@ namespace SpriteGenerator
         /// </summary>
         public int Perimeter
         {
-            get { return _modules.Max(m => m.X + m.Width) + _modules.Max(m => m.Y + m.Height); }
+            get
+            {
+                return _modules.Max(m => m.X + m.Width) + _modules.Max(m => m.Y + m.Height);
+            }
         }
 
         /// <summary>
@@ -29,7 +32,10 @@ namespace SpriteGenerator
         /// </summary>
         public int Width
         {
-            get { return _modules.Max(m => m.X + m.Width); }
+            get
+            {
+                return _modules.Max(m => m.X + m.Width);
+            }
         }
 
         /// <summary>
@@ -37,7 +43,10 @@ namespace SpriteGenerator
         /// </summary>
         public int Height
         {
-            get { return _modules.Max(m => m.Y + m.Height); }
+            get
+            {
+                return _modules.Max(m => m.Y + m.Height);
+            }
         }
 
         /// <summary>
@@ -45,7 +54,10 @@ namespace SpriteGenerator
         /// </summary>
         public List<Module> Modules
         {
-            get { return _modules; }
+            get
+            {
+                return _modules;
+            }
         }
     }
 }

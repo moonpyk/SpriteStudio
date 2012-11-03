@@ -71,7 +71,7 @@
             // 
             this.buttonGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonGenerate.Enabled = false;
-            this.buttonGenerate.Location = new System.Drawing.Point(393, 293);
+            this.buttonGenerate.Location = new System.Drawing.Point(417, 264);
             this.buttonGenerate.Name = "buttonGenerate";
             this.buttonGenerate.Size = new System.Drawing.Size(75, 23);
             this.buttonGenerate.TabIndex = 3;
@@ -113,7 +113,7 @@
             this.textBoxInputDirectoryPath.Location = new System.Drawing.Point(132, 19);
             this.textBoxInputDirectoryPath.Name = "textBoxInputDirectoryPath";
             this.textBoxInputDirectoryPath.ReadOnly = true;
-            this.textBoxInputDirectoryPath.Size = new System.Drawing.Size(235, 20);
+            this.textBoxInputDirectoryPath.Size = new System.Drawing.Size(259, 20);
             this.textBoxInputDirectoryPath.TabIndex = 0;
             // 
             // textBoxOutputImageFilePath
@@ -123,7 +123,7 @@
             this.textBoxOutputImageFilePath.Location = new System.Drawing.Point(132, 45);
             this.textBoxOutputImageFilePath.Name = "textBoxOutputImageFilePath";
             this.textBoxOutputImageFilePath.ReadOnly = true;
-            this.textBoxOutputImageFilePath.Size = new System.Drawing.Size(235, 20);
+            this.textBoxOutputImageFilePath.Size = new System.Drawing.Size(259, 20);
             this.textBoxOutputImageFilePath.TabIndex = 1;
             // 
             // textBoxOutputCSSFilePath
@@ -133,7 +133,7 @@
             this.textBoxOutputCSSFilePath.Location = new System.Drawing.Point(132, 71);
             this.textBoxOutputCSSFilePath.Name = "textBoxOutputCSSFilePath";
             this.textBoxOutputCSSFilePath.ReadOnly = true;
-            this.textBoxOutputCSSFilePath.Size = new System.Drawing.Size(235, 20);
+            this.textBoxOutputCSSFilePath.Size = new System.Drawing.Size(259, 20);
             this.textBoxOutputCSSFilePath.TabIndex = 2;
             // 
             // saveFileDialogOutputImage
@@ -147,7 +147,7 @@
             // buttonBrowseFolder
             // 
             this.buttonBrowseFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonBrowseFolder.Location = new System.Drawing.Point(384, 17);
+            this.buttonBrowseFolder.Location = new System.Drawing.Point(408, 17);
             this.buttonBrowseFolder.Name = "buttonBrowseFolder";
             this.buttonBrowseFolder.Size = new System.Drawing.Size(75, 23);
             this.buttonBrowseFolder.TabIndex = 8;
@@ -158,7 +158,7 @@
             // buttonSelectOutputImageFilePath
             // 
             this.buttonSelectOutputImageFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSelectOutputImageFilePath.Location = new System.Drawing.Point(384, 43);
+            this.buttonSelectOutputImageFilePath.Location = new System.Drawing.Point(408, 43);
             this.buttonSelectOutputImageFilePath.Name = "buttonSelectOutputImageFilePath";
             this.buttonSelectOutputImageFilePath.Size = new System.Drawing.Size(75, 23);
             this.buttonSelectOutputImageFilePath.TabIndex = 9;
@@ -169,7 +169,7 @@
             // buttonSelectOutputCSSFilePath
             // 
             this.buttonSelectOutputCSSFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSelectOutputCSSFilePath.Location = new System.Drawing.Point(384, 69);
+            this.buttonSelectOutputCSSFilePath.Location = new System.Drawing.Point(408, 69);
             this.buttonSelectOutputCSSFilePath.Name = "buttonSelectOutputCSSFilePath";
             this.buttonSelectOutputCSSFilePath.Size = new System.Drawing.Size(75, 23);
             this.buttonSelectOutputCSSFilePath.TabIndex = 10;
@@ -192,7 +192,7 @@
             this.groupBoxPaths.Controls.Add(this.label3);
             this.groupBoxPaths.Location = new System.Drawing.Point(9, 12);
             this.groupBoxPaths.Name = "groupBoxPaths";
-            this.groupBoxPaths.Size = new System.Drawing.Size(465, 103);
+            this.groupBoxPaths.Size = new System.Drawing.Size(489, 103);
             this.groupBoxPaths.TabIndex = 11;
             this.groupBoxPaths.TabStop = false;
             this.groupBoxPaths.Text = "Paths";
@@ -246,7 +246,7 @@
             this.groupBoxLayout.Controls.Add(this.radioButtonRectangularLayout);
             this.groupBoxLayout.Location = new System.Drawing.Point(9, 121);
             this.groupBoxLayout.Name = "groupBoxLayout";
-            this.groupBoxLayout.Size = new System.Drawing.Size(162, 200);
+            this.groupBoxLayout.Size = new System.Drawing.Size(183, 171);
             this.groupBoxLayout.TabIndex = 16;
             this.groupBoxLayout.TabStop = false;
             this.groupBoxLayout.Text = "Layout";
@@ -255,7 +255,7 @@
             // 
             this.labelSprites.AutoSize = true;
             this.labelSprites.Enabled = false;
-            this.labelSprites.Location = new System.Drawing.Point(119, 113);
+            this.labelSprites.Location = new System.Drawing.Point(137, 113);
             this.labelSprites.Name = "labelSprites";
             this.labelSprites.Size = new System.Drawing.Size(40, 13);
             this.labelSprites.TabIndex = 22;
@@ -273,6 +273,7 @@
             // 
             // numericUpDownImagesInColumn
             // 
+            this.numericUpDownImagesInColumn.BackColor = System.Drawing.SystemColors.Control;
             this.numericUpDownImagesInColumn.Enabled = false;
             this.numericUpDownImagesInColumn.Location = new System.Drawing.Point(80, 111);
             this.numericUpDownImagesInColumn.Maximum = new decimal(new int[] {
@@ -281,13 +282,13 @@
             0,
             0});
             this.numericUpDownImagesInColumn.Name = "numericUpDownImagesInColumn";
-            this.numericUpDownImagesInColumn.Size = new System.Drawing.Size(33, 20);
+            this.numericUpDownImagesInColumn.Size = new System.Drawing.Size(51, 20);
             this.numericUpDownImagesInColumn.TabIndex = 20;
             // 
             // numericUpDownImagesInRow
             // 
-            this.numericUpDownImagesInRow.Enabled = false;
-            this.numericUpDownImagesInRow.Location = new System.Drawing.Point(28, 111);
+            this.numericUpDownImagesInRow.BackColor = System.Drawing.SystemColors.Window;
+            this.numericUpDownImagesInRow.Location = new System.Drawing.Point(11, 111);
             this.numericUpDownImagesInRow.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -295,7 +296,7 @@
             0});
             this.numericUpDownImagesInRow.Name = "numericUpDownImagesInRow";
             this.numericUpDownImagesInRow.ReadOnly = true;
-            this.numericUpDownImagesInRow.Size = new System.Drawing.Size(32, 20);
+            this.numericUpDownImagesInRow.Size = new System.Drawing.Size(49, 20);
             this.numericUpDownImagesInRow.TabIndex = 19;
             this.numericUpDownImagesInRow.ValueChanged += new System.EventHandler(this.NumericUpDownImagesInRowValueChanged);
             // 
@@ -346,9 +347,9 @@
             this.groupBoxDistances.Controls.Add(this.labelMarginWidth);
             this.groupBoxDistances.Controls.Add(this.labelDistanceBetweenImages);
             this.groupBoxDistances.Controls.Add(this.numericUpDownDistanceBetweenImages);
-            this.groupBoxDistances.Location = new System.Drawing.Point(174, 121);
+            this.groupBoxDistances.Location = new System.Drawing.Point(198, 121);
             this.groupBoxDistances.Name = "groupBoxDistances";
-            this.groupBoxDistances.Size = new System.Drawing.Size(300, 146);
+            this.groupBoxDistances.Size = new System.Drawing.Size(300, 137);
             this.groupBoxDistances.TabIndex = 17;
             this.groupBoxDistances.TabStop = false;
             this.groupBoxDistances.Text = "Distances";
@@ -379,9 +380,9 @@
             // 
             this.progressWork.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressWork.Location = new System.Drawing.Point(183, 292);
+            this.progressWork.Location = new System.Drawing.Point(198, 263);
             this.progressWork.Name = "progressWork";
-            this.progressWork.Size = new System.Drawing.Size(204, 23);
+            this.progressWork.Size = new System.Drawing.Size(213, 23);
             this.progressWork.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressWork.TabIndex = 18;
             this.progressWork.Visible = false;
@@ -390,7 +391,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(483, 327);
+            this.ClientSize = new System.Drawing.Size(507, 298);
             this.Controls.Add(this.progressWork);
             this.Controls.Add(this.groupBoxDistances);
             this.Controls.Add(this.groupBoxLayout);

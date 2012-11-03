@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SpriteGenerator.Utility
 {
-    class HorizontalContour : ContourAbstract
+    public class HorizontalContour : ContourAbstract
     {
         /// <summary>
         /// Contour class for quick computation of y-coordinates during working with horizontal O-Tree.
@@ -25,20 +25,20 @@ namespace SpriteGenerator.Utility
         {
             var max = 0;
 
-            //Actual module does not need to be checked.
+            // Actual module does not need to be checked.
             var indexFrom = InsertationIndex + 1;
 
-            //Checking modules in contour.
+            // Checking modules in contour.
             while (indexFrom < ModuleSequence.Count && ModuleSequence[indexFrom].X < to)
             {
-                //Overwriting maximum.
+                // Overwriting maximum.
                 if (max < ModuleSequence[indexFrom].Y + ModuleSequence[indexFrom].Height)
                 {
                     max = ModuleSequence[indexFrom].Y + ModuleSequence[indexFrom].Height;
                     WhereMax = ModuleSequence[indexFrom];
                 }
 
-                //Removing modules, which are covered by the module will be isnserted.
+                // Removing modules, which are covered by the module will be isnserted.
                 if (ModuleSequence[indexFrom].X + ModuleSequence[indexFrom].Width <= to)
                 {
                     ModuleSequence.RemoveAt(indexFrom);

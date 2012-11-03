@@ -10,7 +10,7 @@ namespace SpriteGenerator.Utility
     /// placement. It is needed for linear time computation of the modules coordinates. It is easier to understand 
     /// it from some figure. See reference.
     /// </summary>
-    abstract class ContourAbstract
+    public abstract class ContourAbstract
     {
         protected void Construct(Module root)
         {

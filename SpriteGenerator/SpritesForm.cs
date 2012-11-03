@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Linq;
-using System.Text;
 using System.Drawing;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
@@ -83,6 +78,7 @@ namespace SpriteGenerator
 
                 progressWork.Visible = true;
 
+                // Maybe long operation, depends of how many images you have
                 Task.Factory.StartNew(() =>
                 {
                     // Horizontal layout radiobutton is enabled only when all image heights are the same.
@@ -160,16 +156,16 @@ namespace SpriteGenerator
             {
                 textBoxOutputCSSFilePath.Text = saveFileDialogOutputCss.FileName;
                 _buttonGenerateEnabled[2] = true;
-                buttonGenerate.Enabled = _buttonGenerateEnabled.All(element => element == true);
+                buttonGenerate.Enabled = _buttonGenerateEnabled.All(_ => _);
             }
         }
 
-        //Rectangular layout radiobutton checked change.
+        // Rectangular layout radiobutton checked change.
         private void RadioButtonRectangularLayoutCheckedChanged(object sender, EventArgs e)
         {
             RadioButtonLayoutCheckedChanged(sender, e);
 
-            //Enabling numericupdowns to select layout dimension.
+            // Enabling numericupdowns to select layout dimension.
             if (radioButtonRectangularLayout.Checked)
             {
                 numericUpDownImagesInRow.Enabled = true;
@@ -178,8 +174,7 @@ namespace SpriteGenerator
                 labelSprites.Enabled = true;
                 numericUpDownImagesInRow.Maximum = _layoutProp.InputFilePaths.Length;
             }
-            //Disabling numericupdowns
-            else
+            else // Disabling numericupdowns
             {
                 numericUpDownImagesInRow.Enabled = false;
                 numericUpDownImagesInColumn.Enabled = false;
@@ -188,7 +183,7 @@ namespace SpriteGenerator
             }
         }
 
-        //Checked change event for all layout radiobutton.
+        // Checked change event for all layout radiobutton.
         private void RadioButtonLayoutCheckedChanged(object sender, EventArgs e)
         {
             var rd = sender as RadioButton;
@@ -200,7 +195,7 @@ namespace SpriteGenerator
             }
         }
 
-        //Sprites in row numericupdown value changed event
+        // Sprites in row numericupdown value changed event
         private void NumericUpDownImagesInRowValueChanged(object sender, EventArgs e)
         {
             var numberOfFiles = _layoutProp.InputFilePaths.Length;

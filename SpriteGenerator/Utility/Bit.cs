@@ -2,7 +2,7 @@
 {
     // Bit struct. In reference, DFS-order is stored in a 0-1 sequence, 
     // this struct has been created to follow terminology.
-    struct Bit
+    public struct Bit
     {
         private readonly bool _bit;
 

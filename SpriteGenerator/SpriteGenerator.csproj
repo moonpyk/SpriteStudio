@@ -86,7 +86,7 @@
     <Compile Include="Utility\GraphNode.cs" />
     <Compile Include="Utility\HorizontalContour.cs" />
     <Compile Include="Utility\Module.cs" />
-    <Compile Include="Utility\OT.cs" />
+    <Compile Include="Utility\OTHelper.cs" />
     <Compile Include="Utility\OTree.cs" />
     <Compile Include="Utility\VerticalContour.cs" />
     <EmbeddedResource Include="SpritesForm.resx">

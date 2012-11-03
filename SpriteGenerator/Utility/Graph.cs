@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SpriteGenerator.Utility
 {
-    class Graph
+    public class Graph
     {
         protected Dictionary<int, GraphNode> Nodes;
 
@@ -13,13 +11,13 @@ namespace SpriteGenerator.Utility
         /// Directed graph with weigted edges.
         /// </summary>
         /// <param name="nodes">List of node labels.</param>
-        public Graph(List<int> nodes)
+        public Graph(IEnumerable<int> nodes)
         {
             //Nodes of the graph.
             Nodes = new Dictionary<int, GraphNode>();
 
             //Initializing list of edges for all nodes.
-            foreach (int node in nodes)
+            foreach (var node in nodes)
             {
                 var gn = new GraphNode();
                 gn.InitializeEdges();
@@ -56,20 +54,20 @@ namespace SpriteGenerator.Utility
             {
                 visitedNodes[node] = true;
 
-                //Adding node to topological order and adding a 0 to DFS sequense strores the forth step belongs 
-                //to the module
+                // Adding node to topological order and adding a 0 to DFS sequense strores the forth step belongs 
+                // to the module
                 topologicalOrder.Add(node);
                 dfsSequence.Add(0);
 
-                //Ordering neighbors by their weights
+                // Ordering neighbors by their weights
                 var orderedNeighbors = from neighbor in Nodes[node].OutgoingEdges.Keys
                                        orderby Nodes[node].OutgoingEdges[neighbor]
                                        select neighbor;
 
-                //Ordered list of neighbors
+                // Ordered list of neighbors
                 var neighborsOfNode = new List<int>(orderedNeighbors);
 
-                //Visiting nodes in the afore calculated order.
+                // Visiting nodes in the afore calculated order.
                 foreach (int neighbor in neighborsOfNode)
                 {
                     VisitNode(neighbor, visitedNodes, topologicalOrder, dfsSequence);
@@ -85,23 +83,23 @@ namespace SpriteGenerator.Utility
         /// Ordered depth first search. Calculates module sequence and DFS sequence belonging to the graph. 
         /// These determines the O-Tree with the same orientation what the graph has.
         /// </summary>
-        /// <param name="DFSSequence">O-Tree DFSSequence.</param>
+        /// <param name="dfsSequence">O-Tree DFSSequence.</param>
         /// <returns>O-Tree ModuleSequence.</returns>
-        public List<int> DepthFirstSearch(List<Bit> DFSSequence)
+        public List<int> DepthFirstSearch(List<Bit> dfsSequence)
         {
             //Clearing DFS sequence and creating an empty list of module labels.
-            DFSSequence.Clear();
+            dfsSequence.Clear();
             var nodeOrder = new List<int>();
             //Every node is unvisited yet.
             var visitedNodes = Nodes.Keys.ToDictionary(item => item, item => false);
 
             //Visit starts at root module representing by label -1.
-            VisitNode(-1, visitedNodes, nodeOrder, DFSSequence);
+            VisitNode(-1, visitedNodes, nodeOrder, dfsSequence);
 
             //Removing root module.
             nodeOrder.RemoveAt(0);
-            DFSSequence.RemoveAt(0);
-            DFSSequence.RemoveAt(DFSSequence.Count - 1);
+            dfsSequence.RemoveAt(0);
+            dfsSequence.RemoveAt(dfsSequence.Count - 1);
 
             return nodeOrder;
         }

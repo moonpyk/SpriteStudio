@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SpriteGenerator
 {
-    class LayoutProperties
+    public class LayoutProperties
     {
         public string[] InputFilePaths;
         public string OutputSpriteFilePath;

@@ -44,7 +44,10 @@ namespace SpriteGenerator.Utility
         /// </summary>
         public int Width
         {
-            get { return _width; }
+            get
+            {
+                return _width;
+            }
         }
 
         /// <summary>
@@ -52,7 +55,10 @@ namespace SpriteGenerator.Utility
         /// </summary>
         public int Height
         {
-            get { return _height; }
+            get
+            {
+                return _height;
+            }
         }
 
         /// <summary>
@@ -60,8 +66,14 @@ namespace SpriteGenerator.Utility
         /// </summary>
         public int X
         {
-            get { return _xCoordinate; }
-            set { _xCoordinate = value; }
+            get
+            {
+                return _xCoordinate;
+            }
+            set
+            {
+                _xCoordinate = value;
+            }
         }
 
         /// <summary>
@@ -69,8 +81,14 @@ namespace SpriteGenerator.Utility
         /// </summary>
         public int Y
         {
-            get { return _yCoordinate; }
-            set { _yCoordinate = value; }
+            get
+            {
+                return _yCoordinate;
+            }
+            set
+            {
+                _yCoordinate = value;
+            }
         }
 
         /// <summary>
@@ -78,7 +96,10 @@ namespace SpriteGenerator.Utility
         /// </summary>
         public int Name
         {
-            get { return _name; }
+            get
+            {
+                return _name;
+            }
         }
 
         /// <summary>
@@ -96,12 +117,11 @@ namespace SpriteGenerator.Utility
         /// <returns></returns>
         public Module Copy()
         {
-            var copy = new Module(_name, _image, _whiteSpace)
+            return new Module(_name, _image, _whiteSpace)
             {
                 _xCoordinate = _xCoordinate,
                 _yCoordinate = _yCoordinate
             };
-            return copy;
         }
 
         /// <summary>
@@ -111,8 +131,13 @@ namespace SpriteGenerator.Utility
         /// <param name="marginWidth">Margin width around the sprite.</param>
         public void Draw(Graphics graphics, int marginWidth)
         {
-            graphics.DrawImage(_image, _xCoordinate + marginWidth, _yCoordinate + marginWidth,
-                _image.Width, _image.Height);
+            graphics.DrawImage(
+                _image,
+                _xCoordinate + marginWidth,
+                _yCoordinate + marginWidth,
+                _image.Width,
+                _image.Height
+            );
         }
     }
 }

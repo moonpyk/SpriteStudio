@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SpriteGenerator.Utility
 {
-    class VerticalContour : ContourAbstract
+    public class VerticalContour : ContourAbstract
     {
         /// <summary>
         /// Contour class for quick computation of x-coordinates during working with vertical O-Tree.
