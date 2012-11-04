@@ -54,9 +54,9 @@
             this.ndpDistanceBetweenImages = new System.Windows.Forms.NumericUpDown();
             this.lbMarginWidth = new System.Windows.Forms.Label();
             this.btGenerate = new System.Windows.Forms.Button();
-            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.saveFileDialogOutputImage = new System.Windows.Forms.SaveFileDialog();
-            this.saveFileDialogOutputCss = new System.Windows.Forms.SaveFileDialog();
+            this.fbDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.sfdOutputImage = new System.Windows.Forms.SaveFileDialog();
+            this.sfdOutputCss = new System.Windows.Forms.SaveFileDialog();
             this.groupBoxPaths = new System.Windows.Forms.GroupBox();
             this.groupBoxLayout = new System.Windows.Forms.GroupBox();
             this.groupBoxDistances = new System.Windows.Forms.GroupBox();
@@ -64,9 +64,9 @@
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.stripStatus = new System.Windows.Forms.StatusStrip();
             this.lbStatusMessage = new System.Windows.Forms.ToolStripStatusLabel();
-            this.menuStrip2 = new System.Windows.Forms.MenuStrip();
             this.mnFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
             lbImagesPath = new System.Windows.Forms.Label();
             lbOutputImage = new System.Windows.Forms.Label();
             lbOutputCss = new System.Windows.Forms.Label();
@@ -88,7 +88,7 @@
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
             this.stripStatus.SuspendLayout();
-            this.menuStrip2.SuspendLayout();
+            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbImagesPath
@@ -143,7 +143,7 @@
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel1.Size = new System.Drawing.Size(513, 86);
+            tableLayoutPanel1.Size = new System.Drawing.Size(511, 86);
             tableLayoutPanel1.TabIndex = 17;
             // 
             // tbInputDirectoryPath
@@ -152,13 +152,13 @@
             this.tbInputDirectoryPath.Location = new System.Drawing.Point(122, 3);
             this.tbInputDirectoryPath.Name = "tbInputDirectoryPath";
             this.tbInputDirectoryPath.ReadOnly = true;
-            this.tbInputDirectoryPath.Size = new System.Drawing.Size(268, 20);
+            this.tbInputDirectoryPath.Size = new System.Drawing.Size(266, 20);
             this.tbInputDirectoryPath.TabIndex = 0;
             // 
             // buttonSelectOutputCSSFilePath
             // 
             this.buttonSelectOutputCSSFilePath.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonSelectOutputCSSFilePath.Location = new System.Drawing.Point(396, 61);
+            this.buttonSelectOutputCSSFilePath.Location = new System.Drawing.Point(394, 61);
             this.buttonSelectOutputCSSFilePath.Name = "buttonSelectOutputCSSFilePath";
             this.buttonSelectOutputCSSFilePath.Size = new System.Drawing.Size(114, 23);
             this.buttonSelectOutputCSSFilePath.TabIndex = 10;
@@ -172,7 +172,7 @@
             this.tbOutputImageFilePath.Location = new System.Drawing.Point(122, 32);
             this.tbOutputImageFilePath.Name = "tbOutputImageFilePath";
             this.tbOutputImageFilePath.ReadOnly = true;
-            this.tbOutputImageFilePath.Size = new System.Drawing.Size(268, 20);
+            this.tbOutputImageFilePath.Size = new System.Drawing.Size(266, 20);
             this.tbOutputImageFilePath.TabIndex = 1;
             // 
             // tbOutputCSSFilePath
@@ -181,13 +181,13 @@
             this.tbOutputCSSFilePath.Location = new System.Drawing.Point(122, 61);
             this.tbOutputCSSFilePath.Name = "tbOutputCSSFilePath";
             this.tbOutputCSSFilePath.ReadOnly = true;
-            this.tbOutputCSSFilePath.Size = new System.Drawing.Size(268, 20);
+            this.tbOutputCSSFilePath.Size = new System.Drawing.Size(266, 20);
             this.tbOutputCSSFilePath.TabIndex = 2;
             // 
             // btSelectOutputImageFilePath
             // 
             this.btSelectOutputImageFilePath.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btSelectOutputImageFilePath.Location = new System.Drawing.Point(396, 32);
+            this.btSelectOutputImageFilePath.Location = new System.Drawing.Point(394, 32);
             this.btSelectOutputImageFilePath.Name = "btSelectOutputImageFilePath";
             this.btSelectOutputImageFilePath.Size = new System.Drawing.Size(114, 23);
             this.btSelectOutputImageFilePath.TabIndex = 9;
@@ -198,7 +198,7 @@
             // btBrowseFolder
             // 
             this.btBrowseFolder.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btBrowseFolder.Location = new System.Drawing.Point(396, 3);
+            this.btBrowseFolder.Location = new System.Drawing.Point(394, 3);
             this.btBrowseFolder.Name = "btBrowseFolder";
             this.btBrowseFolder.Size = new System.Drawing.Size(114, 23);
             this.btBrowseFolder.TabIndex = 8;
@@ -230,7 +230,7 @@
             tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel2.Size = new System.Drawing.Size(177, 122);
+            tableLayoutPanel2.Size = new System.Drawing.Size(177, 146);
             tableLayoutPanel2.TabIndex = 19;
             // 
             // lbSprites
@@ -241,7 +241,7 @@
             this.lbSprites.Location = new System.Drawing.Point(133, 92);
             this.lbSprites.Name = "lbSprites";
             this.lbSprites.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
-            this.lbSprites.Size = new System.Drawing.Size(41, 30);
+            this.lbSprites.Size = new System.Drawing.Size(41, 54);
             this.lbSprites.TabIndex = 22;
             this.lbSprites.Text = "images";
             // 
@@ -283,7 +283,7 @@
             this.labelX.Location = new System.Drawing.Point(58, 92);
             this.labelX.Name = "labelX";
             this.labelX.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
-            this.labelX.Size = new System.Drawing.Size(12, 30);
+            this.labelX.Size = new System.Drawing.Size(12, 54);
             this.labelX.TabIndex = 21;
             this.labelX.Text = "x";
             // 
@@ -361,11 +361,12 @@
             tableLayoutPanel3.RowCount = 2;
             tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel3.Size = new System.Drawing.Size(315, 125);
+            tableLayoutPanel3.Size = new System.Drawing.Size(313, 146);
             tableLayoutPanel3.TabIndex = 19;
             // 
             // ndpMarginWidth
             // 
+            this.ndpMarginWidth.AutoSize = true;
             this.ndpMarginWidth.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ndpMarginWidth.Location = new System.Drawing.Point(141, 29);
             this.ndpMarginWidth.Maximum = new decimal(new int[] {
@@ -374,7 +375,7 @@
             0,
             0});
             this.ndpMarginWidth.Name = "ndpMarginWidth";
-            this.ndpMarginWidth.Size = new System.Drawing.Size(171, 20);
+            this.ndpMarginWidth.Size = new System.Drawing.Size(169, 20);
             this.ndpMarginWidth.TabIndex = 16;
             // 
             // lbDistanceBetweenImages
@@ -389,6 +390,7 @@
             // 
             // ndpDistanceBetweenImages
             // 
+            this.ndpDistanceBetweenImages.AutoSize = true;
             this.ndpDistanceBetweenImages.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ndpDistanceBetweenImages.Location = new System.Drawing.Point(141, 3);
             this.ndpDistanceBetweenImages.Maximum = new decimal(new int[] {
@@ -397,7 +399,7 @@
             0,
             0});
             this.ndpDistanceBetweenImages.Name = "ndpDistanceBetweenImages";
-            this.ndpDistanceBetweenImages.Size = new System.Drawing.Size(171, 20);
+            this.ndpDistanceBetweenImages.Size = new System.Drawing.Size(169, 20);
             this.ndpDistanceBetweenImages.TabIndex = 13;
             this.ndpDistanceBetweenImages.Tag = "";
             // 
@@ -407,7 +409,7 @@
             this.lbMarginWidth.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbMarginWidth.Location = new System.Drawing.Point(3, 26);
             this.lbMarginWidth.Name = "lbMarginWidth";
-            this.lbMarginWidth.Size = new System.Drawing.Size(132, 99);
+            this.lbMarginWidth.Size = new System.Drawing.Size(132, 120);
             this.lbMarginWidth.TabIndex = 15;
             this.lbMarginWidth.Text = "Margin width:";
             // 
@@ -415,7 +417,7 @@
             // 
             this.btGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btGenerate.Enabled = false;
-            this.btGenerate.Location = new System.Drawing.Point(422, 264);
+            this.btGenerate.Location = new System.Drawing.Point(420, 285);
             this.btGenerate.Name = "btGenerate";
             this.btGenerate.Size = new System.Drawing.Size(100, 24);
             this.btGenerate.TabIndex = 3;
@@ -423,13 +425,13 @@
             this.btGenerate.UseVisualStyleBackColor = true;
             this.btGenerate.Click += new System.EventHandler(this.BtGenerate_Click);
             // 
-            // saveFileDialogOutputImage
+            // sfdOutputImage
             // 
-            this.saveFileDialogOutputImage.Filter = "PNG Image|*.png";
+            this.sfdOutputImage.Filter = "PNG Image|*.png";
             // 
-            // saveFileDialogOutputCss
+            // sfdOutputCss
             // 
-            this.saveFileDialogOutputCss.Filter = "CSS file|*.css";
+            this.sfdOutputCss.Filter = "CSS file|*.css";
             // 
             // groupBoxPaths
             // 
@@ -438,7 +440,7 @@
             this.groupBoxPaths.Controls.Add(tableLayoutPanel1);
             this.groupBoxPaths.Location = new System.Drawing.Point(3, 6);
             this.groupBoxPaths.Name = "groupBoxPaths";
-            this.groupBoxPaths.Size = new System.Drawing.Size(519, 105);
+            this.groupBoxPaths.Size = new System.Drawing.Size(517, 105);
             this.groupBoxPaths.TabIndex = 11;
             this.groupBoxPaths.TabStop = false;
             this.groupBoxPaths.Text = "Paths";
@@ -450,7 +452,7 @@
             this.groupBoxLayout.Controls.Add(tableLayoutPanel2);
             this.groupBoxLayout.Location = new System.Drawing.Point(12, 117);
             this.groupBoxLayout.Name = "groupBoxLayout";
-            this.groupBoxLayout.Size = new System.Drawing.Size(183, 141);
+            this.groupBoxLayout.Size = new System.Drawing.Size(183, 165);
             this.groupBoxLayout.TabIndex = 16;
             this.groupBoxLayout.TabStop = false;
             this.groupBoxLayout.Text = "Layout";
@@ -463,7 +465,7 @@
             this.groupBoxDistances.Controls.Add(tableLayoutPanel3);
             this.groupBoxDistances.Location = new System.Drawing.Point(201, 117);
             this.groupBoxDistances.Name = "groupBoxDistances";
-            this.groupBoxDistances.Size = new System.Drawing.Size(321, 144);
+            this.groupBoxDistances.Size = new System.Drawing.Size(319, 165);
             this.groupBoxDistances.TabIndex = 17;
             this.groupBoxDistances.TabStop = false;
             this.groupBoxDistances.Text = "Distances";
@@ -472,9 +474,9 @@
             // 
             this.progressWork.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressWork.Location = new System.Drawing.Point(3, 264);
+            this.progressWork.Location = new System.Drawing.Point(6, 286);
             this.progressWork.Name = "progressWork";
-            this.progressWork.Size = new System.Drawing.Size(413, 23);
+            this.progressWork.Size = new System.Drawing.Size(411, 23);
             this.progressWork.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressWork.TabIndex = 18;
             this.progressWork.Visible = false;
@@ -493,19 +495,19 @@
             this.toolStripContainer1.ContentPanel.Controls.Add(this.groupBoxLayout);
             this.toolStripContainer1.ContentPanel.Controls.Add(this.btGenerate);
             this.toolStripContainer1.ContentPanel.Controls.Add(this.groupBoxPaths);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(525, 291);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(523, 314);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.LeftToolStripPanelVisible = false;
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer1.Name = "toolStripContainer1";
             this.toolStripContainer1.RightToolStripPanelVisible = false;
-            this.toolStripContainer1.Size = new System.Drawing.Size(525, 337);
+            this.toolStripContainer1.Size = new System.Drawing.Size(523, 360);
             this.toolStripContainer1.TabIndex = 11;
             this.toolStripContainer1.Text = "toolStripContainer1";
             // 
             // toolStripContainer1.TopToolStripPanel
             // 
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip2);
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip);
             // 
             // stripStatus
             // 
@@ -514,24 +516,13 @@
             this.lbStatusMessage});
             this.stripStatus.Location = new System.Drawing.Point(0, 0);
             this.stripStatus.Name = "stripStatus";
-            this.stripStatus.Size = new System.Drawing.Size(525, 22);
+            this.stripStatus.Size = new System.Drawing.Size(523, 22);
             this.stripStatus.TabIndex = 0;
             // 
             // lbStatusMessage
             // 
             this.lbStatusMessage.Name = "lbStatusMessage";
             this.lbStatusMessage.Size = new System.Drawing.Size(0, 17);
-            // 
-            // menuStrip2
-            // 
-            this.menuStrip2.Dock = System.Windows.Forms.DockStyle.None;
-            this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnFile});
-            this.menuStrip2.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip2.Name = "menuStrip2";
-            this.menuStrip2.Size = new System.Drawing.Size(525, 24);
-            this.menuStrip2.TabIndex = 0;
-            this.menuStrip2.Text = "menuStrip2";
             // 
             // mnFile
             // 
@@ -549,11 +540,22 @@
             this.mnExit.Text = "E&xit";
             this.mnExit.Click += new System.EventHandler(this.MnExit_Click);
             // 
+            // menuStrip
+            // 
+            this.menuStrip.Dock = System.Windows.Forms.DockStyle.None;
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnFile});
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(523, 24);
+            this.menuStrip.TabIndex = 0;
+            this.menuStrip.Text = "Menu";
+            // 
             // SpritesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(525, 337);
+            this.ClientSize = new System.Drawing.Size(523, 360);
             this.Controls.Add(this.toolStripContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SpritesForm";
@@ -581,8 +583,8 @@
             this.toolStripContainer1.PerformLayout();
             this.stripStatus.ResumeLayout(false);
             this.stripStatus.PerformLayout();
-            this.menuStrip2.ResumeLayout(false);
-            this.menuStrip2.PerformLayout();
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -593,9 +595,9 @@
         private System.Windows.Forms.TextBox tbInputDirectoryPath;
         private System.Windows.Forms.TextBox tbOutputImageFilePath;
         private System.Windows.Forms.TextBox tbOutputCSSFilePath;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
-        private System.Windows.Forms.SaveFileDialog saveFileDialogOutputImage;
-        private System.Windows.Forms.SaveFileDialog saveFileDialogOutputCss;
+        private System.Windows.Forms.FolderBrowserDialog fbDialog;
+        private System.Windows.Forms.SaveFileDialog sfdOutputImage;
+        private System.Windows.Forms.SaveFileDialog sfdOutputCss;
         private System.Windows.Forms.Button btBrowseFolder;
         private System.Windows.Forms.Button btSelectOutputImageFilePath;
         private System.Windows.Forms.Button buttonSelectOutputCSSFilePath;
@@ -618,7 +620,7 @@
         private System.Windows.Forms.ToolStripContainer toolStripContainer1;
         private System.Windows.Forms.StatusStrip stripStatus;
         private System.Windows.Forms.ToolStripStatusLabel lbStatusMessage;
-        private System.Windows.Forms.MenuStrip menuStrip2;
+        private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem mnFile;
         private System.Windows.Forms.ToolStripMenuItem mnExit;
     }

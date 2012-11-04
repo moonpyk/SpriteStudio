@@ -81,7 +81,7 @@ namespace SpriteGenerator
         // Browse input images folder.
         private void BtBrowseFolder_Click(object sender, EventArgs e)
         {
-            if (folderBrowserDialog.ShowDialog() != DialogResult.OK)
+            if (fbDialog.ShowDialog() != DialogResult.OK)
             {
                 return;
             }
@@ -92,9 +92,9 @@ namespace SpriteGenerator
         // Select output image file path.
         private void BtSelectOutputImageFilePath_Click(object sender, EventArgs e)
         {
-            saveFileDialogOutputImage.ShowDialog();
+            sfdOutputImage.ShowDialog();
 
-            if (string.IsNullOrEmpty(saveFileDialogOutputImage.FileName))
+            if (string.IsNullOrEmpty(sfdOutputImage.FileName))
             {
                 return;
             }
@@ -105,9 +105,9 @@ namespace SpriteGenerator
         // Select output CSS file path.
         private void BtSelectOutputCssFilePath_Click(object sender, EventArgs e)
         {
-            saveFileDialogOutputCss.ShowDialog();
+            sfdOutputCss.ShowDialog();
 
-            if (string.IsNullOrEmpty(saveFileDialogOutputCss.FileName))
+            if (string.IsNullOrEmpty(sfdOutputCss.FileName))
             {
                 return;
             }
@@ -180,35 +180,35 @@ namespace SpriteGenerator
 
             if (!string.IsNullOrEmpty(settings.LastDirectory))
             {
-                tbInputDirectoryPath.Text = folderBrowserDialog.SelectedPath
+                tbInputDirectoryPath.Text = fbDialog.SelectedPath
                     = settings.LastDirectory;
 
                 if (!ValidateImagesDirectory(true))
                 {
-                    tbInputDirectoryPath.Text = folderBrowserDialog.SelectedPath = settings.LastDirectory = "";
+                    tbInputDirectoryPath.Text = fbDialog.SelectedPath = settings.LastDirectory = "";
                 }
             }
 
             if (!string.IsNullOrEmpty(settings.LastOutputCssFile))
             {
-                tbOutputCSSFilePath.Text = saveFileDialogOutputCss.FileName
+                tbOutputCSSFilePath.Text = sfdOutputCss.FileName
                     = settings.LastOutputCssFile;
 
                 if (!ValidateOutputCssPath(true))
                 {
-                    tbOutputCSSFilePath.Text = saveFileDialogOutputCss.FileName
+                    tbOutputCSSFilePath.Text = sfdOutputCss.FileName
                         = settings.LastOutputCssFile = "";
                 }
             }
 
             if (!string.IsNullOrEmpty(settings.LastOutputImageFile))
             {
-                tbOutputImageFilePath.Text = saveFileDialogOutputImage.FileName
+                tbOutputImageFilePath.Text = sfdOutputImage.FileName
                     = settings.LastOutputImageFile;
 
                 if (!ValidateOutputImagePath(true))
                 {
-                    tbOutputImageFilePath.Text = saveFileDialogOutputImage.FileName
+                    tbOutputImageFilePath.Text = sfdOutputImage.FileName
                         = settings.LastOutputImageFile = "";
                 }
             }
@@ -226,7 +226,7 @@ namespace SpriteGenerator
 
         private bool ValidateOutputImagePath(bool beSilent)
         {
-            if (_ready.OutputCssPathOK && !ValidateSameDrive(tbOutputCSSFilePath.Text, saveFileDialogOutputImage.FileName))
+            if (_ready.OutputCssPathOK && !ValidateSameDrive(tbOutputCSSFilePath.Text, sfdOutputImage.FileName))
             {
                 if (!beSilent)
                 {
@@ -237,14 +237,14 @@ namespace SpriteGenerator
             }
 
             _ready.OutputImagePathOK = true;
-            tbOutputImageFilePath.Text = saveFileDialogOutputImage.FileName;
+            tbOutputImageFilePath.Text = sfdOutputImage.FileName;
 
             return true;
         }
 
         private bool ValidateOutputCssPath(bool beSilent)
         {
-            if (_ready.OutputImagePathOK && !ValidateSameDrive(tbOutputImageFilePath.Text, saveFileDialogOutputCss.FileName))
+            if (_ready.OutputImagePathOK && !ValidateSameDrive(tbOutputImageFilePath.Text, sfdOutputCss.FileName))
             {
                 if (!beSilent)
                 {
@@ -254,7 +254,7 @@ namespace SpriteGenerator
                 return false;
             }
 
-            tbOutputCSSFilePath.Text = saveFileDialogOutputCss.FileName;
+            tbOutputCSSFilePath.Text = sfdOutputCss.FileName;
             _ready.OutputCssPathOK = true;
             return true;
         }
@@ -267,7 +267,7 @@ namespace SpriteGenerator
 
             _layoutProp.InputFilePaths = (
                 from filter in filters
-                from file in Directory.GetFiles(folderBrowserDialog.SelectedPath)
+                from file in Directory.GetFiles(fbDialog.SelectedPath)
                 where file.EndsWith(filter)
                 select file
             ).ToList();
@@ -284,7 +284,7 @@ namespace SpriteGenerator
             }
 
             // If there are files with the enabled formats in the choosen directory.
-            tbInputDirectoryPath.Text = folderBrowserDialog.SelectedPath;
+            tbInputDirectoryPath.Text = fbDialog.SelectedPath;
 
             _ready.ImagePathOK = _ready.IsLayoutOK = true;
 
