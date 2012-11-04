@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace SpriteGenerator
 {
-    internal class ImageCssMap : Tuple<Dictionary<int, Image>, Dictionary<int, string>>
+    public class ImageCssMap : Tuple<Dictionary<int, Image>, Dictionary<int, string>>
     {
         public ImageCssMap(Dictionary<int, Image> images, Dictionary<int, string> items)
             : base(images, items)

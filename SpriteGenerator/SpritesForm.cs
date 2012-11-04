@@ -342,8 +342,8 @@ namespace SpriteGenerator
             })
             .ContinueWith(obj =>
             {
-                rbHorizontalLayout.Enabled = _layoutProp.FixedHeight = canHorizontal;
-                rbVerticalLayout.Enabled = _layoutProp.FixedWidth = canVertical;
+                rbHorizontalLayout.Enabled = canHorizontal;
+                rbVerticalLayout.Enabled = canVertical;
 
                 // Rectangular layout is enabled only when all image heights and all image widths are the same.
                 rbRectangularLayout.Enabled = canHorizontal && canVertical;

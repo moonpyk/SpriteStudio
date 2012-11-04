@@ -47,6 +47,11 @@
   <ItemGroup>
     <Compile Include="ImageCssMap.cs" />
     <Compile Include="LayoutProperties.cs" />
+    <Compile Include="Layouts\AutomaticBuilder.cs" />
+    <Compile Include="Layouts\HorizontalBuilder.cs" />
+    <Compile Include="Layouts\LayoutBuilderBase.cs" />
+    <Compile Include="Layouts\RectangularBuilder.cs" />
+    <Compile Include="Layouts\VerticalBuilder.cs" />
     <Compile Include="SpriteLayout.cs" />
     <Compile Include="Placement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
