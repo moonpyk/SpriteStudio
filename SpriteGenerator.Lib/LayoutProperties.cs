@@ -66,5 +66,17 @@ namespace SpriteGenerator
             get;
             set;
         }
+
+        public bool FixedHeight
+        {
+            get;
+            set;
+        }
+
+        public bool FixedWidth
+        {
+            get;
+            set;
+        }
     }
 }

@@ -342,11 +342,14 @@ namespace SpriteGenerator
             })
             .ContinueWith(obj =>
             {
-                rbHorizontalLayout.Enabled = canHorizontal;
-                rbVerticalLayout.Enabled = canVertical;
+                rbHorizontalLayout.Enabled = _layoutProp.FixedHeight = canHorizontal;
+                rbVerticalLayout.Enabled = _layoutProp.FixedWidth = canVertical;
 
-                // Rectangular layout radiobutton is enabled only when all image heights and all image widths are the same.
+                // Rectangular layout is enabled only when all image heights and all image widths are the same.
                 rbRectangularLayout.Enabled = canHorizontal && canVertical;
+                
+                // Automatic layout is disabled when rectangular layout is available
+                // all possibles combinations for automatic algorithm will lead to same result
                 rbAutomaticLayout.Enabled = !rbRectangularLayout.Enabled;
 
                 if (!rbAutomaticLayout.Enabled)

@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using SpriteGenerator.Utility;
 
 namespace SpriteGenerator
@@ -12,7 +13,7 @@ namespace SpriteGenerator
     public class Sprite : IDisposable
     {
         private const string CssSpriteDeclarationFormat = ".{1} {{ background-image: url('{0}'); background-color: transparent; background-repeat: no-repeat; }}";
-        private const string CssLineDeclarationFormat = ".{0} {{ width: {1}px; height: {2}px; background-position: {3}px {4}px; }}";
+        private const string CssLineDeclarationFormat = ".{0} {{ width: {1}; height: {2}; background-position: {3} {4}; }}";
 
         private readonly LayoutProperties _layoutProp;
         private Dictionary<int, string> _cssClassNames;
@@ -65,36 +66,42 @@ namespace SpriteGenerator
 
             Image resultSprite;
 
+            var cssContent = new StringBuilder();
+
+            switch (_layoutProp.Layout)
+            {
+                case SpriteLayout.Automatic:
+                    resultSprite = GenerateAutomaticLayout(cssContent);
+                    break;
+
+                case SpriteLayout.Horizontal:
+                    resultSprite = GenerateHorizontalLayout(cssContent);
+                    break;
+
+                case SpriteLayout.Vertical:
+                    resultSprite = GenerateVerticalLayout(cssContent);
+                    break;
+
+                case SpriteLayout.Rectangular:
+                    resultSprite = GenerateRectangularLayout(cssContent);
+                    break;
+
+                default:
+                    throw new InvalidOperationException("Invalid SpriteLayout mode selected.");
+            }
+
+            cssContent.Insert(0, string.Format(CssSpriteDeclarationFormat + Environment.NewLine,
+                RelativeSpriteImagePath(
+                    _layoutProp.OutputSpriteFilePath,
+                    _layoutProp.OutputCssFilePath
+                ),
+                "sprite"
+                )
+            );
+
             using (var cssFile = File.CreateText(_layoutProp.OutputCssFilePath))
             {
-                cssFile.WriteLine(
-                    CssSpriteDeclarationFormat,
-                    RelativeSpriteImagePath(_layoutProp.OutputSpriteFilePath, _layoutProp.OutputCssFilePath),
-                    "sprite"
-                );
-
-                switch (_layoutProp.Layout)
-                {
-                    case SpriteLayout.Automatic:
-                        resultSprite = GenerateAutomaticLayout(cssFile);
-                        break;
-
-                    case SpriteLayout.Horizontal:
-                        resultSprite = GenerateHorizontalLayout(cssFile);
-                        break;
-
-                    case SpriteLayout.Vertical:
-                        resultSprite = GenerateVerticalLayout(cssFile);
-                        break;
-
-                    case SpriteLayout.Rectangular:
-                        resultSprite = GenerateRectangularLayout(cssFile);
-                        break;
-
-                    default:
-                        throw new InvalidOperationException("Invalid SpriteLayout mode selected.");
-                }
-
+                cssFile.Write(cssContent);
                 cssFile.Close();
             }
 
@@ -103,6 +110,8 @@ namespace SpriteGenerator
                 resultSprite.Save(outputSpriteFile, ImageFormat.Png);
                 outputSpriteFile.Close();
             }
+
+            resultSprite.Dispose();
         }
 
         /// <summary>
@@ -131,19 +140,7 @@ namespace SpriteGenerator
                 .ToList();
         }
 
-        // CSS line
-        private static string CssLine(string cssClassName, Rectangle rectangle)
-        {
-            var line = string.Format(CssLineDeclarationFormat,
-                cssClassName,
-                rectangle.Width.ToString(CultureInfo.InvariantCulture),
-                rectangle.Height.ToString(CultureInfo.InvariantCulture),
-                (-1 * rectangle.X).ToString(CultureInfo.InvariantCulture),
-                (-1 * rectangle.Y).ToString(CultureInfo.InvariantCulture)
-            );
 
-            return line;
-        }
 
         // Relative sprite image file path
         private static string RelativeSpriteImagePath(string outputSpriteFilePath, string outputCssFilePath)
@@ -176,7 +173,7 @@ namespace SpriteGenerator
         }
 
         // Automatic layout
-        private Image GenerateAutomaticLayout(TextWriter cssFile)
+        private Image GenerateAutomaticLayout(StringBuilder cssFile)
         {
             var sortedByArea = CreateModules().OrderByDescending(m => m.Width * m.Height);
 
@@ -203,29 +200,32 @@ namespace SpriteGenerator
                     m.Height - _layoutProp.DistanceBetweenImages
                 );
 
-                cssFile.WriteLine(CssLine(_cssClassNames[m.Name], rectangle));
+                cssFile.AppendLine(CssLine(_cssClassNames[m.Name], rectangle));
             }
 
             return resultSprite;
         }
 
         // Horizontal layout
-        private Image GenerateHorizontalLayout(TextWriter cssFile)
+        private Image GenerateHorizontalLayout(StringBuilder cssFile)
         {
+            var distanceBetweenImages = _layoutProp.DistanceBetweenImages;
+            var marginWidth = _layoutProp.MarginWidth;
+
             // Calculating result image dimension.
-            var width = _images.Values.Sum(_ => _.Width + _layoutProp.DistanceBetweenImages);
+            var width = _images.Values.Sum(_ => _.Width + distanceBetweenImages);
 
-            width = width - _layoutProp.DistanceBetweenImages + 2 * _layoutProp.MarginWidth;
+            width = width - distanceBetweenImages + 2 * marginWidth;
 
-            var height = _images[0].Height + 2 * _layoutProp.MarginWidth;
+            var height = _images[0].Height + 2 * marginWidth;
 
             // Creating an empty result image.
             var resultSprite = new Bitmap(width, height);
             var graphics = Graphics.FromImage(resultSprite);
 
             // Initial coordinates.
-            var actualXCoordinate = _layoutProp.MarginWidth;
-            var yCoordinate = _layoutProp.MarginWidth;
+            var actualXCoordinate = marginWidth;
+            var yCoordinate = marginWidth;
 
             // Drawing images into the result image, writing CSS lines and increasing X coordinate.
             foreach (var i in _images.Keys)
@@ -238,29 +238,33 @@ namespace SpriteGenerator
                 );
 
                 graphics.DrawImage(_images[i], rectangle);
-                cssFile.WriteLine(CssLine(_cssClassNames[i], rectangle));
-                actualXCoordinate += _images[i].Width + _layoutProp.DistanceBetweenImages;
+                cssFile.AppendLine(CssLine(_cssClassNames[i], rectangle));
+                actualXCoordinate += _images[i].Width + distanceBetweenImages;
             }
 
             return resultSprite;
         }
 
         // Vertical layout
-        private Image GenerateVerticalLayout(TextWriter cssFile)
+        private Image GenerateVerticalLayout(StringBuilder cssFile)
         {
-            // Calculating result image dimension.
-            var height = _images.Values.Sum(image => image.Height + _layoutProp.DistanceBetweenImages);
+            var distanceBetweenImages = _layoutProp.DistanceBetweenImages;
+            var marginWidth = _layoutProp.MarginWidth;
 
-            height = height - _layoutProp.DistanceBetweenImages + 2 * _layoutProp.MarginWidth;
-            var width = _images[0].Width + 2 * _layoutProp.MarginWidth;
+            // Calculating result image dimension.
+
+            var height = _images.Values.Sum(image => image.Height + distanceBetweenImages);
+
+            height = height - distanceBetweenImages + 2 * marginWidth;
+            var width = _images[0].Width + 2 * marginWidth;
 
             // Creating an empty result image.
             var resultSprite = new Bitmap(width, height);
             var graphics = Graphics.FromImage(resultSprite);
 
             // Initial coordinates.
-            var actualYCoordinate = _layoutProp.MarginWidth;
-            var xCoordinate = _layoutProp.MarginWidth;
+            var actualYCoordinate = marginWidth;
+            var xCoordinate = marginWidth;
 
             // Drawing images into the result image, writing CSS lines and increasing Y coordinate.
             foreach (var i in _images.Keys)
@@ -273,34 +277,37 @@ namespace SpriteGenerator
                 );
 
                 graphics.DrawImage(_images[i], rectangle);
-                cssFile.WriteLine(CssLine(_cssClassNames[i], rectangle));
-                actualYCoordinate += _images[i].Height + _layoutProp.DistanceBetweenImages;
+                cssFile.AppendLine(CssLine(_cssClassNames[i], rectangle));
+                actualYCoordinate += _images[i].Height + distanceBetweenImages;
             }
 
             return resultSprite;
         }
 
-        private Image GenerateRectangularLayout(TextWriter cssFile)
+        private Image GenerateRectangularLayout(StringBuilder cssFile)
         {
+            var distanceBetweenImages = _layoutProp.DistanceBetweenImages;
+            var marginWidth = _layoutProp.MarginWidth;
+
             // Calculating result image dimension.
             var imageWidth = _images[0].Width;
             var imageHeight = _images[0].Height;
             var imagesInColumn = _layoutProp.ImagesInColumn;
             var imagesInRow = _layoutProp.ImagesInRow;
 
-            var width = imagesInRow * (imageWidth + _layoutProp.DistanceBetweenImages) -
-                _layoutProp.DistanceBetweenImages + 2 * _layoutProp.MarginWidth;
+            var width = imagesInRow * (imageWidth + distanceBetweenImages) -
+                distanceBetweenImages + 2 * marginWidth;
 
-            var height = imagesInColumn * (imageHeight + _layoutProp.DistanceBetweenImages) -
-                _layoutProp.DistanceBetweenImages + 2 * _layoutProp.MarginWidth;
+            var height = imagesInColumn * (imageHeight + distanceBetweenImages) -
+                distanceBetweenImages + 2 * marginWidth;
 
             // Creating an empty result image.
             var resultSprite = new Bitmap(width, height);
             var graphics = Graphics.FromImage(resultSprite);
 
             // Initial coordinates.
-            var actualYCoordinate = _layoutProp.MarginWidth;
-            var actualXCoordinate = _layoutProp.MarginWidth;
+            var actualYCoordinate = marginWidth;
+            var actualXCoordinate = marginWidth;
 
             // Drawing images into the result image, writing CSS lines and increasing coordinates.
             for (var i = 0; i < imagesInColumn; i++)
@@ -315,16 +322,40 @@ namespace SpriteGenerator
                     );
 
                     graphics.DrawImage(_images[i * imagesInRow + j], rectangle);
-                    cssFile.WriteLine(CssLine(_cssClassNames[i * imagesInRow + j], rectangle));
+                    cssFile.AppendLine(CssLine(_cssClassNames[i * imagesInRow + j], rectangle));
 
-                    actualXCoordinate += imageWidth + _layoutProp.DistanceBetweenImages;
+                    actualXCoordinate += imageWidth + distanceBetweenImages;
                 }
 
-                actualYCoordinate += imageHeight + _layoutProp.DistanceBetweenImages;
-                actualXCoordinate = _layoutProp.MarginWidth;
+                actualYCoordinate += imageHeight + distanceBetweenImages;
+                actualXCoordinate = marginWidth;
             }
 
             return resultSprite;
+        }
+
+        // CSS line
+        private static string CssLine(string cssClassName, Rectangle rect)
+        {
+            var line = string.Format(CssLineDeclarationFormat,
+                cssClassName,
+                CssPixels(rect.Width),
+                CssPixels(rect.Height),
+                CssPixels(-1 * rect.X),
+                CssPixels(-1 * rect.Y)
+            );
+
+            return line;
+        }
+
+        private static string CssPixels(int val)
+        {
+            if (val == 0)
+            {
+                return "0";
+            }
+
+            return val.ToString(CultureInfo.InvariantCulture) + "px";
         }
     }
 }
