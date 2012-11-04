@@ -152,18 +152,19 @@ namespace SpriteGenerator
             // Enabling numericupdowns to select layout dimension.
             if (rbRectangularLayout.Checked)
             {
-                ndpImagesInRow.Enabled = true;
-                ndpImagesInColumn.Enabled = true;
-                labelX.Enabled = true;
-                lbSprites.Enabled = true;
+                ndpImagesInRow.Enabled =
+                    ndpImagesInColumn.Enabled =
+                    labelX.Enabled =
+                    lbSprites.Enabled = true;
+
                 ndpImagesInRow.Maximum = _layoutProp.InputFilePaths.Count;
             }
             else // Disabling numericupdowns
             {
-                ndpImagesInRow.Enabled = false;
-                ndpImagesInColumn.Enabled = false;
-                labelX.Enabled = false;
-                lbSprites.Enabled = false;
+                ndpImagesInRow.Enabled =
+                    ndpImagesInColumn.Enabled =
+                    labelX.Enabled =
+                    lbSprites.Enabled = false;
             }
         }
 
@@ -399,8 +400,7 @@ namespace SpriteGenerator
 
                 if (!rbAutomaticLayout.Enabled)
                 {
-                    rbAutomaticLayout.Checked = false;
-                    _ready.IsLayoutOK = false;
+                    rbAutomaticLayout.Checked = _ready.IsLayoutOK = false;
                 }
 
                 // Setting rectangular layout dimensions.
@@ -413,10 +413,8 @@ namespace SpriteGenerator
                 }
                 else
                 {
-                    ndpImagesInRow.Minimum = 0;
-                    ndpImagesInColumn.Minimum = 0;
-                    ndpImagesInRow.Value = 0;
-                    ndpImagesInColumn.Value = 0;
+                    ndpImagesInRow.Minimum = ndpImagesInColumn.Minimum = 0;
+                    ndpImagesInRow.Value = ndpImagesInColumn.Value = 0;
                 }
 
                 Working = false;
