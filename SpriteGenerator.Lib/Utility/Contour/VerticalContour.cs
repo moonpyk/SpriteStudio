@@ -1,4 +1,4 @@
-﻿namespace SpriteGenerator.Utility
+﻿namespace SpriteGenerator.Utility.Contour
 {
     public class VerticalContour : ContourAbstract
     {

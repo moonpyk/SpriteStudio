@@ -58,14 +58,14 @@
     <Compile Include="Sprite.cs" />
     <Compile Include="Utility\Algorithm.cs" />
     <Compile Include="Utility\Bit.cs" />
-    <Compile Include="Utility\ContourAbstract.cs" />
+    <Compile Include="Utility\Contour\ContourAbstract.cs" />
     <Compile Include="Utility\Graph.cs" />
     <Compile Include="Utility\GraphNode.cs" />
-    <Compile Include="Utility\HorizontalContour.cs" />
+    <Compile Include="Utility\Contour\HorizontalContour.cs" />
     <Compile Include="Utility\Module.cs" />
     <Compile Include="Utility\OTHelper.cs" />
     <Compile Include="Utility\OTree.cs" />
-    <Compile Include="Utility\VerticalContour.cs" />
+    <Compile Include="Utility\Contour\VerticalContour.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

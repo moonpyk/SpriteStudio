@@ -13,9 +13,10 @@ namespace SpriteGenerator.Utility
         /// <returns>Near optimal placement.</returns>
         public static Placement Greedy(List<Module> modules)
         {
+            OTHelper finalOt = null;
+
             // Empty O-Tree code.
             var oTree = new OTree();
-            OTHelper finalOt = null;
 
             // Empty list of modules.
             var moduleList = new List<Module>();
@@ -31,15 +32,16 @@ namespace SpriteGenerator.Utility
                 // Set the minimum perimeter of the placement to high.
                 var minPerimeter = Int32.MaxValue;
 
-                // Try all insertation point.
+                // Try all insertion points.
                 Debug.Assert(oTree != null, "oTree != null");
 
-                foreach (var insertationPoint in oTree.InsertationPoints())
+                foreach (var insertionPoint in oTree.InsertionPoints())
                 {
-                    var ot = oTree.Copy();
-                    ot.Insert(module.Name, insertationPoint);
-                    var oT = new OTHelper(ot, moduleList);
-                    var pm = oT.Placement;
+                    var copy = oTree.Copy();
+                    copy.Insert(module.Name, insertionPoint);
+
+                    var ot = new OTHelper(copy, moduleList);
+                    var pm = ot.Placement;
 
                     // Choose the one with the minimum perimeter.
                     if (pm.Perimeter >= minPerimeter)
@@ -47,10 +49,11 @@ namespace SpriteGenerator.Utility
                         continue;
                     }
 
-                    finalOt = oT;
-                    bestOTree = ot;
+                    finalOt = ot;
+                    bestOTree = copy;
                     minPerimeter = pm.Perimeter;
                 }
+
                 oTree = bestOTree;
             }
 

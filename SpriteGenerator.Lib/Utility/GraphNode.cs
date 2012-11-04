@@ -4,8 +4,8 @@ namespace SpriteGenerator.Utility
 {
     public class GraphNode
     {
-        public Dictionary<int, int> IncomingEdges;
-        public Dictionary<int, int> OutgoingEdges;
+        public IDictionary<int, int> IncomingEdges;
+        public IDictionary<int, int> OutgoingEdges;
 
         public void InitializeEdges()
         {

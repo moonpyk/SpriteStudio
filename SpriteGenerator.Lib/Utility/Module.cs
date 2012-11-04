@@ -28,9 +28,10 @@ namespace SpriteGenerator.Utility
                 _width = image.Width + whiteSpace;
                 _height = image.Height + whiteSpace;
             }
-            //Empty module
-            else
-            { _width = _height = 0; }
+            else //Empty module
+            {
+                _width = _height = 0;
+            }
 
             _whiteSpace = whiteSpace;
             _xCoordinate = 0;

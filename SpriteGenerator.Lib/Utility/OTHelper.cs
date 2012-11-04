@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using SpriteGenerator.Utility.Contour;
 
 namespace SpriteGenerator.Utility
 {
     public class OTHelper
     {
         private readonly OTree _oTree;
-        private readonly Dictionary<int, Module> _modules;
+        private readonly IDictionary<int, Module> _modules;
         private Placement _placement;
 
         /// <summary>

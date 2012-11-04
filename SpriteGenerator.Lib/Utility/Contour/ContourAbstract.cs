@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SpriteGenerator.Utility
+namespace SpriteGenerator.Utility.Contour
 {
     /// <summary>
     /// Contour is the list of the modules on the top (horizontal contour) or on the right (vertical contour) of the

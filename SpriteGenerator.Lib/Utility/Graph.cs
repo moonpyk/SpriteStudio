@@ -5,7 +5,7 @@ namespace SpriteGenerator.Utility
 {
     public class Graph
     {
-        protected Dictionary<int, GraphNode> Nodes;
+        protected IDictionary<int, GraphNode> Nodes;
 
         /// <summary>
         /// Directed graph with weigted edges.
@@ -47,7 +47,7 @@ namespace SpriteGenerator.Utility
         /// <param name="topologicalOrder">Topological order of the graph.</param>
         /// <param name="dfsSequence">0-1 sequence representing of the DFS traversing. 0 means forth step,
         /// 1 means back step.</param>
-        private void VisitNode(int node, Dictionary<int, bool> visitedNodes, List<int> topologicalOrder, List<Bit> dfsSequence)
+        private void VisitNode(int node, IDictionary<int, bool> visitedNodes, List<int> topologicalOrder, List<Bit> dfsSequence)
         {
             //If node is not visited yet
             if (!visitedNodes[node])

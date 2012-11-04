@@ -3,8 +3,10 @@ using System.Linq;
 
 namespace SpriteGenerator.Utility
 {
-    //Code class for O-Tree representation. O-Tree encodes a placement by a sequence of 
-    //module labels and a 0-1 sequence describing the tree structure.
+    /// <summary>
+    /// Code class for O-Tree representation. O-Tree encodes a placement by a sequence of 
+    /// module labels and a 0-1 sequence describing the tree structure.
+    /// </summary>
     public class OTree
     {
         private List<int> _moduleSequence;
@@ -57,11 +59,11 @@ namespace SpriteGenerator.Utility
         }
 
         /// <summary>
-        /// Calculates insertation positions according to DFS-sequence.
+        /// Calculates insertion positions according to DFS-sequence.
         /// </summary>
         /// <returns>IEnumerable collection of zero based indices in DFS-sequence where new element 
         /// can be inserted.</returns>
-        public IEnumerable<int> InsertationPoints()
+        public IEnumerable<int> InsertionPoints()
         {
             for (var i = 0; i <= DfsSequence.Count; i++)
             {
