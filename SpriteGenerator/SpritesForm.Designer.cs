@@ -64,9 +64,9 @@
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.stripStatus = new System.Windows.Forms.StatusStrip();
             this.lbStatusMessage = new System.Windows.Forms.ToolStripStatusLabel();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.mnFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip = new System.Windows.Forms.MenuStrip();
             lbImagesPath = new System.Windows.Forms.Label();
             lbOutputImage = new System.Windows.Forms.Label();
             lbOutputCss = new System.Windows.Forms.Label();
@@ -524,6 +524,17 @@
             this.lbStatusMessage.Name = "lbStatusMessage";
             this.lbStatusMessage.Size = new System.Drawing.Size(0, 17);
             // 
+            // menuStrip
+            // 
+            this.menuStrip.Dock = System.Windows.Forms.DockStyle.None;
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnFile});
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(523, 24);
+            this.menuStrip.TabIndex = 0;
+            this.menuStrip.Text = "Menu";
+            // 
             // mnFile
             // 
             this.mnFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -539,17 +550,6 @@
             this.mnExit.Size = new System.Drawing.Size(135, 22);
             this.mnExit.Text = "E&xit";
             this.mnExit.Click += new System.EventHandler(this.MnExit_Click);
-            // 
-            // menuStrip
-            // 
-            this.menuStrip.Dock = System.Windows.Forms.DockStyle.None;
-            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnFile});
-            this.menuStrip.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(523, 24);
-            this.menuStrip.TabIndex = 0;
-            this.menuStrip.Text = "Menu";
             // 
             // SpritesForm
             // 

@@ -285,11 +285,13 @@ namespace SpriteGenerator
             // Calculating result image dimension.
             var imageWidth = _images[0].Width;
             var imageHeight = _images[0].Height;
+            var imagesInColumn = _layoutProp.ImagesInColumn;
+            var imagesInRow = _layoutProp.ImagesInRow;
 
-            var width = _layoutProp.ImagesInRow * (imageWidth + _layoutProp.DistanceBetweenImages) -
+            var width = imagesInRow * (imageWidth + _layoutProp.DistanceBetweenImages) -
                 _layoutProp.DistanceBetweenImages + 2 * _layoutProp.MarginWidth;
 
-            var height = _layoutProp.ImagesInColumn * (imageHeight + _layoutProp.DistanceBetweenImages) -
+            var height = imagesInColumn * (imageHeight + _layoutProp.DistanceBetweenImages) -
                 _layoutProp.DistanceBetweenImages + 2 * _layoutProp.MarginWidth;
 
             // Creating an empty result image.
@@ -301,9 +303,9 @@ namespace SpriteGenerator
             var actualXCoordinate = _layoutProp.MarginWidth;
 
             // Drawing images into the result image, writing CSS lines and increasing coordinates.
-            for (var i = 0; i < _layoutProp.ImagesInColumn; i++)
+            for (var i = 0; i < imagesInColumn; i++)
             {
-                for (var j = 0; (i * _layoutProp.ImagesInRow) + j < _images.Count && j < _layoutProp.ImagesInRow; j++)
+                for (var j = 0; (i * imagesInRow) + j < _images.Count && j < imagesInRow; j++)
                 {
                     var rectangle = new Rectangle(
                         actualXCoordinate,
@@ -312,8 +314,8 @@ namespace SpriteGenerator
                         imageHeight
                     );
 
-                    graphics.DrawImage(_images[i * _layoutProp.ImagesInRow + j], rectangle);
-                    cssFile.WriteLine(CssLine(_cssClassNames[i * _layoutProp.ImagesInRow + j], rectangle));
+                    graphics.DrawImage(_images[i * imagesInRow + j], rectangle);
+                    cssFile.WriteLine(CssLine(_cssClassNames[i * imagesInRow + j], rectangle));
 
                     actualXCoordinate += imageWidth + _layoutProp.DistanceBetweenImages;
                 }

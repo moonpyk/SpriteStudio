@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Linq;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
 using SpriteGenerator.Properties;
 
 namespace SpriteGenerator
@@ -12,6 +13,7 @@ namespace SpriteGenerator
     {
         private readonly LayoutProperties _layoutProp = new LayoutProperties();
         private readonly GenerationConditions _ready = new GenerationConditions();
+        private readonly Stopwatch _stopwatch = new Stopwatch();
 
         public SpritesForm()
         {
@@ -59,10 +61,12 @@ namespace SpriteGenerator
 
             Task.Factory.StartNew(() =>
             {
+                _stopwatch.Start();
                 using (var sprite = new Sprite(_layoutProp))
                 {
                     sprite.Create();
                 }
+                _stopwatch.Stop();
             }).ContinueWith(o =>
             {
                 var s = Settings.Default;
@@ -73,7 +77,8 @@ namespace SpriteGenerator
                 s.Save();
 
                 Working = false;
-                WorkingMessage = "Spriting done";
+                WorkingMessage = string.Format("Spriting done [{0}]", _stopwatch.Elapsed);
+                _stopwatch.Reset();
 
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
@@ -159,9 +164,11 @@ namespace SpriteGenerator
             var numberOfFiles = _layoutProp.InputFilePaths.Count;
 
             // Setting sprites in column numericupdown value
+
             // ReSharper disable PossibleLossOfFraction : Wanted behaviour
             ndpImagesInColumn.Minimum = numberOfFiles / (int)ndpImagesInRow.Value;
             // ReSharper restore PossibleLossOfFraction
+
             ndpImagesInColumn.Minimum += (numberOfFiles % (int)ndpImagesInRow.Value) > 0 ? 1 : 0;
             ndpImagesInColumn.Maximum = ndpImagesInColumn.Minimum;
 
@@ -290,8 +297,8 @@ namespace SpriteGenerator
 
             rbAutomaticLayout.Enabled = rbAutomaticLayout.Checked = true;
 
-            bool canVertical = false,
-                 canHorizontal = false;
+            bool canVertical = true,
+                 canHorizontal = true;
 
             var sched = TaskScheduler.FromCurrentSynchronizationContext();
 
@@ -301,6 +308,8 @@ namespace SpriteGenerator
             // Maybe long operation, depends of how many images you have
             Task.Factory.StartNew(() =>
             {
+                _stopwatch.Start();
+
                 int width, height;
 
                 using (var firstImage = Image.FromFile(_layoutProp.InputFilePaths[0]))
@@ -308,27 +317,28 @@ namespace SpriteGenerator
                     width = firstImage.Width;
                     height = firstImage.Height;
                 }
-#if PARA
-                var allImages = _layoutProp.InputFilePaths.AsParallel()
-                    .Select(Image.FromFile)
-                    .ToList();
-#else
-                var allImages = _layoutProp.InputFilePaths
-                    .Select(Image.FromFile)
-                    .ToList();
-#endif
 
-                // Horizontal layout radiobutton is enabled only when all image heights are the same.                    
-                canHorizontal = allImages.All(_ => _.Height == height);
+                Parallel.ForEach(
+                    _layoutProp.InputFilePaths.Skip(1),
+                    (f, s) =>
+                    {
+                        using (var i = Image.FromFile(f))
+                        {
+                            // Horizontal layout is enabled only when all image heights are the same.                    
+                            canHorizontal &= i.Height == height;
 
-                // Vertical layout radiobutton is enabled only when all image widths are the same.
-                canVertical = allImages.All(_ => _.Width == width);
+                            // Vertical layout is enabled only when all image widths are the same.
+                            canVertical &= i.Width == width;
 
-#if PARA
-                allImages.AsParallel().ForAll(i => i.Dispose());
-#else
-                allImages.ForEach(i => i.Dispose());
-#endif
+                            if (!canHorizontal || !canVertical)
+                            {
+                                s.Break(); // We can stop immediately
+                            }
+                        }
+                    }
+                );
+
+                _stopwatch.Stop();
             })
             .ContinueWith(obj =>
             {
@@ -362,7 +372,9 @@ namespace SpriteGenerator
                 }
 
                 Working = false;
-                WorkingMessage = string.Empty;
+                WorkingMessage = string.Format("Directory scan done [{0}]", _stopwatch.Elapsed);
+                _stopwatch.Reset();
+
             }, sched);
 
             return true;
