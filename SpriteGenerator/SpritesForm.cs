@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -47,6 +48,28 @@ namespace SpriteGenerator
             _layoutProp.Layout = SpriteLayoutUtil.FromString(rbAutomaticLayout.Text);
 
             LoadLastSettings();
+        }
+
+        private void SpritesForm_DragEnter(object sender, DragEventArgs e)
+        {
+            var dir = HandleDirectoryDrag(e);
+
+            if (!string.IsNullOrEmpty(dir) && Directory.Exists(dir))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+        }
+
+        private void SpritesForm_DragDrop(object sender, DragEventArgs e)
+        {
+            var dir = HandleDirectoryDrag(e);
+
+            if (string.IsNullOrEmpty(dir))
+            {
+                return;
+            }
+            tbInputDirectoryPath.Text = fbDialog.SelectedPath = dir;
+            ValidateImagesDirectory(false);
         }
 
         // Generate button click event. Start generating output image and CSS file.
@@ -403,6 +426,28 @@ namespace SpriteGenerator
             }, sched);
 
             return true;
+        }
+
+        private static bool IsFileDrop(DragEventArgs e)
+        {
+            return e.Data.GetDataPresent(DataFormats.FileDrop);
+        }
+
+        private static string HandleDirectoryDrag(DragEventArgs e)
+        {
+            if (!IsFileDrop(e))
+            {
+                return null;
+            }
+
+            var fileDrop = e.Data.GetData(DataFormats.FileDrop) as IList<string>;
+
+            if (fileDrop == null || fileDrop.Count() != 1)
+            {
+                return null;
+            }
+
+            return fileDrop[0];
         }
     }
 }
