@@ -45,6 +45,9 @@
   <PropertyGroup>
     <ApplicationIcon>spritegenerator.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>SpriteGenerator.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GenerationConditions.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="SpritesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +76,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">

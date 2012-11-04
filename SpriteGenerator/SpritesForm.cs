@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using SpriteGenerator.Properties;
 
 namespace SpriteGenerator
 {
@@ -40,13 +39,12 @@ namespace SpriteGenerator
             }
         }
 
-        private void SpritesForm_Load(object sender, EventArgs e) {
+        private void SpritesForm_Load(object sender, EventArgs e)
+        {
             _layoutProp.Layout = SpriteLayoutUtil.FromString(rbAutomaticLayout.Text);
 
             LoadLastSettings();
         }
-
-
 
         // Generate button click event. Start generating output image and CSS file.
         private void BtGenerate_Click(object sender, EventArgs e)
@@ -67,10 +65,12 @@ namespace SpriteGenerator
                 }
             }).ContinueWith(o =>
             {
-                var settings = Properties.Settings.Default;
+                var s = Settings.Default;
 
-                settings.LastDirectory = tbInputDirectoryPath.Text;
-                settings.Save();
+                s.LastDirectory = tbInputDirectoryPath.Text;
+                s.LastOutputCssFile = tbOutputCSSFilePath.Text;
+                s.LastOutputImageFile = tbOutputImageFilePath.Text;
+                s.Save();
 
                 Working = false;
                 WorkingMessage = "Spriting done";
@@ -86,7 +86,7 @@ namespace SpriteGenerator
                 return;
             }
 
-            CheckImagesDirectory(false);
+            ValidateImagesDirectory(false);
         }
 
         // Select output image file path.
@@ -99,7 +99,7 @@ namespace SpriteGenerator
                 return;
             }
 
-            CheckOutputImagePath(false);
+            ValidateOutputImagePath(false);
         }
 
         // Select output CSS file path.
@@ -112,7 +112,7 @@ namespace SpriteGenerator
                 return;
             }
 
-            CheckOutputCssPath(false);
+            ValidateOutputCssPath(false);
         }
 
         // Rectangular layout radiobutton checked change.
@@ -144,10 +144,13 @@ namespace SpriteGenerator
             var rd = sender as RadioButton;
 
             // Setting layout field value.
-            if (rd != null && rd.Checked)
+            if (rd == null || !rd.Checked)
             {
-                _layoutProp.Layout = SpriteLayoutUtil.FromString(rd.Text);
+                return;
             }
+
+            _ready.IsLayoutOK = true;
+            _layoutProp.Layout = SpriteLayoutUtil.FromString(rd.Text);
         }
 
         // Sprites in row numericupdown value changed event
@@ -155,8 +158,10 @@ namespace SpriteGenerator
         {
             var numberOfFiles = _layoutProp.InputFilePaths.Count;
 
-            //Setting sprites in column numericupdown value
+            // Setting sprites in column numericupdown value
+            // ReSharper disable PossibleLossOfFraction : Wanted behaviour
             ndpImagesInColumn.Minimum = numberOfFiles / (int)ndpImagesInRow.Value;
+            // ReSharper restore PossibleLossOfFraction
             ndpImagesInColumn.Minimum += (numberOfFiles % (int)ndpImagesInRow.Value) > 0 ? 1 : 0;
             ndpImagesInColumn.Maximum = ndpImagesInColumn.Minimum;
 
@@ -171,27 +176,61 @@ namespace SpriteGenerator
 
         private void LoadLastSettings()
         {
-            var settings = Properties.Settings.Default;
+            var settings = Settings.Default;
 
-            if (string.IsNullOrEmpty(settings.LastDirectory))
+            if (!string.IsNullOrEmpty(settings.LastDirectory))
             {
-                return;
+                tbInputDirectoryPath.Text = folderBrowserDialog.SelectedPath
+                    = settings.LastDirectory;
+
+                if (!ValidateImagesDirectory(true))
+                {
+                    tbInputDirectoryPath.Text = folderBrowserDialog.SelectedPath = settings.LastDirectory = "";
+                }
             }
 
-            tbInputDirectoryPath.Text = folderBrowserDialog.SelectedPath = settings.LastDirectory;
-
-            if (!CheckImagesDirectory(true))
+            if (!string.IsNullOrEmpty(settings.LastOutputCssFile))
             {
-                tbInputDirectoryPath.Text = folderBrowserDialog.SelectedPath = settings.LastDirectory = "";
+                tbOutputCSSFilePath.Text = saveFileDialogOutputCss.FileName
+                    = settings.LastOutputCssFile;
+
+                if (!ValidateOutputCssPath(true))
+                {
+                    tbOutputCSSFilePath.Text = saveFileDialogOutputCss.FileName
+                        = settings.LastOutputCssFile = "";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(settings.LastOutputImageFile))
+            {
+                tbOutputImageFilePath.Text = saveFileDialogOutputImage.FileName
+                    = settings.LastOutputImageFile;
+
+                if (!ValidateOutputImagePath(true))
+                {
+                    tbOutputImageFilePath.Text = saveFileDialogOutputImage.FileName
+                        = settings.LastOutputImageFile = "";
+                }
             }
         }
 
-        private bool CheckOutputImagePath(bool beSilent)
+        private static bool ValidateSameDrive(string a, string b)
         {
-            if (_ready.OutputCssPathOK && tbOutputCSSFilePath.Text[0] != saveFileDialogOutputImage.FileName[0])
+            if (string.IsNullOrWhiteSpace(a) || string.IsNullOrWhiteSpace(b))
             {
-                if(!beSilent) {
-                    MessageBox.Show("Output image and CSS file must be on the same drive.");                    
+                return false;
+            }
+
+            return a[0] == b[0];
+        }
+
+        private bool ValidateOutputImagePath(bool beSilent)
+        {
+            if (_ready.OutputCssPathOK && !ValidateSameDrive(tbOutputCSSFilePath.Text, saveFileDialogOutputImage.FileName))
+            {
+                if (!beSilent)
+                {
+                    MessageBox.Show(Resources.ErrorMessageOutputImageAndOutCssNotSameDrive);
                 }
                 _ready.OutputImagePathOK = false;
                 return false;
@@ -203,13 +242,13 @@ namespace SpriteGenerator
             return true;
         }
 
-        private bool CheckOutputCssPath(bool beSilent)
+        private bool ValidateOutputCssPath(bool beSilent)
         {
-            if (_ready.OutputImagePathOK && tbOutputImageFilePath.Text[0] != saveFileDialogOutputCss.FileName[0])
+            if (_ready.OutputImagePathOK && !ValidateSameDrive(tbOutputImageFilePath.Text, saveFileDialogOutputCss.FileName))
             {
                 if (!beSilent)
                 {
-                    MessageBox.Show("Output image and CSS file must be on the same drive.");
+                    MessageBox.Show(Resources.ErrorMessageOutputImageAndOutCssNotSameDrive);
                 }
                 _ready.OutputCssPathOK = false;
                 return false;
@@ -220,7 +259,7 @@ namespace SpriteGenerator
             return true;
         }
 
-        private bool CheckImagesDirectory(bool beSilent)
+        private bool ValidateImagesDirectory(bool beSilent)
         {
             string[] filters = {
                 ".png", ".jpg", ".jpeg", ".gif"
@@ -238,7 +277,7 @@ namespace SpriteGenerator
             {
                 if (!beSilent)
                 {
-                    MessageBox.Show("This directory does not contain image files.");
+                    MessageBox.Show(Resources.ErrorDirectoryNoImageFile);
                 }
                 _ready.ImagePathOK = false;
                 return false;
@@ -247,9 +286,9 @@ namespace SpriteGenerator
             // If there are files with the enabled formats in the choosen directory.
             tbInputDirectoryPath.Text = folderBrowserDialog.SelectedPath;
 
-            _ready.ImagePathOK = true;
+            _ready.ImagePathOK = _ready.IsLayoutOK = true;
 
-            rbAutomaticLayout.Checked = true;
+            rbAutomaticLayout.Enabled = rbAutomaticLayout.Checked = true;
 
             bool canVertical = false,
                  canHorizontal = false;
@@ -299,6 +338,12 @@ namespace SpriteGenerator
                 // Rectangular layout radiobutton is enabled only when all image heights and all image widths are the same.
                 rbRectangularLayout.Enabled = canHorizontal && canVertical;
                 rbAutomaticLayout.Enabled = !rbRectangularLayout.Enabled;
+
+                if (!rbAutomaticLayout.Enabled)
+                {
+                    rbAutomaticLayout.Checked = false;
+                    _ready.IsLayoutOK = false;
+                }
 
                 // Setting rectangular layout dimensions.
                 if (rbRectangularLayout.Enabled)

@@ -7,6 +7,7 @@ namespace SpriteGenerator
         private bool _imagePathOK;
         private bool _outputCssPathOK;
         private bool _outputImagePathOK;
+        private bool _isLayoutOK;
 
         public bool OutputImagePathOK
         {
@@ -63,7 +64,24 @@ namespace SpriteGenerator
         {
             get
             {
-                return ImagePathOK && OutputCssPathOK && OutputCssPathOK;
+                return ImagePathOK && OutputCssPathOK && OutputCssPathOK && IsLayoutOK;
+            }
+        }
+
+        public bool IsLayoutOK
+        {
+            get
+            {
+                return _isLayoutOK;
+            }
+            set
+            {
+                if (value.Equals(_isLayoutOK))
+                {
+                    return;
+                }
+                _isLayoutOK = value;
+                OnPropertyChanged("IsLayoutOK");
             }
         }
 

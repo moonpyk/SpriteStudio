@@ -34,5 +34,29 @@ namespace SpriteGenerator.Properties {
                 this["LastDirectory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastOutputCssFile {
+            get {
+                return ((string)(this["LastOutputCssFile"]));
+            }
+            set {
+                this["LastOutputCssFile"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastOutputImageFile {
+            get {
+                return ((string)(this["LastOutputImageFile"]));
+            }
+            set {
+                this["LastOutputImageFile"] = value;
+            }
+        }
     }
 }
