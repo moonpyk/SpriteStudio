@@ -320,6 +320,7 @@
             // 
             this.ndpImagesInRow.BackColor = System.Drawing.SystemColors.Window;
             this.ndpImagesInRow.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ndpImagesInRow.Enabled = false;
             this.ndpImagesInRow.Location = new System.Drawing.Point(3, 95);
             this.ndpImagesInRow.Maximum = new decimal(new int[] {
             1000,
@@ -382,6 +383,7 @@
             // 
             this.lbDistanceBetweenImages.AutoSize = true;
             this.lbDistanceBetweenImages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbDistanceBetweenImages.Enabled = false;
             this.lbDistanceBetweenImages.Location = new System.Drawing.Point(3, 0);
             this.lbDistanceBetweenImages.Name = "lbDistanceBetweenImages";
             this.lbDistanceBetweenImages.Size = new System.Drawing.Size(132, 26);
@@ -392,6 +394,7 @@
             // 
             this.ndpDistanceBetweenImages.AutoSize = true;
             this.ndpDistanceBetweenImages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ndpDistanceBetweenImages.Enabled = false;
             this.ndpDistanceBetweenImages.Location = new System.Drawing.Point(141, 3);
             this.ndpDistanceBetweenImages.Maximum = new decimal(new int[] {
             10,
@@ -522,7 +525,8 @@
             // lbStatusMessage
             // 
             this.lbStatusMessage.Name = "lbStatusMessage";
-            this.lbStatusMessage.Size = new System.Drawing.Size(0, 17);
+            this.lbStatusMessage.Size = new System.Drawing.Size(69, 17);
+            this.lbStatusMessage.Text = "<message>";
             // 
             // menuStrip
             // 

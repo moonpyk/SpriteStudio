@@ -18,6 +18,7 @@ namespace SpriteGenerator
         public SpritesForm()
         {
             InitializeComponent();
+            WorkingMessage = "";
 
             _ready.PropertyChanged += delegate
             {
@@ -164,15 +165,25 @@ namespace SpriteGenerator
             var numberOfFiles = _layoutProp.InputFilePaths.Count;
 
             // Setting sprites in column numericupdown value
+            var imagesInRow = (int)ndpImagesInRow.Value;
 
-            // ReSharper disable PossibleLossOfFraction : Wanted behaviour
-            ndpImagesInColumn.Minimum = numberOfFiles / (int)ndpImagesInRow.Value;
-            // ReSharper restore PossibleLossOfFraction
+            if (imagesInRow > 0)
+            {
+                // ReSharper disable PossibleLossOfFraction : Wanted behaviour
+                ndpImagesInColumn.Minimum = numberOfFiles / imagesInRow;
+                // ReSharper restore PossibleLossOfFraction
+                ndpImagesInColumn.Minimum += (numberOfFiles % imagesInRow) > 0
+                    ? 1
+                    : 0;
+            }
+            else
+            {
+                ndpImagesInColumn.Minimum = 0;
+            }
 
-            ndpImagesInColumn.Minimum += (numberOfFiles % (int)ndpImagesInRow.Value) > 0 ? 1 : 0;
             ndpImagesInColumn.Maximum = ndpImagesInColumn.Minimum;
 
-            _layoutProp.ImagesInRow = (int)ndpImagesInRow.Value;
+            _layoutProp.ImagesInRow = imagesInRow;
             _layoutProp.ImagesInColumn = (int)ndpImagesInColumn.Value;
         }
 
@@ -272,12 +283,23 @@ namespace SpriteGenerator
                 ".png", ".jpg", ".jpeg", ".gif"
             };
 
-            _layoutProp.InputFilePaths = (
-                from filter in filters
-                from file in Directory.GetFiles(fbDialog.SelectedPath)
-                where file.EndsWith(filter)
-                select file
-            ).ToList();
+            try
+            {
+                _layoutProp.InputFilePaths = (
+                    from filter in filters
+                    from file in Directory.GetFiles(fbDialog.SelectedPath)
+                    where file.EndsWith(filter)
+                    select file
+                ).ToList();
+            }
+            catch (Exception ex)
+            {
+                if (!beSilent)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                return false;
+            }
 
             // If there is no file with the enabled formats in the choosen directory.
             if (_layoutProp.InputFilePaths.Count == 0)
@@ -347,7 +369,7 @@ namespace SpriteGenerator
 
                 // Rectangular layout is enabled only when all image heights and all image widths are the same.
                 rbRectangularLayout.Enabled = canHorizontal && canVertical;
-                
+
                 // Automatic layout is disabled when rectangular layout is available
                 // all possibles combinations for automatic algorithm will lead to same result
                 rbAutomaticLayout.Enabled = !rbRectangularLayout.Enabled;
