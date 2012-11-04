@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SpriteGenerator
 {
-    public class LayoutProperties
+    public class LayoutProperties : IDisposable
     {
         public LayoutProperties()
         {
@@ -15,8 +16,8 @@ namespace SpriteGenerator
             ImagesInRow = 0;
             ImagesInColumn = 0;
 
-            OutputSpriteFilePath = "";
-            OutputCssFilePath = "";
+            OutputSpriteFilePath = string.Empty;
+            OutputCssFilePath = string.Empty;
         }
 
         public IList<string> InputFilePaths
@@ -65,6 +66,18 @@ namespace SpriteGenerator
         {
             get;
             set;
+        }
+
+        public void Dispose()
+        {
+            if (InputFilePaths != null)
+            {
+                InputFilePaths.Clear();
+                InputFilePaths = null;
+            }
+
+            OutputSpriteFilePath = null;
+            OutputCssFilePath = null;
         }
     }
 }

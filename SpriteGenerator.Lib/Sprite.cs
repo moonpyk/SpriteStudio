@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SpriteGenerator.Layouts;
@@ -14,8 +15,7 @@ namespace SpriteGenerator
         private bool _disposed;
 
         private readonly LayoutProperties _properties;
-        private Dictionary<int, string> _cssClassNames;
-        private Dictionary<int, Image> _images;
+        private ImageCssMap _map;
 
         public Sprite(LayoutProperties properties)
         {
@@ -26,23 +26,21 @@ namespace SpriteGenerator
 
         public void Dispose()
         {
-            if (_disposed)
+            if (_disposed || _map == null)
             {
                 return;
             }
 
-            if (_images != null)
+            if (_map.Images != null)
             {
-                Parallel.ForEach(_images, i => i.Value.Dispose());
-                _images.Clear();
-                _images = null;
+                Parallel.ForEach(_map.Images, i => i.Value.Dispose());
+                _map.Images.Clear();
             }
 
 
-            if (_cssClassNames != null)
+            if (_map.CssClassesNames != null)
             {
-                _cssClassNames.Clear();
-                _cssClassNames = null;
+                _map.CssClassesNames.Clear();
             }
 
             _disposed = true;
@@ -52,29 +50,26 @@ namespace SpriteGenerator
 
         public void Create()
         {
-            var tuple = PopulateData();
-
-            _images = tuple.Images;
-            _cssClassNames = tuple.CssClassesNames;
+            _map = PopulateData();
 
             LayoutBuilderBase b = null;
 
             switch (_properties.Layout)
             {
                 case SpriteLayout.Automatic:
-                    b = new AutomaticBuilder(tuple, _properties);
+                    b = new AutomaticBuilder(_map, _properties);
                     break;
 
                 case SpriteLayout.Horizontal:
-                    b = new HorizontalBuilder(tuple, _properties);
+                    b = new HorizontalBuilder(_map, _properties);
                     break;
 
                 case SpriteLayout.Vertical:
-                    b = new VerticalBuilder(tuple, _properties);
+                    b = new VerticalBuilder(_map, _properties);
                     break;
 
                 case SpriteLayout.Rectangular:
-                    b = new RectangularBuilder(tuple, _properties);
+                    b = new RectangularBuilder(_map, _properties);
                     break;
             }
 
@@ -87,25 +82,19 @@ namespace SpriteGenerator
 
             var cssContent = new StringBuilder();
 
-            cssContent.AppendFormat(LayoutBuilderBase.CssSpriteDeclarationFormat + Environment.NewLine,
-                RelativeSpriteImagePath(
-                    _properties.OutputSpriteFilePath,
-                    _properties.OutputCssFilePath
-                ),
-                "sprite"
-            );
+            cssContent.Append(b.GetSpriteDefinition("sprite"));
             cssContent.Append(b.CssCode);
 
-            using (var cssFile = File.CreateText(_properties.OutputCssFilePath))
+            using (var outCss = File.CreateText(_properties.OutputCssFilePath))
             {
-                cssFile.Write(cssContent);
-                cssFile.Close();
+                outCss.Write(cssContent);
+                outCss.Close();
             }
 
-            using (var outputSpriteFile = new FileStream(_properties.OutputSpriteFilePath, FileMode.Create))
+            using (var outImage = new FileStream(_properties.OutputSpriteFilePath, FileMode.Create))
             {
-                b.ResultImage.Save(outputSpriteFile, ImageFormat.Png);
-                outputSpriteFile.Close();
+                b.ResultImage.Save(outImage, ImageFormat.Png);
+                outImage.Close();
             }
 
             b.Dispose();
@@ -116,53 +105,33 @@ namespace SpriteGenerator
         /// </summary> 
         private ImageCssMap PopulateData()
         {
-            var images = new Dictionary<int, Image>();
-            var cssClassNames = new Dictionary<int, string>();
+            var images = new ConcurrentDictionary<int, Image>();
+            var cssClassNames = new ConcurrentDictionary<int, string>();
 
-            for (var i = 0; i < _properties.InputFilePaths.Count; i++)
+            var inputFilePaths = _properties.InputFilePaths;
+
+            Parallel.For(0, inputFilePaths.Count, i =>
             {
-                images.Add(i, Image.FromFile(_properties.InputFilePaths[i]));
+                var imgInstance = Image.FromFile(inputFilePaths[i]);
+                if (!images.TryAdd(i, imgInstance))
+                {
+                    throw new Exception("Unable to insert one Image instance");
+                }
 
-                var splittedFilePath = _properties.InputFilePaths[i].Split(
+                var splittedFilePath = inputFilePaths[i].Split(
                     Path.DirectorySeparatorChar
                 );
 
-                cssClassNames.Add(i, splittedFilePath[splittedFilePath.Length - 1].Split('.')[0]);
-            }
-
-            return new ImageCssMap(images, cssClassNames);
-        }
-
-        // Relative sprite image file path
-        private static string RelativeSpriteImagePath(string outputSpriteFilePath, string outputCssFilePath)
-        {
-            var sep = Path.DirectorySeparatorChar;
-
-            var splittedOutputCssFilePath = outputCssFilePath.Split(sep);
-            var splittedOutputSpriteFilePath = outputSpriteFilePath.Split(sep);
-
-            var breakAt = 0;
-            for (var i = 0; i < splittedOutputCssFilePath.Length; i++)
-            {
-                if (i >= splittedOutputSpriteFilePath.Length || splittedOutputCssFilePath[i] == splittedOutputSpriteFilePath[i])
+                if (!cssClassNames.TryAdd(i, splittedFilePath.Last().Split('.')[0]))
                 {
-                    continue;
+                    throw new Exception("Unable to insert one cssClassName instance");
                 }
+            });
 
-                breakAt = i;
-                break;
-            }
-
-            var relativePath = "";
-
-            for (var i = 0; i < splittedOutputCssFilePath.Length - breakAt - 1; i++)
-            {
-                relativePath += "../";
-            }
-
-            relativePath += String.Join("/", splittedOutputSpriteFilePath, breakAt, splittedOutputSpriteFilePath.Length - breakAt);
-
-            return relativePath;
+            return new ImageCssMap(
+                images,
+                cssClassNames
+            );
         }
     }
 }

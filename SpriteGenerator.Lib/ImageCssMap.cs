@@ -4,13 +4,13 @@ using System.Drawing;
 
 namespace SpriteGenerator
 {
-    public class ImageCssMap : Tuple<Dictionary<int, Image>, Dictionary<int, string>>
+    public class ImageCssMap : Tuple<IDictionary<int, Image>, IDictionary<int, string>>
     {
-        public ImageCssMap(Dictionary<int, Image> images, Dictionary<int, string> items)
+        public ImageCssMap(IDictionary<int, Image> images, IDictionary<int, string> items)
             : base(images, items)
         { }
 
-        public Dictionary<int, Image> Images
+        public IDictionary<int, Image> Images
         {
             get
             {
@@ -18,7 +18,7 @@ namespace SpriteGenerator
             }
         }
 
-        public Dictionary<int, string> CssClassesNames
+        public IDictionary<int, string> CssClassesNames
         {
             get
             {

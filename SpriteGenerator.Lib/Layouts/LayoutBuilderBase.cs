@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Text;
 
 namespace SpriteGenerator.Layouts
@@ -13,8 +14,8 @@ namespace SpriteGenerator.Layouts
 
         private readonly StringBuilder _cssBuilder = new StringBuilder();
 
-        private readonly Dictionary<int, string> _cssClassNames;
-        private readonly Dictionary<int, Image> _images;
+        private readonly IDictionary<int, string> _cssClassNames;
+        private readonly IDictionary<int, Image> _images;
         private readonly LayoutProperties _properties;
 
         private bool _disposed;
@@ -34,7 +35,7 @@ namespace SpriteGenerator.Layouts
             }
         }
 
-        public Dictionary<int, string> CssClassNames
+        public IDictionary<int, string> CssClassNames
         {
             get
             {
@@ -42,7 +43,7 @@ namespace SpriteGenerator.Layouts
             }
         }
 
-        public Dictionary<int, Image> Images
+        public IDictionary<int, Image> Images
         {
             get
             {
@@ -96,6 +97,17 @@ namespace SpriteGenerator.Layouts
 
         public abstract void Generate();
 
+        public virtual string GetSpriteDefinition(string baseClass)
+        {
+            return string.Format(
+                CssSpriteDeclarationFormat + Environment.NewLine,
+                RelativeSpriteImagePath(
+                    _properties.OutputSpriteFilePath,
+                    _properties.OutputCssFilePath
+                    ),
+                baseClass);
+        }
+
         protected virtual string CssLine(string cssClassName, Rectangle rect)
         {
             var line = string.Format(CssLineDeclarationFormat,
@@ -117,6 +129,38 @@ namespace SpriteGenerator.Layouts
             }
 
             return val.ToString(CultureInfo.InvariantCulture) + "px";
+        }
+
+        // Relative sprite image file path
+        protected static string RelativeSpriteImagePath(string outputSpriteFilePath, string outputCssFilePath)
+        {
+            var sep = Path.DirectorySeparatorChar;
+
+            var spltOutputCssFilePath = outputCssFilePath.Split(sep);
+            var spltOutputSpriteFilePath = outputSpriteFilePath.Split(sep);
+
+            var breakAt = 0;
+            for (var i = 0; i < spltOutputCssFilePath.Length; i++)
+            {
+                if (i >= spltOutputSpriteFilePath.Length || spltOutputCssFilePath[i] == spltOutputSpriteFilePath[i])
+                {
+                    continue;
+                }
+
+                breakAt = i;
+                break;
+            }
+
+            var relativePath = "";
+
+            for (var i = 0; i < spltOutputCssFilePath.Length - breakAt - 1; i++)
+            {
+                relativePath += "../";
+            }
+
+            relativePath += String.Join("/", spltOutputSpriteFilePath, breakAt, spltOutputSpriteFilePath.Length - breakAt);
+
+            return relativePath;
         }
     }
 }
