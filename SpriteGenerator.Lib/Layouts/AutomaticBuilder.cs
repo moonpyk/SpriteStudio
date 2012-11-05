@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using SpriteGenerator.Packer;
 
 namespace SpriteGenerator.Layouts
 {
-    public class PackerBuilder : LayoutBuilderBase
+    public class AutomaticBuilder : LayoutBuilderBase
     {
         private readonly List<ImageNode> _nodes;
 
-        public PackerBuilder(ImageCssMap map, LayoutProperties props)
+        public AutomaticBuilder(ImageCssMap map, LayoutProperties props)
             : base(map, props)
         {
             _nodes = Images.Keys.Select(i => new ImageNode(

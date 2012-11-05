@@ -49,7 +49,7 @@
     <Compile Include="LayoutProperties.cs" />
     <Compile Include="Layouts\HorizontalBuilder.cs" />
     <Compile Include="Layouts\LayoutBuilderBase.cs" />
-    <Compile Include="Layouts\PackerBuilder.cs" />
+    <Compile Include="Layouts\AutomaticBuilder.cs" />
     <Compile Include="Layouts\RectangularBuilder.cs" />
     <Compile Include="Layouts\VerticalBuilder.cs" />
     <Compile Include="Packer\ImageNodeComparer.cs" />

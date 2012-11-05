@@ -232,9 +232,10 @@
             tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             tableLayoutPanel3.Location = new System.Drawing.Point(3, 16);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
-            tableLayoutPanel3.RowCount = 2;
+            tableLayoutPanel3.RowCount = 3;
             tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             tableLayoutPanel3.Size = new System.Drawing.Size(324, 140);
             tableLayoutPanel3.TabIndex = 19;
             // 
@@ -261,6 +262,7 @@
             this.lbDistanceBetweenImages.Size = new System.Drawing.Size(49, 26);
             this.lbDistanceBetweenImages.TabIndex = 14;
             this.lbDistanceBetweenImages.Text = "Padding:";
+            this.lbDistanceBetweenImages.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ndpDistanceBetweenImages
             // 
@@ -283,9 +285,10 @@
             this.lbMarginWidth.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbMarginWidth.Location = new System.Drawing.Point(3, 26);
             this.lbMarginWidth.Name = "lbMarginWidth";
-            this.lbMarginWidth.Size = new System.Drawing.Size(49, 114);
+            this.lbMarginWidth.Size = new System.Drawing.Size(49, 26);
             this.lbMarginWidth.TabIndex = 15;
             this.lbMarginWidth.Text = "Margin:";
+            this.lbMarginWidth.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tableLayoutPanel2
             // 
