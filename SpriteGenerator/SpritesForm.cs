@@ -77,8 +77,8 @@ namespace SpriteGenerator
         {
             _layoutProp.OutputSpriteFilePath = tbOutputImageFilePath.Text;
             _layoutProp.OutputCssFilePath = tbOutputCSSFilePath.Text;
-            _layoutProp.DistanceBetweenImages = (int)ndpDistanceBetweenImages.Value;
-            _layoutProp.MarginWidth = (int)ndpMarginWidth.Value;
+            _layoutProp.Padding = (int)ndpDistanceBetweenImages.Value;
+            _layoutProp.Margin = (int)ndpMarginWidth.Value;
 
             Working = true;
             WorkingMessage = "Generating sprite...";

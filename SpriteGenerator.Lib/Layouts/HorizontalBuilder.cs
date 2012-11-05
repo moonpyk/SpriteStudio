@@ -12,23 +12,23 @@ namespace SpriteGenerator.Layouts
 
         public override void Generate()
         {
-            var distanceBetweenImages = Properties.DistanceBetweenImages;
-            var marginWidth = Properties.MarginWidth;
+            var padding = Properties.Padding;
+            var margin = Properties.Margin;
 
             // Calculating result image dimension.
-            var width = Images.Values.Sum(_ => _.Width + distanceBetweenImages);
+            var width = Images.Values.Sum(_ => _.Width + padding);
 
-            width = width - distanceBetweenImages + 2 * marginWidth;
+            width = width - padding + 2 * margin;
 
-            var height = Images[0].Height + 2 * marginWidth;
+            var height = Images[0].Height + 2 * margin;
 
             // Creating an empty result image.
             ResultImage = new Bitmap(width, height);
             var graphics = Graphics.FromImage(ResultImage);
 
             // Initial coordinates.
-            var actualXCoordinate = marginWidth;
-            var yCoordinate = marginWidth;
+            var actualXCoordinate = margin;
+            var yCoordinate = margin;
 
             // Drawing images into the result image, writing CSS lines and increasing X coordinate.
             foreach (var i in Images.Keys)
@@ -44,7 +44,7 @@ namespace SpriteGenerator.Layouts
 
                 graphics.DrawImage(currentImage, rectangle);
                 CssBuilder.AppendLine(CssLine(CssClassNames[i], rectangle));
-                actualXCoordinate += currentImage.Width + distanceBetweenImages;
+                actualXCoordinate += currentImage.Width + padding;
             }
         }
     }

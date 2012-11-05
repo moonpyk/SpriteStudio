@@ -235,47 +235,45 @@
             tableLayoutPanel3.RowCount = 2;
             tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel3.Size = new System.Drawing.Size(347, 140);
+            tableLayoutPanel3.Size = new System.Drawing.Size(324, 140);
             tableLayoutPanel3.TabIndex = 19;
             // 
             // ndpMarginWidth
             // 
             this.ndpMarginWidth.AutoSize = true;
             this.ndpMarginWidth.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ndpMarginWidth.Location = new System.Drawing.Point(141, 29);
+            this.ndpMarginWidth.Location = new System.Drawing.Point(58, 29);
             this.ndpMarginWidth.Maximum = new decimal(new int[] {
             10,
             0,
             0,
             0});
             this.ndpMarginWidth.Name = "ndpMarginWidth";
-            this.ndpMarginWidth.Size = new System.Drawing.Size(203, 20);
+            this.ndpMarginWidth.Size = new System.Drawing.Size(263, 20);
             this.ndpMarginWidth.TabIndex = 16;
             // 
             // lbDistanceBetweenImages
             // 
             this.lbDistanceBetweenImages.AutoSize = true;
             this.lbDistanceBetweenImages.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbDistanceBetweenImages.Enabled = false;
             this.lbDistanceBetweenImages.Location = new System.Drawing.Point(3, 0);
             this.lbDistanceBetweenImages.Name = "lbDistanceBetweenImages";
-            this.lbDistanceBetweenImages.Size = new System.Drawing.Size(132, 26);
+            this.lbDistanceBetweenImages.Size = new System.Drawing.Size(49, 26);
             this.lbDistanceBetweenImages.TabIndex = 14;
-            this.lbDistanceBetweenImages.Text = "Distance between images:";
+            this.lbDistanceBetweenImages.Text = "Padding:";
             // 
             // ndpDistanceBetweenImages
             // 
             this.ndpDistanceBetweenImages.AutoSize = true;
             this.ndpDistanceBetweenImages.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ndpDistanceBetweenImages.Enabled = false;
-            this.ndpDistanceBetweenImages.Location = new System.Drawing.Point(141, 3);
+            this.ndpDistanceBetweenImages.Location = new System.Drawing.Point(58, 3);
             this.ndpDistanceBetweenImages.Maximum = new decimal(new int[] {
             10,
             0,
             0,
             0});
             this.ndpDistanceBetweenImages.Name = "ndpDistanceBetweenImages";
-            this.ndpDistanceBetweenImages.Size = new System.Drawing.Size(203, 20);
+            this.ndpDistanceBetweenImages.Size = new System.Drawing.Size(263, 20);
             this.ndpDistanceBetweenImages.TabIndex = 13;
             this.ndpDistanceBetweenImages.Tag = "";
             // 
@@ -285,9 +283,9 @@
             this.lbMarginWidth.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbMarginWidth.Location = new System.Drawing.Point(3, 26);
             this.lbMarginWidth.Name = "lbMarginWidth";
-            this.lbMarginWidth.Size = new System.Drawing.Size(132, 114);
+            this.lbMarginWidth.Size = new System.Drawing.Size(49, 114);
             this.lbMarginWidth.TabIndex = 15;
-            this.lbMarginWidth.Text = "Margin width:";
+            this.lbMarginWidth.Text = "Margin:";
             // 
             // tableLayoutPanel2
             // 
@@ -313,7 +311,7 @@
             tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel2.Size = new System.Drawing.Size(170, 140);
+            tableLayoutPanel2.Size = new System.Drawing.Size(193, 140);
             tableLayoutPanel2.TabIndex = 19;
             // 
             // lbSprites
@@ -324,7 +322,7 @@
             this.lbSprites.Location = new System.Drawing.Point(133, 92);
             this.lbSprites.Name = "lbSprites";
             this.lbSprites.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
-            this.lbSprites.Size = new System.Drawing.Size(40, 48);
+            this.lbSprites.Size = new System.Drawing.Size(57, 48);
             this.lbSprites.TabIndex = 22;
             this.lbSprites.Text = "images";
             // 
@@ -336,7 +334,7 @@
             this.rbAutomaticLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rbAutomaticLayout.Location = new System.Drawing.Point(3, 3);
             this.rbAutomaticLayout.Name = "rbAutomaticLayout";
-            this.rbAutomaticLayout.Size = new System.Drawing.Size(170, 17);
+            this.rbAutomaticLayout.Size = new System.Drawing.Size(187, 17);
             this.rbAutomaticLayout.TabIndex = 17;
             this.rbAutomaticLayout.TabStop = true;
             this.rbAutomaticLayout.Text = "Automatic";
@@ -378,7 +376,7 @@
             this.rbHorizontalLayout.Enabled = false;
             this.rbHorizontalLayout.Location = new System.Drawing.Point(3, 26);
             this.rbHorizontalLayout.Name = "rbHorizontalLayout";
-            this.rbHorizontalLayout.Size = new System.Drawing.Size(170, 17);
+            this.rbHorizontalLayout.Size = new System.Drawing.Size(187, 17);
             this.rbHorizontalLayout.TabIndex = 16;
             this.rbHorizontalLayout.Text = "Horizontal";
             this.rbHorizontalLayout.UseVisualStyleBackColor = true;
@@ -392,7 +390,7 @@
             this.rbVerticalLayout.Enabled = false;
             this.rbVerticalLayout.Location = new System.Drawing.Point(3, 49);
             this.rbVerticalLayout.Name = "rbVerticalLayout";
-            this.rbVerticalLayout.Size = new System.Drawing.Size(170, 17);
+            this.rbVerticalLayout.Size = new System.Drawing.Size(187, 17);
             this.rbVerticalLayout.TabIndex = 18;
             this.rbVerticalLayout.TabStop = true;
             this.rbVerticalLayout.Text = "Vertical";
@@ -424,7 +422,7 @@
             this.rbRectangularLayout.Enabled = false;
             this.rbRectangularLayout.Location = new System.Drawing.Point(3, 72);
             this.rbRectangularLayout.Name = "rbRectangularLayout";
-            this.rbRectangularLayout.Size = new System.Drawing.Size(170, 17);
+            this.rbRectangularLayout.Size = new System.Drawing.Size(187, 17);
             this.rbRectangularLayout.TabIndex = 15;
             this.rbRectangularLayout.Text = "Rectangular";
             this.rbRectangularLayout.UseVisualStyleBackColor = true;
@@ -538,7 +536,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBoxDistances);
             this.splitContainer1.Size = new System.Drawing.Size(533, 159);
-            this.splitContainer1.SplitterDistance = 176;
+            this.splitContainer1.SplitterDistance = 199;
             this.splitContainer1.TabIndex = 17;
             // 
             // groupBoxLayout
@@ -547,7 +545,7 @@
             this.groupBoxLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxLayout.Location = new System.Drawing.Point(0, 0);
             this.groupBoxLayout.Name = "groupBoxLayout";
-            this.groupBoxLayout.Size = new System.Drawing.Size(176, 159);
+            this.groupBoxLayout.Size = new System.Drawing.Size(199, 159);
             this.groupBoxLayout.TabIndex = 16;
             this.groupBoxLayout.TabStop = false;
             this.groupBoxLayout.Text = "Layout";
@@ -558,7 +556,7 @@
             this.groupBoxDistances.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxDistances.Location = new System.Drawing.Point(0, 0);
             this.groupBoxDistances.Name = "groupBoxDistances";
-            this.groupBoxDistances.Size = new System.Drawing.Size(353, 159);
+            this.groupBoxDistances.Size = new System.Drawing.Size(330, 159);
             this.groupBoxDistances.TabIndex = 17;
             this.groupBoxDistances.TabStop = false;
             this.groupBoxDistances.Text = "Distances";

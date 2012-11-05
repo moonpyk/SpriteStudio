@@ -13,7 +13,7 @@ namespace SpriteGenerator.Layouts
             : base(map, props)
         {
             _modules = Images.Keys
-                .Select(i => new Module(i, Images[i], Properties.DistanceBetweenImages))
+                .Select(i => new Module(i, Images[i], Properties.Padding))
                 .ToList();
         }
 
@@ -26,8 +26,8 @@ namespace SpriteGenerator.Layouts
 
             // Creating an empty result image.
             ResultImage = new Bitmap(
-                placement.Width - Properties.DistanceBetweenImages + 2 * Properties.MarginWidth,
-                placement.Height - Properties.DistanceBetweenImages + 2 * Properties.MarginWidth
+                placement.Width - Properties.Padding + 2 * Properties.Margin,
+                placement.Height - Properties.Padding + 2 * Properties.Margin
             );
 
             var graphics = Graphics.FromImage(ResultImage);
@@ -35,13 +35,13 @@ namespace SpriteGenerator.Layouts
             // Drawing images into the result image in the original order and writing CSS lines.
             foreach (var m in placement.Modules)
             {
-                m.Draw(graphics, Properties.MarginWidth);
+                m.Draw(graphics, Properties.Margin);
 
                 var rectangle = new Rectangle(
-                    m.X + Properties.MarginWidth,
-                    m.Y + Properties.MarginWidth,
-                    m.Width - Properties.DistanceBetweenImages,
-                    m.Height - Properties.DistanceBetweenImages
+                    m.X + Properties.Margin,
+                    m.Y + Properties.Margin,
+                    m.Width - Properties.Padding,
+                    m.Height - Properties.Padding
                 );
 
                 CssBuilder.AppendLine(CssLine(CssClassNames[m.Name], rectangle));

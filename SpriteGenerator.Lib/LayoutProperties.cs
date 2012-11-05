@@ -10,8 +10,8 @@ namespace SpriteGenerator
             Layout = SpriteLayout.None;
             InputFilePaths = null;
 
-            DistanceBetweenImages = 0;
-            MarginWidth = 0;
+            Padding = 0;
+            Margin = 0;
 
             ImagesInRow = 0;
             ImagesInColumn = 0;
@@ -44,13 +44,13 @@ namespace SpriteGenerator
             set;
         }
 
-        public int DistanceBetweenImages
+        public int Padding
         {
             get;
             set;
         }
 
-        public int MarginWidth
+        public int Margin
         {
             get;
             set;

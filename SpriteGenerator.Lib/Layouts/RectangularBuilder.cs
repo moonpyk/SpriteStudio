@@ -10,8 +10,8 @@ namespace SpriteGenerator.Layouts
 
         public override void Generate()
         {
-            var distanceBetweenImages = Properties.DistanceBetweenImages;
-            var marginWidth = Properties.MarginWidth;
+            var padding = Properties.Padding;
+            var margin = Properties.Margin;
 
             // Calculating result image dimension.
             var imageWidth = Images[0].Width;
@@ -20,19 +20,19 @@ namespace SpriteGenerator.Layouts
             var imagesInColumn = Properties.ImagesInColumn;
             var imagesInRow = Properties.ImagesInRow;
 
-            var width = imagesInRow * (imageWidth + distanceBetweenImages) -
-                distanceBetweenImages + 2 * marginWidth;
+            var width = imagesInRow * (imageWidth + padding) -
+                padding + 2 * margin;
 
-            var height = imagesInColumn * (imageHeight + distanceBetweenImages) -
-                distanceBetweenImages + 2 * marginWidth;
+            var height = imagesInColumn * (imageHeight + padding) -
+                padding + 2 * margin;
 
             // Creating an empty result image.
             ResultImage = new Bitmap(width, height);
             var graphics = Graphics.FromImage(ResultImage);
 
             // Initial coordinates.
-            var actualYCoordinate = marginWidth;
-            var actualXCoordinate = marginWidth;
+            var actualYCoordinate = margin;
+            var actualXCoordinate = margin;
 
             // Drawing images into the result image, writing CSS lines and increasing coordinates.
             for (var i = 0; i < imagesInColumn; i++)
@@ -49,11 +49,11 @@ namespace SpriteGenerator.Layouts
                     graphics.DrawImage(Images[i * imagesInRow + j], rectangle);
                     CssBuilder.AppendLine(CssLine(CssClassNames[i * imagesInRow + j], rectangle));
 
-                    actualXCoordinate += imageWidth + distanceBetweenImages;
+                    actualXCoordinate += imageWidth + padding;
                 }
 
-                actualYCoordinate += imageHeight + distanceBetweenImages;
-                actualXCoordinate = marginWidth;
+                actualYCoordinate += imageHeight + padding;
+                actualXCoordinate = margin;
             }
         }
     }
