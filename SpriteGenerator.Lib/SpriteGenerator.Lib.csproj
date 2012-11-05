@@ -50,8 +50,12 @@
     <Compile Include="Layouts\AutomaticBuilder.cs" />
     <Compile Include="Layouts\HorizontalBuilder.cs" />
     <Compile Include="Layouts\LayoutBuilderBase.cs" />
+    <Compile Include="Layouts\PackerBuilder.cs" />
     <Compile Include="Layouts\RectangularBuilder.cs" />
     <Compile Include="Layouts\VerticalBuilder.cs" />
+    <Compile Include="Packer\ImageNodeComparer.cs" />
+    <Compile Include="Packer\Packer.cs" />
+    <Compile Include="Packer\ImageNode.cs" />
     <Compile Include="SpriteLayout.cs" />
     <Compile Include="Placement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,6 +71,7 @@
     <Compile Include="Utility\OTree.cs" />
     <Compile Include="Utility\Contour\VerticalContour.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

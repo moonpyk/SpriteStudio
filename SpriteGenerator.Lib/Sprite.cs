@@ -65,7 +65,7 @@ namespace SpriteGenerator
             switch (_properties.Layout)
             {
                 case SpriteLayout.Automatic:
-                    b = new AutomaticBuilder(_map, _properties);
+                    b = new PackerBuilder(_map, _properties);
                     break;
 
                 case SpriteLayout.Horizontal:
