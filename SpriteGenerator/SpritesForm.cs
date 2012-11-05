@@ -88,7 +88,7 @@ namespace SpriteGenerator
                 _stopwatch.Start();
                 using (var sprite = new Sprite(_layoutProp))
                 {
-                    sprite.Create();
+                    sprite.Generate();
                 }
                 _stopwatch.Stop();
             }).ContinueWith(o =>

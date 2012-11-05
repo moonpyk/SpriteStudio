@@ -48,7 +48,15 @@ namespace SpriteGenerator
 
         #endregion
 
-        public void Create()
+        /// <summary>
+        /// Generates the CSS Sprite image and stylesheet using the <see cref="LayoutProperties"/>
+        /// given during instanciation.
+        /// </summary>
+        /// <exception cref="Exception">
+        /// If invalid SpriteLayout mode selected (None usually).
+        /// If underlaying imaging library (GDI+ on Windows) ecounters an exception
+        /// </exception>
+        public void Generate()
         {
             _map = PopulateData();
 
@@ -75,7 +83,7 @@ namespace SpriteGenerator
 
             if (b == null)
             {
-                throw new InvalidOperationException("Invalid SpriteLayout mode selected.");
+                throw new Exception("Invalid SpriteLayout mode selected.");
             }
 
             b.Generate();
@@ -93,16 +101,28 @@ namespace SpriteGenerator
 
             using (var outImage = new FileStream(_properties.OutputSpriteFilePath, FileMode.Create))
             {
-                b.ResultImage.Save(outImage, ImageFormat.Png);
-                outImage.Close();
+                try
+                {
+                    b.ResultImage.Save(outImage, ImageFormat.Png);
+                }
+                catch (System.Runtime.InteropServices.ExternalException ex)
+                {
+                    throw new Exception("Underlaying imaging library encountered an error", ex);
+                }
+                finally
+                {
+                    outImage.Close();
+                    b.Dispose();
+                }
             }
-
-            b.Dispose();
         }
 
         /// <summary>
         /// Creates dictionary of images from the given paths and dictionary of CSS classnames from the image filenames.
         /// </summary> 
+        /// <exception cref="Exception">
+        /// If Unable to insert one Image instance or unable to insert one cssClassName string
+        /// </exception>
         private ImageCssMap PopulateData()
         {
             var images = new ConcurrentDictionary<int, Image>();
@@ -124,7 +144,7 @@ namespace SpriteGenerator
 
                 if (!cssClassNames.TryAdd(i, splittedFilePath.Last().Split('.')[0]))
                 {
-                    throw new Exception("Unable to insert one cssClassName instance");
+                    throw new Exception("Unable to insert one cssClassName string");
                 }
             });
 
