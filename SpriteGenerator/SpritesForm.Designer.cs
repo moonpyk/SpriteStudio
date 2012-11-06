@@ -277,7 +277,6 @@
             this.ndpDistanceBetweenImages.Name = "ndpDistanceBetweenImages";
             this.ndpDistanceBetweenImages.Size = new System.Drawing.Size(263, 20);
             this.ndpDistanceBetweenImages.TabIndex = 13;
-            this.ndpDistanceBetweenImages.Tag = "";
             // 
             // lbMarginWidth
             // 

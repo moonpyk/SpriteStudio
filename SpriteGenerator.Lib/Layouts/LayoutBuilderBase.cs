@@ -104,8 +104,9 @@ namespace SpriteGenerator.Layouts
                 RelativeSpriteImagePath(
                     _properties.OutputSpriteFilePath,
                     _properties.OutputCssFilePath
-                    ),
-                baseClass);
+                ),
+                baseClass
+            );
         }
 
         protected virtual string CssLine(string cssClassName, Rectangle rect)
@@ -140,6 +141,7 @@ namespace SpriteGenerator.Layouts
             var spltOutputSpriteFilePath = outputSpriteFilePath.Split(sep);
 
             var breakAt = 0;
+
             for (var i = 0; i < spltOutputCssFilePath.Length; i++)
             {
                 if (i >= spltOutputSpriteFilePath.Length || spltOutputCssFilePath[i] == spltOutputSpriteFilePath[i])

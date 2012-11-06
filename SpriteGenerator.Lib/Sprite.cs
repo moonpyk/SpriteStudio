@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -12,9 +13,8 @@ namespace SpriteGenerator
 {
     public class Sprite : IDisposable
     {
-        private bool _disposed;
-
         private readonly LayoutProperties _properties;
+        private bool _disposed;
         private ImageCssMap _map;
 
         public Sprite(LayoutProperties properties)
@@ -33,7 +33,13 @@ namespace SpriteGenerator
 
             if (_map.Images != null)
             {
-                Parallel.ForEach(_map.Images, i => i.Value.Dispose());
+                try
+                {
+                    Parallel.ForEach(_map.Images, i => i.Value.Dispose());
+                }
+                // ReSharper disable EmptyGeneralCatchClause : What can we do anyway ?
+                catch { }
+                // ReSharper restore EmptyGeneralCatchClause
                 _map.Images.Clear();
             }
 
@@ -120,9 +126,7 @@ namespace SpriteGenerator
         /// <summary>
         /// Creates dictionary of images from the given paths and dictionary of CSS classnames from the image filenames.
         /// </summary> 
-        /// <exception cref="Exception">
-        /// If Unable to insert one Image instance or unable to insert one cssClassName string
-        /// </exception>
+        /// <exception cref="System.Exception">Error during dictionaries populating</exception>
         private ImageCssMap PopulateData()
         {
             var images = new ConcurrentDictionary<int, Image>();
@@ -130,28 +134,39 @@ namespace SpriteGenerator
 
             var inputFilePaths = _properties.InputFilePaths;
 
-            Parallel.For(0, inputFilePaths.Count, i =>
-            {
-                var imgInstance = Image.FromFile(inputFilePaths[i]);
-                if (!images.TryAdd(i, imgInstance))
-                {
-                    throw new Exception("Unable to insert one Image instance");
-                }
-
-                var splittedFilePath = inputFilePaths[i].Split(
-                    Path.DirectorySeparatorChar
-                );
-
-                if (!cssClassNames.TryAdd(i, splittedFilePath.Last().Split('.')[0]))
-                {
-                    throw new Exception("Unable to insert one cssClassName string");
-                }
-            });
+            Parallel.For(0, inputFilePaths.Count, i => PopulateDictionaries(
+                inputFilePaths, i, images, cssClassNames
+            ));
 
             return new ImageCssMap(
                 images,
                 cssClassNames
             );
+        }
+
+        /// <summary>
+        /// Fills images and class names dictionnaries with needed data. Depending of the IDictionary type used under the hood
+        /// an exception may be thrown.
+        /// </summary>
+        /// <exception cref="Exception">Error during dictionnarie populating</exception>
+        private static void PopulateDictionaries(IList<string> inputFilePaths, int i, IDictionary<int, Image> images, IDictionary<int, string> cssClassNames)
+        {
+            try
+            {
+                var imgInstance = Image.FromFile(inputFilePaths[i]);
+
+                images[i] = imgInstance;
+
+                var splittedFilePath = inputFilePaths[i].Split(
+                    Path.DirectorySeparatorChar
+                );
+
+                cssClassNames[i] = splittedFilePath.Last().Split('.')[0];
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error during dictionaries populating", ex);
+            }
         }
     }
 }

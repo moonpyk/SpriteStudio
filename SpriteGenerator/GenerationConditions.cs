@@ -60,14 +60,6 @@ namespace SpriteGenerator
             }
         }
 
-        public bool IsOK
-        {
-            get
-            {
-                return ImagePathOK && OutputCssPathOK && OutputCssPathOK && IsLayoutOK;
-            }
-        }
-
         public bool IsLayoutOK
         {
             get
@@ -82,6 +74,14 @@ namespace SpriteGenerator
                 }
                 _isLayoutOK = value;
                 OnPropertyChanged("IsLayoutOK");
+            }
+        }
+
+        public bool IsOK
+        {
+            get
+            {
+                return ImagePathOK && OutputCssPathOK && OutputCssPathOK && IsLayoutOK;
             }
         }
 

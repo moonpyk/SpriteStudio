@@ -20,11 +20,8 @@ namespace SpriteGenerator.Layouts
             var imagesInColumn = Properties.ImagesInColumn;
             var imagesInRow = Properties.ImagesInRow;
 
-            var width = imagesInRow * (imageWidth + padding) -
-                padding + 2 * margin;
-
-            var height = imagesInColumn * (imageHeight + padding) -
-                padding + 2 * margin;
+            var width = imagesInRow * (imageWidth + padding) - padding + 2 * margin;
+            var height = imagesInColumn * (imageHeight + padding) - padding + 2 * margin;
 
             // Creating an empty result image.
             ResultImage = new Bitmap(width, height);

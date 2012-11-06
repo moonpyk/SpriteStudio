@@ -16,6 +16,9 @@ namespace SpriteGenerator
 
     public static class SpriteLayoutUtil
     {
+        /// <summary>
+        /// Parses a string and returns a <see cref="SpriteLayout"/> value.
+        /// </summary>
         public static SpriteLayout FromString(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -39,6 +42,14 @@ namespace SpriteGenerator
             }
 
             return SpriteLayout.None;
+        }
+
+        /// <summary>
+        /// Convenience method to get a sprite layout from a <see cref="string"/> instance.
+        /// </summary>
+        public static SpriteLayout ToSpriteLayout(this string s)
+        {
+            return FromString(s);
         }
     }
 }
