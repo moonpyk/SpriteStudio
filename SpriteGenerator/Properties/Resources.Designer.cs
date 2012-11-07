@@ -61,6 +61,26 @@ namespace SpriteGenerator.Properties {
         }
         
         /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_circle {
+            get {
+                object obj = ResourceManager.GetObject("arrow_circle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap compile {
+            get {
+                object obj = ResourceManager.GetObject("compile", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à This directory does not contain image files..
         /// </summary>
         internal static string ErrorDirectoryNoImageFile {
@@ -75,6 +95,26 @@ namespace SpriteGenerator.Properties {
         internal static string ErrorMessageOutputImageAndOutCssNotSameDrive {
             get {
                 return ResourceManager.GetString("ErrorMessageOutputImageAndOutCssNotSameDrive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap folder_horizontal_open {
+            get {
+                object obj = ResourceManager.GetObject("folder_horizontal_open", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap zone_resize_actual {
+            get {
+                object obj = ResourceManager.GetObject("zone_resize_actual", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

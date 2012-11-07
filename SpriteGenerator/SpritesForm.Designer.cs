@@ -29,18 +29,19 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SpritesForm));
             System.Windows.Forms.Label lbOutputCss;
             System.Windows.Forms.Label lbImagesPath;
             System.Windows.Forms.Label lbOutputImage;
             System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
             System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SpritesForm));
             this.tbInputDirectoryPath = new System.Windows.Forms.TextBox();
-            this.buttonSelectOutputCSSFilePath = new System.Windows.Forms.Button();
+            this.btSelectOutputCSSFilePath = new System.Windows.Forms.Button();
             this.tbOutputImageFilePath = new System.Windows.Forms.TextBox();
             this.tbOutputCSSFilePath = new System.Windows.Forms.TextBox();
             this.btSelectOutputImageFilePath = new System.Windows.Forms.Button();
             this.btBrowseFolder = new System.Windows.Forms.Button();
+            this.btRefresh = new System.Windows.Forms.Button();
             this.ndpMarginWidth = new System.Windows.Forms.NumericUpDown();
             this.lbDistanceBetweenImages = new System.Windows.Forms.Label();
             this.ndpDistanceBetweenImages = new System.Windows.Forms.NumericUpDown();
@@ -53,6 +54,7 @@
             this.rbVerticalLayout = new System.Windows.Forms.RadioButton();
             this.ndpImagesInRow = new System.Windows.Forms.NumericUpDown();
             this.rbRectangularLayout = new System.Windows.Forms.RadioButton();
+            this.btSquare = new System.Windows.Forms.Button();
             this.btGenerate = new System.Windows.Forms.Button();
             this.fbDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.sfdOutputImage = new System.Windows.Forms.SaveFileDialog();
@@ -107,12 +109,13 @@
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.ColumnCount = 3;
+            tableLayoutPanel1.ColumnCount = 4;
             tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             tableLayoutPanel1.Controls.Add(this.tbInputDirectoryPath, 1, 0);
-            tableLayoutPanel1.Controls.Add(this.buttonSelectOutputCSSFilePath, 2, 2);
+            tableLayoutPanel1.Controls.Add(this.btSelectOutputCSSFilePath, 2, 2);
             tableLayoutPanel1.Controls.Add(this.tbOutputImageFilePath, 1, 1);
             tableLayoutPanel1.Controls.Add(this.tbOutputCSSFilePath, 1, 2);
             tableLayoutPanel1.Controls.Add(this.btSelectOutputImageFilePath, 2, 1);
@@ -120,6 +123,7 @@
             tableLayoutPanel1.Controls.Add(lbImagesPath, 0, 0);
             tableLayoutPanel1.Controls.Add(this.btBrowseFolder, 2, 0);
             tableLayoutPanel1.Controls.Add(lbOutputImage, 0, 1);
+            tableLayoutPanel1.Controls.Add(this.btRefresh, 3, 0);
             tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             tableLayoutPanel1.Location = new System.Drawing.Point(3, 16);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -127,7 +131,7 @@
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel1.Size = new System.Drawing.Size(527, 86);
+            tableLayoutPanel1.Size = new System.Drawing.Size(541, 86);
             tableLayoutPanel1.TabIndex = 17;
             // 
             // tbInputDirectoryPath
@@ -136,19 +140,22 @@
             this.tbInputDirectoryPath.Location = new System.Drawing.Point(122, 3);
             this.tbInputDirectoryPath.Name = "tbInputDirectoryPath";
             this.tbInputDirectoryPath.ReadOnly = true;
-            this.tbInputDirectoryPath.Size = new System.Drawing.Size(282, 20);
+            this.tbInputDirectoryPath.Size = new System.Drawing.Size(267, 20);
             this.tbInputDirectoryPath.TabIndex = 0;
             // 
-            // buttonSelectOutputCSSFilePath
+            // btSelectOutputCSSFilePath
             // 
-            this.buttonSelectOutputCSSFilePath.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonSelectOutputCSSFilePath.Location = new System.Drawing.Point(410, 61);
-            this.buttonSelectOutputCSSFilePath.Name = "buttonSelectOutputCSSFilePath";
-            this.buttonSelectOutputCSSFilePath.Size = new System.Drawing.Size(114, 23);
-            this.buttonSelectOutputCSSFilePath.TabIndex = 10;
-            this.buttonSelectOutputCSSFilePath.Text = "Browse";
-            this.buttonSelectOutputCSSFilePath.UseVisualStyleBackColor = true;
-            this.buttonSelectOutputCSSFilePath.Click += new System.EventHandler(this.BtSelectOutputCssFilePath_Click);
+            tableLayoutPanel1.SetColumnSpan(this.btSelectOutputCSSFilePath, 2);
+            this.btSelectOutputCSSFilePath.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btSelectOutputCSSFilePath.Image = ((System.Drawing.Image)(resources.GetObject("btSelectOutputCSSFilePath.Image")));
+            this.btSelectOutputCSSFilePath.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btSelectOutputCSSFilePath.Location = new System.Drawing.Point(395, 61);
+            this.btSelectOutputCSSFilePath.Name = "btSelectOutputCSSFilePath";
+            this.btSelectOutputCSSFilePath.Size = new System.Drawing.Size(143, 23);
+            this.btSelectOutputCSSFilePath.TabIndex = 10;
+            this.btSelectOutputCSSFilePath.Text = "Browse";
+            this.btSelectOutputCSSFilePath.UseVisualStyleBackColor = true;
+            this.btSelectOutputCSSFilePath.Click += new System.EventHandler(this.BtSelectOutputCssFilePath_Click);
             // 
             // tbOutputImageFilePath
             // 
@@ -156,7 +163,7 @@
             this.tbOutputImageFilePath.Location = new System.Drawing.Point(122, 32);
             this.tbOutputImageFilePath.Name = "tbOutputImageFilePath";
             this.tbOutputImageFilePath.ReadOnly = true;
-            this.tbOutputImageFilePath.Size = new System.Drawing.Size(282, 20);
+            this.tbOutputImageFilePath.Size = new System.Drawing.Size(267, 20);
             this.tbOutputImageFilePath.TabIndex = 1;
             // 
             // tbOutputCSSFilePath
@@ -165,15 +172,18 @@
             this.tbOutputCSSFilePath.Location = new System.Drawing.Point(122, 61);
             this.tbOutputCSSFilePath.Name = "tbOutputCSSFilePath";
             this.tbOutputCSSFilePath.ReadOnly = true;
-            this.tbOutputCSSFilePath.Size = new System.Drawing.Size(282, 20);
+            this.tbOutputCSSFilePath.Size = new System.Drawing.Size(267, 20);
             this.tbOutputCSSFilePath.TabIndex = 2;
             // 
             // btSelectOutputImageFilePath
             // 
+            tableLayoutPanel1.SetColumnSpan(this.btSelectOutputImageFilePath, 2);
             this.btSelectOutputImageFilePath.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btSelectOutputImageFilePath.Location = new System.Drawing.Point(410, 32);
+            this.btSelectOutputImageFilePath.Image = ((System.Drawing.Image)(resources.GetObject("btSelectOutputImageFilePath.Image")));
+            this.btSelectOutputImageFilePath.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btSelectOutputImageFilePath.Location = new System.Drawing.Point(395, 32);
             this.btSelectOutputImageFilePath.Name = "btSelectOutputImageFilePath";
-            this.btSelectOutputImageFilePath.Size = new System.Drawing.Size(114, 23);
+            this.btSelectOutputImageFilePath.Size = new System.Drawing.Size(143, 23);
             this.btSelectOutputImageFilePath.TabIndex = 9;
             this.btSelectOutputImageFilePath.Text = "Browse";
             this.btSelectOutputImageFilePath.UseVisualStyleBackColor = true;
@@ -202,7 +212,9 @@
             // btBrowseFolder
             // 
             this.btBrowseFolder.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btBrowseFolder.Location = new System.Drawing.Point(410, 3);
+            this.btBrowseFolder.Image = ((System.Drawing.Image)(resources.GetObject("btBrowseFolder.Image")));
+            this.btBrowseFolder.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btBrowseFolder.Location = new System.Drawing.Point(395, 3);
             this.btBrowseFolder.Name = "btBrowseFolder";
             this.btBrowseFolder.Size = new System.Drawing.Size(114, 23);
             this.btBrowseFolder.TabIndex = 8;
@@ -220,6 +232,17 @@
             lbOutputImage.TabIndex = 6;
             lbOutputImage.Text = "Output image file path:";
             // 
+            // btRefresh
+            // 
+            this.btRefresh.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btRefresh.Image = global::SpriteGenerator.Properties.Resources.arrow_circle;
+            this.btRefresh.Location = new System.Drawing.Point(515, 3);
+            this.btRefresh.Name = "btRefresh";
+            this.btRefresh.Size = new System.Drawing.Size(23, 23);
+            this.btRefresh.TabIndex = 11;
+            this.btRefresh.UseVisualStyleBackColor = true;
+            this.btRefresh.Click += new System.EventHandler(this.BtRefresh_Click);
+            // 
             // tableLayoutPanel3
             // 
             tableLayoutPanel3.ColumnCount = 2;
@@ -236,7 +259,7 @@
             tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            tableLayoutPanel3.Size = new System.Drawing.Size(324, 140);
+            tableLayoutPanel3.Size = new System.Drawing.Size(325, 134);
             tableLayoutPanel3.TabIndex = 19;
             // 
             // ndpMarginWidth
@@ -250,7 +273,7 @@
             0,
             0});
             this.ndpMarginWidth.Name = "ndpMarginWidth";
-            this.ndpMarginWidth.Size = new System.Drawing.Size(263, 20);
+            this.ndpMarginWidth.Size = new System.Drawing.Size(264, 20);
             this.ndpMarginWidth.TabIndex = 16;
             // 
             // lbDistanceBetweenImages
@@ -275,7 +298,7 @@
             0,
             0});
             this.ndpDistanceBetweenImages.Name = "ndpDistanceBetweenImages";
-            this.ndpDistanceBetweenImages.Size = new System.Drawing.Size(263, 20);
+            this.ndpDistanceBetweenImages.Size = new System.Drawing.Size(264, 20);
             this.ndpDistanceBetweenImages.TabIndex = 13;
             // 
             // lbMarginWidth
@@ -291,7 +314,8 @@
             // 
             // tableLayoutPanel2
             // 
-            tableLayoutPanel2.ColumnCount = 4;
+            tableLayoutPanel2.ColumnCount = 5;
+            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -304,16 +328,18 @@
             tableLayoutPanel2.Controls.Add(this.rbVerticalLayout, 0, 2);
             tableLayoutPanel2.Controls.Add(this.ndpImagesInRow, 0, 4);
             tableLayoutPanel2.Controls.Add(this.rbRectangularLayout, 0, 3);
+            tableLayoutPanel2.Controls.Add(this.btSquare, 4, 4);
             tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             tableLayoutPanel2.Location = new System.Drawing.Point(3, 16);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 5;
+            tableLayoutPanel2.RowCount = 6;
             tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel2.Size = new System.Drawing.Size(193, 140);
+            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel2.Size = new System.Drawing.Size(206, 134);
             tableLayoutPanel2.TabIndex = 19;
             // 
             // lbSprites
@@ -323,20 +349,20 @@
             this.lbSprites.Enabled = false;
             this.lbSprites.Location = new System.Drawing.Point(133, 92);
             this.lbSprites.Name = "lbSprites";
-            this.lbSprites.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
-            this.lbSprites.Size = new System.Drawing.Size(57, 48);
+            this.lbSprites.Size = new System.Drawing.Size(40, 28);
             this.lbSprites.TabIndex = 22;
             this.lbSprites.Text = "images";
+            this.lbSprites.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // rbAutomaticLayout
             // 
             this.rbAutomaticLayout.AutoSize = true;
             this.rbAutomaticLayout.Checked = true;
-            tableLayoutPanel2.SetColumnSpan(this.rbAutomaticLayout, 4);
+            tableLayoutPanel2.SetColumnSpan(this.rbAutomaticLayout, 5);
             this.rbAutomaticLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rbAutomaticLayout.Location = new System.Drawing.Point(3, 3);
             this.rbAutomaticLayout.Name = "rbAutomaticLayout";
-            this.rbAutomaticLayout.Size = new System.Drawing.Size(187, 17);
+            this.rbAutomaticLayout.Size = new System.Drawing.Size(200, 17);
             this.rbAutomaticLayout.TabIndex = 17;
             this.rbAutomaticLayout.TabStop = true;
             this.rbAutomaticLayout.Text = "Automatic";
@@ -365,20 +391,20 @@
             this.labelX.Enabled = false;
             this.labelX.Location = new System.Drawing.Point(58, 92);
             this.labelX.Name = "labelX";
-            this.labelX.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
-            this.labelX.Size = new System.Drawing.Size(12, 48);
+            this.labelX.Size = new System.Drawing.Size(12, 28);
             this.labelX.TabIndex = 21;
             this.labelX.Text = "x";
+            this.labelX.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // rbHorizontalLayout
             // 
             this.rbHorizontalLayout.AutoSize = true;
-            tableLayoutPanel2.SetColumnSpan(this.rbHorizontalLayout, 4);
+            tableLayoutPanel2.SetColumnSpan(this.rbHorizontalLayout, 5);
             this.rbHorizontalLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rbHorizontalLayout.Enabled = false;
             this.rbHorizontalLayout.Location = new System.Drawing.Point(3, 26);
             this.rbHorizontalLayout.Name = "rbHorizontalLayout";
-            this.rbHorizontalLayout.Size = new System.Drawing.Size(187, 17);
+            this.rbHorizontalLayout.Size = new System.Drawing.Size(200, 17);
             this.rbHorizontalLayout.TabIndex = 16;
             this.rbHorizontalLayout.Text = "Horizontal";
             this.rbHorizontalLayout.UseVisualStyleBackColor = true;
@@ -387,12 +413,12 @@
             // rbVerticalLayout
             // 
             this.rbVerticalLayout.AutoSize = true;
-            tableLayoutPanel2.SetColumnSpan(this.rbVerticalLayout, 4);
+            tableLayoutPanel2.SetColumnSpan(this.rbVerticalLayout, 5);
             this.rbVerticalLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rbVerticalLayout.Enabled = false;
             this.rbVerticalLayout.Location = new System.Drawing.Point(3, 49);
             this.rbVerticalLayout.Name = "rbVerticalLayout";
-            this.rbVerticalLayout.Size = new System.Drawing.Size(187, 17);
+            this.rbVerticalLayout.Size = new System.Drawing.Size(200, 17);
             this.rbVerticalLayout.TabIndex = 18;
             this.rbVerticalLayout.TabStop = true;
             this.rbVerticalLayout.Text = "Vertical";
@@ -419,24 +445,40 @@
             // rbRectangularLayout
             // 
             this.rbRectangularLayout.AutoSize = true;
-            tableLayoutPanel2.SetColumnSpan(this.rbRectangularLayout, 4);
+            tableLayoutPanel2.SetColumnSpan(this.rbRectangularLayout, 5);
             this.rbRectangularLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rbRectangularLayout.Enabled = false;
             this.rbRectangularLayout.Location = new System.Drawing.Point(3, 72);
             this.rbRectangularLayout.Name = "rbRectangularLayout";
-            this.rbRectangularLayout.Size = new System.Drawing.Size(187, 17);
+            this.rbRectangularLayout.Size = new System.Drawing.Size(200, 17);
             this.rbRectangularLayout.TabIndex = 15;
             this.rbRectangularLayout.Text = "Rectangular";
             this.rbRectangularLayout.UseVisualStyleBackColor = true;
             this.rbRectangularLayout.CheckedChanged += new System.EventHandler(this.RbRectangularLayoutChecked_Changed);
             // 
+            // btSquare
+            // 
+            this.btSquare.AutoSize = true;
+            this.btSquare.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btSquare.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btSquare.Enabled = false;
+            this.btSquare.Image = global::SpriteGenerator.Properties.Resources.zone_resize_actual;
+            this.btSquare.Location = new System.Drawing.Point(179, 95);
+            this.btSquare.Name = "btSquare";
+            this.btSquare.Size = new System.Drawing.Size(24, 22);
+            this.btSquare.TabIndex = 23;
+            this.btSquare.UseVisualStyleBackColor = true;
+            this.btSquare.Click += new System.EventHandler(this.BtSquare_Click);
+            // 
             // btGenerate
             // 
             this.btGenerate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btGenerate.Enabled = false;
+            this.btGenerate.Image = global::SpriteGenerator.Properties.Resources.compile;
+            this.btGenerate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btGenerate.Location = new System.Drawing.Point(3, 3);
             this.btGenerate.Name = "btGenerate";
-            this.btGenerate.Size = new System.Drawing.Size(124, 25);
+            this.btGenerate.Size = new System.Drawing.Size(129, 25);
             this.btGenerate.TabIndex = 3;
             this.btGenerate.Text = "Generate";
             this.btGenerate.UseVisualStyleBackColor = true;
@@ -455,7 +497,7 @@
             this.progressWork.Dock = System.Windows.Forms.DockStyle.Fill;
             this.progressWork.Location = new System.Drawing.Point(3, 3);
             this.progressWork.Name = "progressWork";
-            this.progressWork.Size = new System.Drawing.Size(413, 25);
+            this.progressWork.Size = new System.Drawing.Size(422, 25);
             this.progressWork.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressWork.TabIndex = 18;
             this.progressWork.Visible = false;
@@ -472,13 +514,13 @@
             this.toolStripContainer1.ContentPanel.Controls.Add(this.tabControl);
             this.toolStripContainer1.ContentPanel.Controls.Add(this.splitContainer2);
             this.toolStripContainer1.ContentPanel.Padding = new System.Windows.Forms.Padding(6);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(565, 345);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(579, 339);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.LeftToolStripPanelVisible = false;
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer1.Name = "toolStripContainer1";
             this.toolStripContainer1.RightToolStripPanelVisible = false;
-            this.toolStripContainer1.Size = new System.Drawing.Size(565, 391);
+            this.toolStripContainer1.Size = new System.Drawing.Size(579, 385);
             this.toolStripContainer1.TabIndex = 11;
             this.toolStripContainer1.Text = "toolStripContainer1";
             // 
@@ -493,7 +535,7 @@
             this.lbStatusMessage});
             this.stripStatus.Location = new System.Drawing.Point(0, 0);
             this.stripStatus.Name = "stripStatus";
-            this.stripStatus.Size = new System.Drawing.Size(565, 22);
+            this.stripStatus.Size = new System.Drawing.Size(579, 22);
             this.stripStatus.TabIndex = 0;
             // 
             // lbStatusMessage
@@ -509,7 +551,7 @@
             this.tabControl.Location = new System.Drawing.Point(6, 6);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(553, 302);
+            this.tabControl.Size = new System.Drawing.Size(567, 296);
             this.tabControl.TabIndex = 19;
             // 
             // tabBase
@@ -519,7 +561,7 @@
             this.tabBase.Location = new System.Drawing.Point(4, 22);
             this.tabBase.Name = "tabBase";
             this.tabBase.Padding = new System.Windows.Forms.Padding(6);
-            this.tabBase.Size = new System.Drawing.Size(545, 276);
+            this.tabBase.Size = new System.Drawing.Size(559, 270);
             this.tabBase.TabIndex = 1;
             this.tabBase.Text = "Base";
             this.tabBase.UseVisualStyleBackColor = true;
@@ -537,8 +579,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBoxDistances);
-            this.splitContainer1.Size = new System.Drawing.Size(533, 159);
-            this.splitContainer1.SplitterDistance = 199;
+            this.splitContainer1.Size = new System.Drawing.Size(547, 153);
+            this.splitContainer1.SplitterDistance = 212;
             this.splitContainer1.TabIndex = 17;
             // 
             // groupBoxLayout
@@ -547,7 +589,7 @@
             this.groupBoxLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxLayout.Location = new System.Drawing.Point(0, 0);
             this.groupBoxLayout.Name = "groupBoxLayout";
-            this.groupBoxLayout.Size = new System.Drawing.Size(199, 159);
+            this.groupBoxLayout.Size = new System.Drawing.Size(212, 153);
             this.groupBoxLayout.TabIndex = 16;
             this.groupBoxLayout.TabStop = false;
             this.groupBoxLayout.Text = "Layout";
@@ -558,7 +600,7 @@
             this.groupBoxDistances.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxDistances.Location = new System.Drawing.Point(0, 0);
             this.groupBoxDistances.Name = "groupBoxDistances";
-            this.groupBoxDistances.Size = new System.Drawing.Size(330, 159);
+            this.groupBoxDistances.Size = new System.Drawing.Size(331, 153);
             this.groupBoxDistances.TabIndex = 17;
             this.groupBoxDistances.TabStop = false;
             this.groupBoxDistances.Text = "Distances";
@@ -569,7 +611,7 @@
             this.groupBoxPaths.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBoxPaths.Location = new System.Drawing.Point(6, 6);
             this.groupBoxPaths.Name = "groupBoxPaths";
-            this.groupBoxPaths.Size = new System.Drawing.Size(533, 105);
+            this.groupBoxPaths.Size = new System.Drawing.Size(547, 105);
             this.groupBoxPaths.TabIndex = 11;
             this.groupBoxPaths.TabStop = false;
             this.groupBoxPaths.Text = "Paths";
@@ -578,7 +620,7 @@
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.splitContainer2.IsSplitterFixed = true;
-            this.splitContainer2.Location = new System.Drawing.Point(6, 308);
+            this.splitContainer2.Location = new System.Drawing.Point(6, 302);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
@@ -590,8 +632,8 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.btGenerate);
             this.splitContainer2.Panel2.Padding = new System.Windows.Forms.Padding(3);
-            this.splitContainer2.Size = new System.Drawing.Size(553, 31);
-            this.splitContainer2.SplitterDistance = 419;
+            this.splitContainer2.Size = new System.Drawing.Size(567, 31);
+            this.splitContainer2.SplitterDistance = 428;
             this.splitContainer2.TabIndex = 20;
             // 
             // menuStrip
@@ -601,7 +643,7 @@
             this.mnFile});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(565, 24);
+            this.menuStrip.Size = new System.Drawing.Size(579, 24);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "Menu";
             // 
@@ -626,7 +668,7 @@
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(565, 391);
+            this.ClientSize = new System.Drawing.Size(579, 385);
             this.Controls.Add(this.toolStripContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SpritesForm";
@@ -704,12 +746,14 @@
         private System.Windows.Forms.Label lbMarginWidth;
         private System.Windows.Forms.GroupBox groupBoxPaths;
         private System.Windows.Forms.TextBox tbInputDirectoryPath;
-        private System.Windows.Forms.Button buttonSelectOutputCSSFilePath;
+        private System.Windows.Forms.Button btSelectOutputCSSFilePath;
         private System.Windows.Forms.TextBox tbOutputImageFilePath;
         private System.Windows.Forms.TextBox tbOutputCSSFilePath;
         private System.Windows.Forms.Button btSelectOutputImageFilePath;
         private System.Windows.Forms.Button btBrowseFolder;
         private System.Windows.Forms.TabPage tabBase;
+        private System.Windows.Forms.Button btRefresh;
+        private System.Windows.Forms.Button btSquare;
     }
 }
 

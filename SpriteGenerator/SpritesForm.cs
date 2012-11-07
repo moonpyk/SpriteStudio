@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -142,6 +141,16 @@ namespace SpriteGenerator
             }
 
             ValidateOutputCssPath(false);
+        }
+
+        private void BtRefresh_Click(object sender, EventArgs e)
+        {
+            ValidateImagesDirectory(false);
+        }
+
+        private void BtSquare_Click(object sender, EventArgs e)
+        {
+
         }
 
         // Rectangular layout radiobutton checked change.
@@ -438,5 +447,7 @@ namespace SpriteGenerator
 
             return fileDrop[0];
         }
+
+
     }
 }

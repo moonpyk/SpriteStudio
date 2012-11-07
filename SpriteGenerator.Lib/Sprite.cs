@@ -124,6 +124,15 @@ namespace SpriteGenerator
         }
 
         /// <summary>
+        /// Convience shortcut to run <see cref="Generate"/> in an asynchronous way
+        /// </summary>
+        /// <returns>Awaitable task</returns>
+        public Task GenerateAsync()
+        {
+            return Task.Factory.StartNew(Generate);
+        }
+
+        /// <summary>
         /// Creates dictionary of images from the given paths and dictionary of CSS classnames from the image filenames.
         /// </summary> 
         /// <exception cref="System.Exception">Error during dictionaries populating</exception>
