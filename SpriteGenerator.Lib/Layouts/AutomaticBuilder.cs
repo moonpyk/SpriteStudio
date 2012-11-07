@@ -13,20 +13,26 @@ namespace SpriteGenerator.Layouts
             : base(map, props)
         {
             _nodes = Images.Keys.Select(i => new ImageNode(
-                    i,
-                    Images[i],
-                    Properties.Padding,
-                    Properties.Margin)
-                )
-                .ToList();
+                i,
+                Images[i],
+                Properties.Padding,
+                Properties.Margin
+            ))
+            .ToList();
         }
 
         public override void Generate()
         {
-            var packer = new Packer.ImageNodePacker(_nodes);
+            var packer = new ImageNodePacker(_nodes);
             var final = packer.Generate();
 
-            ResultImage = new Bitmap(packer.Width, packer.Height);
+            var addedMargin = Properties.Margin * 2;
+
+            ResultImage = new Bitmap(
+                packer.Width + addedMargin,
+                packer.Height + addedMargin
+            );
+
             var graphics = Graphics.FromImage(ResultImage);
 
             // Drawing images into the result image in the original order and writing CSS lines.

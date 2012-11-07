@@ -72,6 +72,9 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.mnFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnRefresh = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnGenerate = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnExit = new System.Windows.Forms.ToolStripMenuItem();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             lbOutputCss = new System.Windows.Forms.Label();
@@ -235,6 +238,7 @@
             // btRefresh
             // 
             this.btRefresh.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btRefresh.Enabled = false;
             this.btRefresh.Image = global::SpriteGenerator.Properties.Resources.arrow_circle;
             this.btRefresh.Location = new System.Drawing.Point(515, 3);
             this.btRefresh.Name = "btRefresh";
@@ -650,16 +654,44 @@
             // mnFile
             // 
             this.mnFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnRefresh,
+            this.mnGenerate,
+            this.toolStripSeparator1,
             this.mnExit});
             this.mnFile.Name = "mnFile";
             this.mnFile.Size = new System.Drawing.Size(37, 20);
             this.mnFile.Text = "&File";
             // 
+            // mnRefresh
+            // 
+            this.mnRefresh.Enabled = false;
+            this.mnRefresh.Image = global::SpriteGenerator.Properties.Resources.arrow_circle;
+            this.mnRefresh.Name = "mnRefresh";
+            this.mnRefresh.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
+            this.mnRefresh.Size = new System.Drawing.Size(154, 22);
+            this.mnRefresh.Text = "Refresh";
+            this.mnRefresh.Click += new System.EventHandler(this.BtRefresh_Click);
+            // 
+            // mnGenerate
+            // 
+            this.mnGenerate.Enabled = false;
+            this.mnGenerate.Image = global::SpriteGenerator.Properties.Resources.compile;
+            this.mnGenerate.Name = "mnGenerate";
+            this.mnGenerate.ShortcutKeys = System.Windows.Forms.Keys.F6;
+            this.mnGenerate.Size = new System.Drawing.Size(154, 22);
+            this.mnGenerate.Text = "Generate";
+            this.mnGenerate.Click += new System.EventHandler(this.BtGenerate_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(151, 6);
+            // 
             // mnExit
             // 
             this.mnExit.Name = "mnExit";
             this.mnExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-            this.mnExit.Size = new System.Drawing.Size(135, 22);
+            this.mnExit.Size = new System.Drawing.Size(154, 22);
             this.mnExit.Text = "E&xit";
             this.mnExit.Click += new System.EventHandler(this.MnExit_Click);
             // 
@@ -754,6 +786,9 @@
         private System.Windows.Forms.TabPage tabBase;
         private System.Windows.Forms.Button btRefresh;
         private System.Windows.Forms.Button btSquare;
+        private System.Windows.Forms.ToolStripMenuItem mnRefresh;
+        private System.Windows.Forms.ToolStripMenuItem mnGenerate;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 

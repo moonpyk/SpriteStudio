@@ -162,8 +162,8 @@ namespace SpriteGenerator.Packer
             }
 
             throw new Exception(string.Format("Can't fit {0}x{1} block into root {2}x{3} - this should not happen if images are pre-sorted correctly",
-                w, h, root.Width, root.Height)
-           );
+                w, h, root.Width, root.Height
+            ));
         }
 
         private static ImageNode GrowRight(ImageNode root, int w, int h)

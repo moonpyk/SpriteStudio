@@ -31,10 +31,10 @@ namespace SpriteGenerator.Packer
             _name = name;
             _margin = margin;
 
-            var toAdd = (2 * padding) + (2 * margin);
+            var addPadding = (2 * padding);
 
-            Width = image.Width + toAdd;
-            Height = image.Height + toAdd;
+            Width = image.Width + addPadding;
+            Height = image.Height + addPadding;
         }
 
         public bool Used

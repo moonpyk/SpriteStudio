@@ -22,7 +22,8 @@ namespace SpriteGenerator
 
             _ready.PropertyChanged += delegate
             {
-                btGenerate.Enabled = _ready.IsOK;
+                btRefresh.Enabled = mnRefresh.Enabled = _ready.ImagePathOK;
+                btGenerate.Enabled = mnGenerate.Enabled = _ready.IsOK;
             };
         }
 
@@ -150,7 +151,10 @@ namespace SpriteGenerator
 
         private void BtSquare_Click(object sender, EventArgs e)
         {
-
+            ndpImagesInRow.Value = (int)Math.Round(
+                Math.Sqrt(_layoutProp.InputFilePaths.Count),
+                0
+            );
         }
 
         // Rectangular layout radiobutton checked change.
@@ -158,22 +162,18 @@ namespace SpriteGenerator
         {
             RbLayoutChecked_Changed(sender, e);
 
+            var enableAutomaticProps = rbRectangularLayout.Checked;
+
+            ndpImagesInRow.Enabled =
+                ndpImagesInColumn.Enabled =
+                labelX.Enabled =
+                lbSprites.Enabled =
+                btSquare.Enabled = enableAutomaticProps;
+
             // Enabling numericupdowns to select layout dimension.
             if (rbRectangularLayout.Checked)
             {
-                ndpImagesInRow.Enabled =
-                    ndpImagesInColumn.Enabled =
-                    labelX.Enabled =
-                    lbSprites.Enabled = true;
-
                 ndpImagesInRow.Maximum = _layoutProp.InputFilePaths.Count;
-            }
-            else // Disabling numericupdowns
-            {
-                ndpImagesInRow.Enabled =
-                    ndpImagesInColumn.Enabled =
-                    labelX.Enabled =
-                    lbSprites.Enabled = false;
             }
         }
 
@@ -320,7 +320,7 @@ namespace SpriteGenerator
             {
                 _layoutProp.InputFilePaths = (
                     from filter in filters
-                    from file in Directory.GetFiles(fbDialog.SelectedPath)
+                    from file in Directory.GetFiles(fbDialog.SelectedPath).AsParallel()
                     where file.EndsWith(filter)
                     select file
                 ).ToList();
@@ -335,7 +335,9 @@ namespace SpriteGenerator
             }
 
             // If there is no file with the enabled formats in the choosen directory.
-            if (_layoutProp.InputFilePaths.Count == 0)
+            var imageFiles = _layoutProp.InputFilePaths;
+
+            if (imageFiles.Count == 0)
             {
                 if (!beSilent)
                 {
@@ -365,33 +367,12 @@ namespace SpriteGenerator
             {
                 _stopwatch.Start();
 
-                int width, height;
-
-                using (var firstImage = Image.FromFile(_layoutProp.InputFilePaths[0]))
+                using (var scan = Scanner.ScanImages(new List<string>(imageFiles)))
                 {
-                    width = firstImage.Width;
-                    height = firstImage.Height;
+                    var av = scan.AvailableLayouts;
+                    canHorizontal = av.Contains(SpriteLayout.Horizontal);
+                    canVertical = av.Contains(SpriteLayout.Vertical);
                 }
-
-                Parallel.ForEach(
-                    _layoutProp.InputFilePaths.Skip(1),
-                    (f, s) =>
-                    {
-                        using (var i = Image.FromFile(f))
-                        {
-                            // Horizontal layout is enabled only when all image heights are the same.                    
-                            canHorizontal &= i.Height == height;
-
-                            // Vertical layout is enabled only when all image widths are the same.
-                            canVertical &= i.Width == width;
-
-                            if (!canHorizontal || !canVertical)
-                            {
-                                s.Break(); // We can stop immediately
-                            }
-                        }
-                    }
-                );
 
                 _stopwatch.Stop();
             })
@@ -407,7 +388,7 @@ namespace SpriteGenerator
                 if (rbRectangularLayout.Enabled)
                 {
                     ndpImagesInRow.Minimum = 1;
-                    ndpImagesInRow.Maximum = _layoutProp.InputFilePaths.Count;
+                    ndpImagesInRow.Maximum = imageFiles.Count;
                     _layoutProp.ImagesInRow = (int)ndpImagesInRow.Value;
                     _layoutProp.ImagesInColumn = (int)ndpImagesInColumn.Value;
                 }
@@ -447,7 +428,5 @@ namespace SpriteGenerator
 
             return fileDrop[0];
         }
-
-
     }
 }
