@@ -52,6 +52,8 @@ namespace SpriteGenerator
 
         private void SpritesForm_DragEnter(object sender, DragEventArgs e)
         {
+            DebugDragEvent(e);
+
             var dir = HandleDirectoryDrag(e);
 
             if (!string.IsNullOrEmpty(dir) && Directory.Exists(dir))
@@ -68,6 +70,7 @@ namespace SpriteGenerator
             {
                 return;
             }
+
             tbInputDirectoryPath.Text = fbDialog.SelectedPath = dir;
             ValidateImagesDirectory(false);
         }
@@ -263,6 +266,16 @@ namespace SpriteGenerator
                         = settings.LastOutputImageFile = "";
                 }
             }
+
+            TopMost = mnAlwaysOnTop.Checked = settings.WindowAlwaysOnTop;
+        }
+
+        private void MnAlwaysOnTop_Click(object sender, EventArgs e)
+        {
+            var settings = Settings.Default;
+
+            settings.WindowAlwaysOnTop = TopMost = mnAlwaysOnTop.Checked;
+            settings.Save();
         }
 
         private static bool ValidateSameDrive(string a, string b)
@@ -409,7 +422,11 @@ namespace SpriteGenerator
 
         private static bool IsFileDrop(DragEventArgs e)
         {
-            return e.Data.GetDataPresent(DataFormats.FileDrop);
+            var data = e.Data;
+
+            return
+                data.GetDataPresent(DataFormats.FileDrop) ||
+                data.GetDataPresent(DataFormats.StringFormat);
         }
 
         private static string HandleDirectoryDrag(DragEventArgs e)
@@ -419,14 +436,50 @@ namespace SpriteGenerator
                 return null;
             }
 
-            var fileDrop = e.Data.GetData(DataFormats.FileDrop) as IList<string>;
+            var data = e.Data;
+            var fileDrop = data.GetData(DataFormats.FileDrop) as IList<string>;
 
-            if (fileDrop == null || fileDrop.Count() != 1)
+            if (fileDrop != null && fileDrop.Count == 1)
             {
-                return null;
+                return fileDrop[0];
             }
 
-            return fileDrop[0];
+            var stringDrop = data.GetData(DataFormats.StringFormat) as string;
+
+            if (stringDrop != null)
+            {
+                return stringDrop;
+            }
+
+            return null;
+        }
+
+        [Conditional("DEBUG")]
+        private static void DebugDragEvent(DragEventArgs e)
+        {
+            Debug.WriteLine("----------------");
+            foreach (var f in e.Data.GetFormats())
+            {
+                var data = e.Data.GetData(f);
+
+                try
+                {
+                    Debug.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(new
+                    {
+                        Format = f,
+                        Data = data
+                    }));
+                }
+                catch (Exception)
+                {
+                    Debug.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(new
+                    {
+                        Format = f,
+                        Data = data.GetType(),
+                    }));
+                }
+            }
+            Debug.WriteLine("----------------");
         }
     }
 }

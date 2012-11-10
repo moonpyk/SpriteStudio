@@ -17,9 +17,15 @@ namespace SpriteGenerator
         /// 
         /// </summary>
         /// <exception cref="Exception">The given path does not exists</exception>
-        /// <exception cref="System.IO.IOException">path est un nom de fichier.– ou –Une erreur réseau s'est produite. </exception>
+        /// <exception cref="System.IO.IOException">
+        /// - Path est un nom de fichier.
+        /// – Une erreur réseau s'est produite. 
+        /// </exception>
         /// <exception cref="System.UnauthorizedAccessException">L'appelant n'a pas l'autorisation requise. </exception>
-        /// <exception cref="System.OutOfMemoryException">Le format d'image du fichier n'est pas valide.– ou –GDI+ ne prend pas en charge le format de pixel du fichier.</exception>
+        /// <exception cref="System.OutOfMemoryException">
+        /// - Le format d'image du fichier n'est pas valide.
+        /// – GDI+ ne prend pas en charge le format de pixel du fichier.
+        /// </exception>
         public static ScannerResult ScanDirectory(string directory)
         {
             if (!Directory.Exists(directory))
@@ -45,11 +51,16 @@ namespace SpriteGenerator
         /// <summary>
         /// 
         /// </summary>
-        /// <exception cref="System.OutOfMemoryException">Le format d'image du fichier n'est pas valide.– ou –GDI+ ne prend pas en charge le format de pixel du fichier.</exception>
-        public static ScannerResult ScanImages(IList<string> images) {
+        /// <exception cref="System.OutOfMemoryException">
+        /// - Le format d'image du fichier n'est pas valide.
+        /// – GDI+ ne prend pas en charge le format de pixel du fichier.
+        /// </exception>
+        public static ScannerResult ScanImages(IList<string> images)
+        {
             int width, height;
 
-            using (var firstImage = Image.FromFile(images.First())) {
+            using (var firstImage = Image.FromFile(images.First()))
+            {
                 width = firstImage.Width;
                 height = firstImage.Height;
             }
@@ -57,15 +68,18 @@ namespace SpriteGenerator
             bool canVertical = true,
                  canHorizontal = true;
 
-            Parallel.ForEach(images.Skip(1), (path, s) => {
-                using (var i = Image.FromFile(path)) {
+            Parallel.ForEach(images.Skip(1), (path, s) =>
+            {
+                using (var i = Image.FromFile(path))
+                {
                     // Horizontal layout is enabled only when all image heights are the same.                    
                     canHorizontal &= i.Height == height;
 
                     // Vertical layout is enabled only when all image widths are the same.
                     canVertical &= i.Width == width;
 
-                    if (!canHorizontal || !canVertical) {
+                    if (!canHorizontal || !canVertical)
+                    {
                         s.Break(); // We can stop immediately
                     }
                 }
@@ -75,22 +89,26 @@ namespace SpriteGenerator
                 SpriteLayout.Automatic
             };
 
-            if (canHorizontal) {
+            if (canHorizontal)
+            {
                 availableLayouts.Add(SpriteLayout.Horizontal);
             }
 
-            if (canVertical) {
+            if (canVertical)
+            {
                 availableLayouts.Add(SpriteLayout.Vertical);
             }
 
-            if (canVertical && canHorizontal) {
+            if (canVertical && canHorizontal)
+            {
                 availableLayouts.Add(SpriteLayout.Rectangular);
             }
 
-            return new ScannerResult {
+            return new ScannerResult
+            {
                 AvailableLayouts = availableLayouts,
-                ImagesWidth = canVertical ? width : -1,
-                ImagesHeight = canHorizontal ? height : -1,
+                ImagesWidth = canVertical ? width : ScannerResult.NoCommonImageSize,
+                ImagesHeight = canHorizontal ? height : ScannerResult.NoCommonImageSize,
                 FileList = images,
             };
         }

@@ -76,6 +76,8 @@
             this.mnGenerate = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.displayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnAlwaysOnTop = new System.Windows.Forms.ToolStripMenuItem();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             lbOutputCss = new System.Windows.Forms.Label();
             lbImagesPath = new System.Windows.Forms.Label();
@@ -644,7 +646,8 @@
             // 
             this.menuStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnFile});
+            this.mnFile,
+            this.displayToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(579, 24);
@@ -695,6 +698,22 @@
             this.mnExit.Text = "E&xit";
             this.mnExit.Click += new System.EventHandler(this.MnExit_Click);
             // 
+            // displayToolStripMenuItem
+            // 
+            this.displayToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnAlwaysOnTop});
+            this.displayToolStripMenuItem.Name = "displayToolStripMenuItem";
+            this.displayToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
+            this.displayToolStripMenuItem.Text = "&Display";
+            // 
+            // mnAlwaysOnTop
+            // 
+            this.mnAlwaysOnTop.CheckOnClick = true;
+            this.mnAlwaysOnTop.Name = "mnAlwaysOnTop";
+            this.mnAlwaysOnTop.Size = new System.Drawing.Size(149, 22);
+            this.mnAlwaysOnTop.Text = "Always on top";
+            this.mnAlwaysOnTop.Click += new System.EventHandler(this.MnAlwaysOnTop_Click);
+            // 
             // SpritesForm
             // 
             this.AllowDrop = true;
@@ -703,6 +722,7 @@
             this.ClientSize = new System.Drawing.Size(579, 385);
             this.Controls.Add(this.toolStripContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip;
             this.Name = "SpritesForm";
             this.Text = "SpriteGenerator";
             this.Load += new System.EventHandler(this.SpritesForm_Load);
@@ -789,6 +809,8 @@
         private System.Windows.Forms.ToolStripMenuItem mnRefresh;
         private System.Windows.Forms.ToolStripMenuItem mnGenerate;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem displayToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mnAlwaysOnTop;
     }
 }
 

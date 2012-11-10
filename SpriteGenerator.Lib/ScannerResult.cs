@@ -3,9 +3,10 @@ using System.Collections.Generic;
 
 namespace SpriteGenerator
 {
-    public class ScannerResult : IDisposable
-    {
-        public List<SpriteLayout> AvailableLayouts
+    public class ScannerResult : IDisposable {
+        public const int NoCommonImageSize = -1;
+
+        public IList<SpriteLayout> AvailableLayouts
         {
             get;
             internal set;
