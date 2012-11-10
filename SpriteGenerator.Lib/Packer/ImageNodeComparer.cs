@@ -8,6 +8,7 @@ namespace SpriteGenerator.Packer
     public class ImageNodeComparer : IComparer<ImageNode>
     {
         private static readonly Comparer<int> C = Comparer<int>.Default;
+
         public int Compare(ImageNode a, ImageNode b)
         {
             var diff = C.Compare(

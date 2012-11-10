@@ -96,7 +96,7 @@ namespace SpriteGenerator
 
             var cssContent = new StringBuilder();
 
-            cssContent.Append(b.GetSpriteDefinition("sprite"));
+            cssContent.AppendLine(b.GetSpriteDefinition("sprite"));
             cssContent.Append(b.CssCode);
 
             using (var outCss = File.CreateText(_properties.OutputCssFilePath))
@@ -124,7 +124,7 @@ namespace SpriteGenerator
         }
 
         /// <summary>
-        /// Convience shortcut to run <see cref="Generate"/> in an asynchronous way
+        /// Convenience shortcut to run <see cref="Generate"/> in an asynchronous way
         /// </summary>
         /// <returns>Awaitable task</returns>
         public Task GenerateAsync()
@@ -162,11 +162,12 @@ namespace SpriteGenerator
         {
             try
             {
-                var imgInstance = Image.FromFile(inputFilePaths[i]);
+                var filePath = inputFilePaths[i];
+                var imgInstance = Image.FromFile(filePath);
 
                 images[i] = imgInstance;
 
-                var splittedFilePath = inputFilePaths[i].Split(
+                var splittedFilePath = filePath.Split(
                     Path.DirectorySeparatorChar
                 );
 

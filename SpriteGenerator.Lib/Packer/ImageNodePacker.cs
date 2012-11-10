@@ -53,7 +53,6 @@ namespace SpriteGenerator.Packer
         }
 
         /// <summary>
-        /// Arrages 
         /// </summary>
         /// <exception cref="System.Exception">Can't fit a block into root - this should not happen if images are pre-sorted correctly</exception>
         public IList<ImageNode> Generate()
@@ -66,6 +65,8 @@ namespace SpriteGenerator.Packer
             return _blocks;
         }
 
+        /// <summary>
+        /// </summary>
         /// <exception cref="System.Exception">Can't fit a block into root - this should not happen if images are pre-sorted correctly</exception>
         private void PlaceBlock(ImageNode block)
         {

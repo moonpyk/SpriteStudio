@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 
 namespace SpriteGenerator
@@ -9,6 +10,7 @@ namespace SpriteGenerator
         {
             Layout = SpriteLayout.None;
             InputFilePaths = null;
+            AdditionalCss = null;
 
             Padding = 0;
             Margin = 0;
@@ -68,6 +70,26 @@ namespace SpriteGenerator
             set;
         }
 
+        public int ImagesWidth
+        {
+            get;
+            set;
+        }
+
+        public int ImagesHeight
+        {
+            get;
+            set;
+        }
+
+        public IDictionary<string, string> AdditionalCss
+        {
+            get;
+            set;
+        }
+
+        #region IDisposable Members
+
         public void Dispose()
         {
             if (InputFilePaths != null)
@@ -76,8 +98,16 @@ namespace SpriteGenerator
                 InputFilePaths = null;
             }
 
+            if (AdditionalCss != null)
+            {
+                AdditionalCss.Clear();
+                AdditionalCss = null;
+            }
+
             OutputSpriteFilePath = null;
             OutputCssFilePath = null;
         }
+
+        #endregion
     }
 }

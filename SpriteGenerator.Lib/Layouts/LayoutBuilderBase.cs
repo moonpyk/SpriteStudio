@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace SpriteGenerator.Layouts
 {
     public abstract class LayoutBuilderBase : IDisposable
     {
-        public const string CssSpriteDeclarationFormat = ".{1} {{ background-image: url('{0}'); background-color: transparent; background-repeat: no-repeat; }}";
-        public const string CssLineDeclarationFormat = ".{0} {{ width: {1}; height: {2}; background-position: {3} {4}; }}";
-
         private readonly StringBuilder _cssBuilder = new StringBuilder();
 
         private readonly IDictionary<int, string> _cssClassNames;
@@ -99,27 +97,80 @@ namespace SpriteGenerator.Layouts
 
         public virtual string GetSpriteDefinition(string baseClass)
         {
-            return string.Format(
-                CssSpriteDeclarationFormat + Environment.NewLine,
-                RelativeSpriteImagePath(
-                    _properties.OutputSpriteFilePath,
-                    _properties.OutputCssFilePath
-                ),
-                baseClass
+            var spritePath = RelativeSpriteImagePath(
+                _properties.OutputSpriteFilePath,
+                _properties.OutputCssFilePath
             );
+
+            var props = new Dictionary<string, string> {
+                {"background-image", string.Format("url('{0}')", spritePath)},
+                {"background-repeat", "no-repeat"}
+            };
+
+            int height = Properties.ImagesHeight,
+                width = Properties.ImagesWidth;
+
+            // Images have a common width, let's put the width definition on the top
+            if (width != ScannerResult.NoCommonImageSize)
+            {
+                props.Add("width", CssPixels(width));
+            }
+
+            // Images have a common height, let's put the height definition on the top
+            if (height != ScannerResult.NoCommonImageSize)
+            {
+                props.Add("height", CssPixels(height));
+            }
+
+            return GenerateCss("." + baseClass, props);
         }
 
         protected virtual string CssLine(string cssClassName, Rectangle rect)
         {
-            var line = string.Format(CssLineDeclarationFormat,
-                cssClassName,
-                CssPixels(rect.Width),
-                CssPixels(rect.Height),
-                CssPixels(-1 * rect.X),
-                CssPixels(-1 * rect.Y)
-            );
+            var props = new Dictionary<string, string> {
+                {"background-position", string.Format("{0} {1}", CssPixels(-1 * rect.X), CssPixels(-1 * rect.Y))}
+            };
 
-            return line;
+            int commonHeight = Properties.ImagesHeight,
+                commonWidth = Properties.ImagesWidth;
+
+            // No common image height, we need to define it on the subclass
+            if (commonHeight == ScannerResult.NoCommonImageSize)
+            {
+                props.Add("height", CssPixels(rect.Height));
+            }
+
+            // No common image width, we need to define it on the subclass
+            if (commonWidth == ScannerResult.NoCommonImageSize)
+            {
+                props.Add("width", CssPixels(rect.Width));
+            }
+
+            return GenerateCss("." + cssClassName, props);
+        }
+
+        protected virtual string GenerateCss(string selector, IDictionary<string, string> properties)
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("{0} {{", selector);
+
+            if (properties != null)
+            {
+                foreach (var g in properties.OrderBy(_ => _.Key))
+                {
+                    if (string.IsNullOrWhiteSpace(g.Value))
+                    {
+                        sb.AppendFormat("{0};", g.Key);
+                    }
+                    else
+                    {
+                        sb.AppendFormat("{0}:{1};", g.Key, g.Value);
+                    }
+                }
+            }
+
+            sb.Append("}");
+            return sb.ToString();
         }
 
         protected static string CssPixels(int val)

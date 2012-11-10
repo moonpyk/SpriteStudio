@@ -14,7 +14,6 @@ namespace SpriteGenerator
         };
 
         /// <summary>
-        /// 
         /// </summary>
         /// <exception cref="Exception">The given path does not exists</exception>
         /// <exception cref="System.IO.IOException">
@@ -49,7 +48,6 @@ namespace SpriteGenerator
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <exception cref="System.OutOfMemoryException">
         /// - Le format d'image du fichier n'est pas valide.

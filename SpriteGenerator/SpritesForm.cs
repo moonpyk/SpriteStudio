@@ -385,6 +385,8 @@ namespace SpriteGenerator
                     var av = scan.AvailableLayouts;
                     canHorizontal = av.Contains(SpriteLayout.Horizontal);
                     canVertical = av.Contains(SpriteLayout.Vertical);
+                    _layoutProp.ImagesHeight = scan.ImagesHeight;
+                    _layoutProp.ImagesWidth = scan.ImagesWidth;
                 }
 
                 _stopwatch.Stop();

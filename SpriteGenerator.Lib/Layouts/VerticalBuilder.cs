@@ -19,7 +19,7 @@ namespace SpriteGenerator.Layouts
             var height = Images.Values.Sum(_ => _.Height + padding);
 
             height = height - padding + 2 * margin;
-            var width = Images[0].Width + 2 * margin;
+            var width = Properties.ImagesWidth + 2 * margin;
 
             // Creating an empty result image.
             ResultImage = new Bitmap(width, height);

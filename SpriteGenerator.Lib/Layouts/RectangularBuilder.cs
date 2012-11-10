@@ -14,8 +14,8 @@ namespace SpriteGenerator.Layouts
             var margin = Properties.Margin;
 
             // Calculating result image dimension.
-            var imageWidth = Images[0].Width;
-            var imageHeight = Images[0].Height;
+            var imageWidth = Properties.ImagesWidth;
+            var imageHeight = Properties.ImagesHeight;
 
             var imagesInColumn = Properties.ImagesInColumn;
             var imagesInRow = Properties.ImagesInRow;

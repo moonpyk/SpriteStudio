@@ -67,7 +67,7 @@
             this.tabBase = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBoxLayout = new System.Windows.Forms.GroupBox();
-            this.groupBoxDistances = new System.Windows.Forms.GroupBox();
+            this.gpOptions = new System.Windows.Forms.GroupBox();
             this.groupBoxPaths = new System.Windows.Forms.GroupBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
@@ -103,7 +103,7 @@
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.groupBoxLayout.SuspendLayout();
-            this.groupBoxDistances.SuspendLayout();
+            this.gpOptions.SuspendLayout();
             this.groupBoxPaths.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
@@ -220,8 +220,9 @@
             this.btBrowseFolder.Image = ((System.Drawing.Image)(resources.GetObject("btBrowseFolder.Image")));
             this.btBrowseFolder.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btBrowseFolder.Location = new System.Drawing.Point(395, 3);
+            this.btBrowseFolder.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.btBrowseFolder.Name = "btBrowseFolder";
-            this.btBrowseFolder.Size = new System.Drawing.Size(114, 23);
+            this.btBrowseFolder.Size = new System.Drawing.Size(117, 23);
             this.btBrowseFolder.TabIndex = 8;
             this.btBrowseFolder.Text = "Browse";
             this.btBrowseFolder.UseVisualStyleBackColor = true;
@@ -251,9 +252,10 @@
             // 
             // tableLayoutPanel3
             // 
-            tableLayoutPanel3.ColumnCount = 2;
+            tableLayoutPanel3.ColumnCount = 3;
             tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 249F));
             tableLayoutPanel3.Controls.Add(this.ndpMarginWidth, 1, 1);
             tableLayoutPanel3.Controls.Add(this.lbDistanceBetweenImages, 0, 0);
             tableLayoutPanel3.Controls.Add(this.ndpDistanceBetweenImages, 1, 0);
@@ -271,6 +273,7 @@
             // ndpMarginWidth
             // 
             this.ndpMarginWidth.AutoSize = true;
+            tableLayoutPanel3.SetColumnSpan(this.ndpMarginWidth, 2);
             this.ndpMarginWidth.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ndpMarginWidth.Location = new System.Drawing.Point(58, 29);
             this.ndpMarginWidth.Maximum = new decimal(new int[] {
@@ -296,6 +299,7 @@
             // ndpDistanceBetweenImages
             // 
             this.ndpDistanceBetweenImages.AutoSize = true;
+            tableLayoutPanel3.SetColumnSpan(this.ndpDistanceBetweenImages, 2);
             this.ndpDistanceBetweenImages.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ndpDistanceBetweenImages.Location = new System.Drawing.Point(58, 3);
             this.ndpDistanceBetweenImages.Maximum = new decimal(new int[] {
@@ -584,7 +588,7 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.groupBoxDistances);
+            this.splitContainer1.Panel2.Controls.Add(this.gpOptions);
             this.splitContainer1.Size = new System.Drawing.Size(547, 153);
             this.splitContainer1.SplitterDistance = 212;
             this.splitContainer1.TabIndex = 17;
@@ -600,16 +604,16 @@
             this.groupBoxLayout.TabStop = false;
             this.groupBoxLayout.Text = "Layout";
             // 
-            // groupBoxDistances
+            // gpOptions
             // 
-            this.groupBoxDistances.Controls.Add(tableLayoutPanel3);
-            this.groupBoxDistances.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxDistances.Location = new System.Drawing.Point(0, 0);
-            this.groupBoxDistances.Name = "groupBoxDistances";
-            this.groupBoxDistances.Size = new System.Drawing.Size(331, 153);
-            this.groupBoxDistances.TabIndex = 17;
-            this.groupBoxDistances.TabStop = false;
-            this.groupBoxDistances.Text = "Distances";
+            this.gpOptions.Controls.Add(tableLayoutPanel3);
+            this.gpOptions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gpOptions.Location = new System.Drawing.Point(0, 0);
+            this.gpOptions.Name = "gpOptions";
+            this.gpOptions.Size = new System.Drawing.Size(331, 153);
+            this.gpOptions.TabIndex = 17;
+            this.gpOptions.TabStop = false;
+            this.gpOptions.Text = "Options";
             // 
             // groupBoxPaths
             // 
@@ -754,7 +758,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.groupBoxLayout.ResumeLayout(false);
-            this.groupBoxDistances.ResumeLayout(false);
+            this.gpOptions.ResumeLayout(false);
             this.groupBoxPaths.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
@@ -791,7 +795,7 @@
         private System.Windows.Forms.RadioButton rbVerticalLayout;
         private System.Windows.Forms.NumericUpDown ndpImagesInRow;
         private System.Windows.Forms.RadioButton rbRectangularLayout;
-        private System.Windows.Forms.GroupBox groupBoxDistances;
+        private System.Windows.Forms.GroupBox gpOptions;
         private System.Windows.Forms.NumericUpDown ndpMarginWidth;
         private System.Windows.Forms.Label lbDistanceBetweenImages;
         private System.Windows.Forms.NumericUpDown ndpDistanceBetweenImages;

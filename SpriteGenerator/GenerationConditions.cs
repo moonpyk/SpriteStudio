@@ -5,9 +5,9 @@ namespace SpriteGenerator
     class GenerationConditions : INotifyPropertyChanged
     {
         private bool _imagePathOK;
+        private bool _isLayoutOK;
         private bool _outputCssPathOK;
         private bool _outputImagePathOK;
-        private bool _isLayoutOK;
 
         public bool OutputImagePathOK
         {

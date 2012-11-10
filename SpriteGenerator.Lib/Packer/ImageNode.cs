@@ -17,7 +17,6 @@ namespace SpriteGenerator.Packer
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <exception cref="ArgumentNullException">image</exception>
         public ImageNode(int name, Image image, int padding, int margin)
