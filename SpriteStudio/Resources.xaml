@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style TargetType="Image" x:Key="imgRefresh">
+        <Setter Property="Source" Value="Resources/arrow-circle.png" />
+        <Setter Property="Stretch" Value="None" />
+        <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor"/>
+    </Style>
+    <Style TargetType="Image" x:Key="imgSquare">
+        <Setter Property="Source" Value="Resources/zone-resize-actual.png" />
+        <Setter Property="Stretch" Value="None" />
+        <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor"/>
+    </Style>
+    <Style TargetType="Image" x:Key="imgGenerate">
+        <Setter Property="Source" Value="Resources/compile.png" />
+        <Setter Property="Stretch" Value="None" />
+        <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor"/>
+    </Style>
+    <ControlTemplate x:Key="browseButton">
+        <Button>
+            <StackPanel Orientation="Horizontal">
+                <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Source="Resources/folder-horizontal-open.png" Stretch="None" Margin="0,0,3,0"/>
+                <TextBlock> Browse</TextBlock>
+            </StackPanel>
+        </Button>
+    </ControlTemplate>
+</ResourceDictionary>
