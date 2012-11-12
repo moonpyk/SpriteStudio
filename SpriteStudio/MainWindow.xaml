@@ -3,7 +3,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
     xmlns:sstdio="clr-namespace:SpriteStudio"
-    x:Class="SpriteStudio.MainWindow" ResizeMode="CanResizeWithGrip" Title="SpriteStudio" Height="417" Width="562" AllowDrop="True" DragEnter="Window_DragEnter" Drop="Window_Drop" Loaded="Window_Loaded">
+    xmlns:SpriteGenerator="clr-namespace:SpriteGenerator;assembly=SpriteGenerator.Lib"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d"
+    AllowDrop="True" DragOver="Window_DragOver" Drop="Window_Drop"
+    x:Name="myself"
+    x:Class="SpriteStudio.MainWindow" ResizeMode="CanResizeWithGrip" Title="SpriteStudio" Loaded="Window_Loaded" Icon="Resources/SpriteStudio.ico" Height="411" Width="538">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries >
@@ -24,6 +30,9 @@
         <CommandBinding Executed="OnExit" Command="{x:Static sstdio:MainWindow.ExitRoutedCommand}" />
         <CommandBinding Executed="OnGenerate" Command="{x:Static sstdio:MainWindow.GenerateRoutedCommand}" />
     </Window.CommandBindings>
+    <Window.DataContext>
+        <SpriteGenerator:LayoutProperties x:Name="LayoutProperties"/>
+    </Window.DataContext>
     <Grid Background="{StaticResource {x:Static SystemColors.ControlBrushKey}}" >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -46,11 +55,13 @@
                 <Separator/>
                 <MenuItem Header="Exit" InputGestureText="Ctrl+Q" Click="OnExit"/>
             </MenuItem>
-            <MenuItem Header="Display"/>
+            <MenuItem Header="Display">
+                <MenuItem Header="Always on top" IsCheckable="True" IsChecked="{Binding Topmost, ElementName=myself}"/>
+            </MenuItem>
         </Menu>
-        <TabControl Grid.Row="1" Margin="3">
+        <TabControl Grid.Row="1" Margin="4" >
             <TabItem Header="Base">
-                <Grid>
+                <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition/>
@@ -59,7 +70,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <GroupBox Header="Paths" Grid.ColumnSpan="2">
+                    <GroupBox Header="Paths" Grid.ColumnSpan="2" >
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -74,18 +85,18 @@
                             </Grid.ColumnDefinitions>
 
                             <Label   Content="Images directory path:" />
-                            <TextBox Grid.Column="1" Margin="0,3" IsReadOnly="True" />
+                            <TextBox x:Name="tbInputDirectoryPath" Grid.Column="1" Margin="0,3" IsReadOnly="True" />
                             <Button x:Name="btBrowsePath" Grid.Column="2" Template="{StaticResource browseButton}" Margin="5,3,3,3" Click="BtBrowsePath_Click" />
                             <Button Click="OnRefresh" Grid.Column="3" Margin="0,3">
                                 <Image x:Name="btRefresh" Style="{StaticResource imgRefresh}" />
                             </Button>
 
                             <Label   Grid.Row="1" Content="Output image file path:" />
-                            <TextBox Grid.Row="1" Grid.Column="1" Margin="0,3" IsReadOnly="True"  />
+                            <TextBox Grid.Row="1" Grid.Column="1" Margin="0,3" IsReadOnly="True" Text="{Binding OutputSpriteFilePath}"  />
                             <Button x:Name="btBrowseImage"  Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Template="{StaticResource browseButton}" Margin="5,3,0,3" Click="BtBrowseImage_Click"  />
 
                             <Label   Grid.Row="2" Content="Output CSS file path:" />
-                            <TextBox Grid.Row="2" Grid.Column="1" Margin="0,3" IsReadOnly="True" />
+                            <TextBox Grid.Row="2" Grid.Column="1" Margin="0,3" IsReadOnly="True" Text="{Binding OutputCssFilePath}" />
                             <Button x:Name="btBrowseCss"  Grid.Row="2" Content="Button" Grid.Column="2" Grid.ColumnSpan="2" Template="{StaticResource browseButton}" Margin="5,3,0,3" Click="BtBrowseCss_Click"  />
                         </Grid>
                     </GroupBox>
@@ -106,10 +117,10 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <RadioButton Click="RbLayout_Click" x:Name="rbLayoutAutomatic" Grid.Row="0" Content="Automatic"   Margin="4" Grid.ColumnSpan="5" />
-                            <RadioButton Click="RbLayout_Click" x:Name="rbLayoutHorizonal" Grid.Row="1" Content="Horizontal"  Margin="4" Grid.ColumnSpan="5" IsEnabled="False" />
-                            <RadioButton Click="RbLayout_Click" x:Name="rbLayoutVertical" Grid.Row="2" Content="Vertical"    Margin="4" Grid.ColumnSpan="5" IsEnabled="False" />
-                            <RadioButton Click="RbLayout_Click" x:Name="rbLayoutRectangular" Grid.Row="3" Content="Rectangular" Margin="4" Grid.ColumnSpan="5" IsEnabled="False" />
+                            <RadioButton Click="RbLayout_Click" x:Name="rbLayoutAutomatic"   Grid.Row="0" Content="Automatic"   Margin="4" Grid.ColumnSpan="5" GroupName="Layout" />
+                            <RadioButton Click="RbLayout_Click" x:Name="rbLayoutHorizonal"   Grid.Row="1" Content="Horizontal"  Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsEnabled="True"  />
+                            <RadioButton Click="RbLayout_Click" x:Name="rbLayoutVertical"    Grid.Row="2" Content="Vertical"    Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsEnabled="True"  />
+                            <RadioButton Click="RbLayout_Click" x:Name="rbLayoutRectangular" Grid.Row="3" Content="Rectangular" Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsEnabled="True"  />
                             <xctk:IntegerUpDown Grid.Row="4" Margin="0,3" HorizontalAlignment="Left" Width="65" Value="0" Minimum="0" IsEnabled="False"  />
                             <Label Content="x" Grid.Row="4" Grid.Column="1" IsEnabled="False" />
                             <xctk:IntegerUpDown Grid.Row="4" Grid.Column="2" IsEnabled="False" Margin="0,3" Width="65" Value="0" Minimum="0"  />
@@ -133,11 +144,11 @@
                             </Grid.RowDefinitions>
 
                             <Label Content="Margin:" />
-                            <xctk:IntegerUpDown x:Name="ndpPadding" Grid.Row="1" Grid.Column="1" Margin="0,3" Minimum="0" Maximum="10" Value="0" />
+                            <xctk:IntegerUpDown x:Name="ndpPadding" Grid.Row="1" Grid.Column="1" Margin="0,3" Minimum="0" Maximum="10" Value="{Binding Padding}" />
                             <Label Content="px" Grid.Row="1" Grid.Column="2" />
 
                             <Label Content="Padding:" Grid.Row="1" />
-                            <xctk:IntegerUpDown x:Name="ndpMargin" Grid.Column="1" Margin="0,3" Minimum="0" Maximum="10" Value="0" />
+                            <xctk:IntegerUpDown x:Name="ndpMargin" Grid.Column="1" Margin="0,3" Minimum="0" Maximum="10" Value="{Binding Margin}" />
                             <Label Content="px" Grid.Column="2" />
                         </Grid>
                     </GroupBox>
@@ -147,12 +158,12 @@
                 <Grid/>
             </TabItem>
         </TabControl>
-        <Grid Grid.Row="2" Margin="3">
+        <Grid Grid.Row="2" Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <ProgressBar Margin="0,0,5,0"/>
+            <ProgressBar x:Name="progressWork" Margin="0,0,5,0"/>
             <Button x:Name="btGenerate" Grid.Column="2" Padding="4" IsEnabled="False" Click="OnGenerate">
                 <StackPanel Orientation="Horizontal">
                     <Image Style="{StaticResource imgGenerate}" Margin="0,0,5,0" />
@@ -161,7 +172,7 @@
             </Button>
         </Grid>
         <StatusBar Grid.Row="3">
-            <StatusBarItem Content="&lt;message&gt;" />
+            <StatusBarItem x:Name="lbStatusMessage" Content="&lt;message&gt;" />
         </StatusBar>
     </Grid>
 </Window>
