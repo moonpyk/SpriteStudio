@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using SpriteGenerator.Annotations;
 
-namespace SpriteGenerator
+namespace SpriteStudio
 {
     class GenerationConditions : INotifyPropertyChanged
     {
