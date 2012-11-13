@@ -1,11 +1,22 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Collections.Generic;
+using SpriteGenerator.Annotations;
 
 namespace SpriteGenerator
 {
-    public class LayoutProperties : IDisposable
+    public class LayoutProperties : IDisposable, INotifyPropertyChanged
     {
+        private int _imagesHeight;
+        private int _imagesInColumn;
+        private int _imagesInRow;
+        private int _imagesWidth;
+        private SpriteLayout _layout;
+        private int _margin;
+        private string _outputCssFilePath;
+        private string _outputSpriteFilePath;
+        private int _padding;
+
         public LayoutProperties()
         {
             Layout = SpriteLayout.None;
@@ -30,56 +41,137 @@ namespace SpriteGenerator
 
         public string OutputSpriteFilePath
         {
-            get;
-            set;
+            get { return _outputSpriteFilePath; }
+            set
+            {
+                if (value == _outputSpriteFilePath)
+                {
+                    return;
+                }
+
+                _outputSpriteFilePath = value;
+                OnPropertyChanged("OutputSpriteFilePath");
+            }
         }
 
         public string OutputCssFilePath
         {
-            get;
-            set;
+            get { return _outputCssFilePath; }
+            set
+            {
+                if (value == _outputCssFilePath)
+                {
+                    return;
+                }
+
+                _outputCssFilePath = value;
+                OnPropertyChanged("OutputCssFilePath");
+            }
         }
 
         public SpriteLayout Layout
         {
-            get;
-            set;
+            get { return _layout; }
+            set
+            {
+                if (value == _layout)
+                {
+                    return;
+                }
+
+                _layout = value;
+                OnPropertyChanged("Layout");
+            }
         }
 
         public int Padding
         {
-            get;
-            set;
+            get { return _padding; }
+            set
+            {
+                if (value == _padding)
+                {
+                    return;
+                }
+
+                _padding = value;
+                OnPropertyChanged("Padding");
+            }
         }
 
         public int Margin
         {
-            get;
-            set;
+            get { return _margin; }
+            set
+            {
+                if (value == _margin)
+                {
+                    return;
+                }
+
+                _margin = value;
+                OnPropertyChanged("Margin");
+            }
         }
 
         public int ImagesInRow
         {
-            get;
-            set;
+            get { return _imagesInRow; }
+            set
+            {
+                if (value == _imagesInRow)
+                {
+                    return;
+                }
+
+                _imagesInRow = value;
+                OnPropertyChanged("ImagesInRow");
+            }
         }
 
         public int ImagesInColumn
         {
-            get;
-            set;
+            get { return _imagesInColumn; }
+            set
+            {
+                if (value == _imagesInColumn)
+                {
+                    return;
+                }
+
+                _imagesInColumn = value;
+                OnPropertyChanged("ImagesInColumn");
+            }
         }
 
         public int ImagesWidth
         {
-            get;
-            set;
+            get { return _imagesWidth; }
+            set
+            {
+                if (value == _imagesWidth)
+                {
+                    return;
+                }
+
+                _imagesWidth = value;
+                OnPropertyChanged("ImagesWidth");
+            }
         }
 
         public int ImagesHeight
         {
-            get;
-            set;
+            get { return _imagesHeight; }
+            set
+            {
+                if (value == _imagesHeight)
+                {
+                    return;
+                }
+
+                _imagesHeight = value;
+                OnPropertyChanged("ImagesHeight");
+            }
         }
 
         public IDictionary<string, string> AdditionalCss
@@ -109,5 +201,17 @@ namespace SpriteGenerator
         }
 
         #endregion
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
 }

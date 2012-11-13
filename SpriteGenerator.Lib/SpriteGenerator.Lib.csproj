@@ -45,6 +45,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Scanner.cs" />
     <Compile Include="ImageCssMap.cs" />
     <Compile Include="LayoutProperties.cs" />
