@@ -23,6 +23,7 @@ namespace SpriteStudio
         public static RoutedCommand RefreshRoutedCommand = new RoutedCommand();
         public static RoutedCommand GenerateRoutedCommand = new RoutedCommand();
         public static RoutedCommand ExitRoutedCommand = new RoutedCommand();
+        public static RoutedCommand TopMostRoutedCommand = new RoutedCommand();
 
         private readonly GenerationConditions _ready = new GenerationConditions();
 
@@ -66,6 +67,8 @@ namespace SpriteStudio
                     : Visibility.Hidden;
 
                 progressWork.IsIndeterminate = value;
+
+                btGenerate.IsEnabled = !value && _ready.IsOK;
             }
         }
 
@@ -76,10 +79,10 @@ namespace SpriteStudio
                 lbStatusMessage.Content = value;
             }
         }
-
+        
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
+            LoadLastSettings();
         }
 
         private void Window_DragOver(object sender, DragEventArgs e)
@@ -224,6 +227,9 @@ namespace SpriteStudio
             {
                 var s = Settings.Default;
 
+                s.LastDirectory = tbInputDirectoryPath.Text;
+                s.LastOutputCssFile = tbOutputCSSFilePath.Text;
+                s.LastOutputImageFile = tbOutputImageFilePath.Text;
                 s.Save();
 
                 Working = false;
@@ -237,6 +243,56 @@ namespace SpriteStudio
         private void OnExit(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void OnChangeTopMost(object sender, ExecutedRoutedEventArgs e)
+        {
+            mnTopMost.IsChecked = !mnTopMost.IsChecked;
+        }
+
+        private void OnTopMostChanged(object sender, RoutedEventArgs e)
+        {
+            var s = Settings.Default;
+            s.WindowAlwaysOnTop = Topmost;
+
+            s.Save();
+        }
+
+        private void LoadLastSettings()
+        {
+            var settings = Settings.Default;
+
+            if (!string.IsNullOrEmpty(settings.LastDirectory))
+            {
+                tbInputDirectoryPath.Text = settings.LastDirectory;
+
+                if (!ValidateImagesDirectory(true))
+                {
+                    tbInputDirectoryPath.Text = settings.LastDirectory = "";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(settings.LastOutputCssFile))
+            {
+                tbOutputCSSFilePath.Text = _sfdOutputCss.FileName = settings.LastOutputCssFile;
+
+                if (!ValidateOutputCssPath(true))
+                {
+                    tbOutputCSSFilePath.Text = _sfdOutputCss.FileName = settings.LastOutputCssFile = "";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(settings.LastOutputImageFile))
+            {
+                tbOutputImageFilePath.Text = _sfdOutputImage.FileName = settings.LastOutputImageFile;
+
+                if (!ValidateOutputImagePath(true))
+                {
+                    tbOutputImageFilePath.Text = _sfdOutputImage.FileName = settings.LastOutputImageFile = "";
+                }
+            }
+
+            Topmost = settings.WindowAlwaysOnTop;
         }
 
         private static bool ValidateSameDrive(string a, string b)
@@ -412,14 +468,7 @@ namespace SpriteStudio
                 return fileDrop[0];
             }
 
-            var stringDrop = data.GetData(DataFormats.StringFormat) as string;
-
-            if (stringDrop != null)
-            {
-                return stringDrop;
-            }
-
-            return null;
+            return data.GetData(DataFormats.StringFormat) as string;
         }
 
         private void NdpImagesInRow_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

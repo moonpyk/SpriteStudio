@@ -24,12 +24,14 @@
     <Window.InputBindings>
         <KeyBinding Key="R" Modifiers="Control" Command="{x:Static sstdio:MainWindow.RefreshRoutedCommand}" />
         <KeyBinding Key="Q" Modifiers="Control" Command="{x:Static sstdio:MainWindow.ExitRoutedCommand}" />
+        <KeyBinding Key="T" Modifiers="Alt" Command="{x:Static sstdio:MainWindow.TopMostRoutedCommand}"/>
         <KeyBinding Key="F6" Command="{x:Static sstdio:MainWindow.GenerateRoutedCommand}" />
     </Window.InputBindings>
     <Window.CommandBindings>
         <CommandBinding Executed="OnRefresh" Command="{x:Static sstdio:MainWindow.RefreshRoutedCommand}" />
         <CommandBinding Executed="OnExit" Command="{x:Static sstdio:MainWindow.ExitRoutedCommand}" />
         <CommandBinding Executed="OnGenerate" Command="{x:Static sstdio:MainWindow.GenerateRoutedCommand}" />
+        <CommandBinding Executed="OnChangeTopMost" Command="{x:Static sstdio:MainWindow.TopMostRoutedCommand}" />
     </Window.CommandBindings>
     <Window.DataContext>
         <SpriteGenerator:LayoutProperties x:Name="_layoutProperties" />
@@ -57,7 +59,7 @@
                 <MenuItem Header="Exit" InputGestureText="Ctrl+Q" Click="OnExit" />
             </MenuItem>
             <MenuItem Header="Display">
-                <MenuItem Header="Always on top" IsCheckable="True" IsChecked="{Binding Topmost, ElementName=_this}"/>
+                <MenuItem x:Name="mnTopMost" Checked="OnTopMostChanged" Unchecked="OnTopMostChanged" InputGestureText="Alt+T" Header="Always on top" IsCheckable="True" IsChecked="{Binding Topmost, ElementName=_this}"/>
             </MenuItem>
         </Menu>
         <TabControl Grid.Row="1" Margin="4" >
