@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace SpriteGenerator.Layouts
+namespace SpriteStudio.Layouts
 {
     public class RectangularBuilder : LayoutBuilderBase
     {

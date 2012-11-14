@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SpriteGenerator
+namespace SpriteStudio
 {
     public class ScannerResult : IDisposable {
         public const int NoCommonImageSize = -1;

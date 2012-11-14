@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SpriteGenerator.Packer
+namespace SpriteStudio.Packer
 {
     public class ImageNodePacker
     {

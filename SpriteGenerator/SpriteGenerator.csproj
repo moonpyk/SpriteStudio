@@ -125,9 +125,9 @@
     <Content Include="spritegenerator.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SpriteGenerator.Lib\SpriteGenerator.Lib.csproj">
+    <ProjectReference Include="..\SpriteGenerator.Lib\SpriteStudio.Lib.csproj">
       <Project>{349174D7-027E-46AB-B928-3E14E5619E4D}</Project>
-      <Name>SpriteGenerator.Lib</Name>
+      <Name>SpriteStudio.Lib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

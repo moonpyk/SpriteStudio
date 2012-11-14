@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace SpriteGenerator.Packer
+namespace SpriteStudio.Packer
 {
     public class ImageNodeComparer : IComparer<ImageNode>
     {

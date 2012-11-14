@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using SpriteGenerator.Annotations;
+using SpriteStudio.Properties;
 
 namespace SpriteStudio
 {

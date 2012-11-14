@@ -15,9 +15,8 @@
  */
 
 using System;
-using System.ComponentModel;
 
-namespace SpriteGenerator.Annotations
+namespace SpriteStudio.Properties
 {
     /// <summary>
     /// Indicates that marked element should be localized or not.

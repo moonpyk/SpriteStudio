@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace SpriteGenerator.Layouts
+namespace SpriteStudio.Layouts
 {
     public abstract class LayoutBuilderBase : IDisposable
     {

@@ -8,8 +8,8 @@
     <ProjectGuid>{349174D7-027E-46AB-B928-3E14E5619E4D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SpriteGenerator</RootNamespace>
-    <AssemblyName>SpriteGenerator.Lib</AssemblyName>
+    <RootNamespace>SpriteStudio</RootNamespace>
+    <AssemblyName>SpriteStudio.Lib</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>

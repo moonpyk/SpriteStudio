@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace SpriteGenerator.Packer
+namespace SpriteStudio.Packer
 {
     public class ImageNode
     {

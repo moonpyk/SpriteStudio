@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace SpriteGenerator
+namespace SpriteStudio
 {
     public class ImageCssMap : Tuple<IDictionary<int, Image>, IDictionary<int, string>>
     {

@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Linq;
 
-namespace SpriteGenerator.Layouts
+namespace SpriteStudio.Layouts
 {
     public class VerticalBuilder : LayoutBuilderBase
     {

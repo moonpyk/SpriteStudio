@@ -10,7 +10,6 @@ using System.Windows.Input;
 using System.Windows.Shell;
 using Newtonsoft.Json;
 using Ookii.Dialogs.Wpf;
-using SpriteGenerator;
 using SpriteStudio.Properties;
 
 namespace SpriteStudio

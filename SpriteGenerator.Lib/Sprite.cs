@@ -7,9 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SpriteGenerator.Layouts;
+using SpriteStudio.Layouts;
 
-namespace SpriteGenerator
+namespace SpriteStudio
 {
     public class Sprite : IDisposable
     {

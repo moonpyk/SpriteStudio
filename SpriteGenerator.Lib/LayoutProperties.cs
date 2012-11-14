@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Collections.Generic;
-using SpriteGenerator.Annotations;
+using SpriteStudio.Properties;
 
-namespace SpriteGenerator
+namespace SpriteStudio
 {
     public class LayoutProperties : IDisposable, INotifyPropertyChanged
     {

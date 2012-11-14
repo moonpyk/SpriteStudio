@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using SpriteGenerator.Packer;
+using SpriteStudio.Packer;
 
-namespace SpriteGenerator.Layouts
+namespace SpriteStudio.Layouts
 {
     public class AutomaticBuilder : LayoutBuilderBase
     {
