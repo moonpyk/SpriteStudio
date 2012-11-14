@@ -31,16 +31,17 @@ namespace SpriteStudio
         public static RoutedCommand ExitRoutedCommand = new RoutedCommand();
 
         private readonly GenerationConditions _ready = new GenerationConditions();
-        private readonly Stopwatch _stopwatch = new Stopwatch();
 
         private readonly VistaSaveFileDialog _sfdOutputCss = new VistaSaveFileDialog
         {
-            Filter = "CSS file|*.css"
+            Filter = "CSS File|*.css"
         };
         private readonly VistaSaveFileDialog _sfdOutputImage = new VistaSaveFileDialog()
         {
             Filter = "PNG Image|*.png"
         };
+
+        private readonly Stopwatch _stopwatch = new Stopwatch();
 
         public MainWindow()
         {
@@ -417,38 +418,6 @@ namespace SpriteStudio
             return null;
         }
 
-        #region Debugging Tools
-
-        [Conditional("DEBUG")]
-        private static void DebugDragEvent(DragEventArgs e)
-        {
-            Debug.WriteLine("----------------");
-            foreach (var f in e.Data.GetFormats())
-            {
-                var data = e.Data.GetData(f);
-
-                try
-                {
-                    Debug.WriteLine(JsonConvert.SerializeObject(new
-                    {
-                        Format = f,
-                        Data = data
-                    }));
-                }
-                catch (Exception)
-                {
-                    Debug.WriteLine(JsonConvert.SerializeObject(new
-                    {
-                        Format = f,
-                        Data = data.GetType(),
-                    }));
-                }
-            }
-            Debug.WriteLine("----------------");
-        }
-
-        #endregion
-
         private void NdpImagesInRow_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (_layoutProperties.InputFilePaths == null)
@@ -481,5 +450,37 @@ namespace SpriteStudio
             _layoutProperties.ImagesInRow = imagesInRow;
             _layoutProperties.ImagesInColumn = (int)ndpImagesInColumn.Value;
         }
+
+        #region Debugging Tools
+
+        [Conditional("DEBUG")]
+        private static void DebugDragEvent(DragEventArgs e)
+        {
+            Debug.WriteLine("----------------");
+            foreach (var f in e.Data.GetFormats())
+            {
+                var data = e.Data.GetData(f);
+
+                try
+                {
+                    Debug.WriteLine(JsonConvert.SerializeObject(new
+                    {
+                        Format = f,
+                        Data = data
+                    }));
+                }
+                catch (Exception)
+                {
+                    Debug.WriteLine(JsonConvert.SerializeObject(new
+                    {
+                        Format = f,
+                        Data = data.GetType(),
+                    }));
+                }
+            }
+            Debug.WriteLine("----------------");
+        }
+
+        #endregion
     }
 }

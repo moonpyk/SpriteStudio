@@ -9,7 +9,8 @@
     mc:Ignorable="d"
     AllowDrop="True" DragOver="Window_DragOver" Drop="Window_Drop"
     x:Name="_this"
-    x:Class="SpriteStudio.MainWindow" ResizeMode="CanResizeWithGrip" Title="SpriteStudio" Loaded="Window_Loaded" Icon="Resources/SpriteStudio.ico" SizeToContent="WidthAndHeight">
+    x:Class="SpriteStudio.MainWindow" Title="SpriteStudio" Loaded="Window_Loaded" Icon="Resources/SpriteStudio.ico" 
+    Height="410" Width="575" ResizeMode="CanResizeWithGrip">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries >
