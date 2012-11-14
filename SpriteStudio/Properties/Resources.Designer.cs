@@ -59,5 +59,41 @@ namespace SpriteStudio.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à This directory does not contain image files..
+        /// </summary>
+        internal static string ErrorDirectoryNoImageFile {
+            get {
+                return ResourceManager.GetString("ErrorDirectoryNoImageFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Output image and CSS file must be on the same drive..
+        /// </summary>
+        internal static string ErrorMessageOutputImageAndOutCssNotSameDrive {
+            get {
+                return ResourceManager.GetString("ErrorMessageOutputImageAndOutCssNotSameDrive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à CSS File|*.css.
+        /// </summary>
+        internal static string OutputCssSaveFilter {
+            get {
+                return ResourceManager.GetString("OutputCssSaveFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à PNG Image|*.png.
+        /// </summary>
+        internal static string OutputImageSaveFilter {
+            get {
+                return ResourceManager.GetString("OutputImageSaveFilter", resourceCulture);
+            }
+        }
     }
 }

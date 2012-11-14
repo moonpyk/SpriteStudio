@@ -4,16 +4,31 @@
         <Setter Property="Source" Value="Resources/arrow-circle.png" />
         <Setter Property="Stretch" Value="None" />
         <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.3"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
     <Style TargetType="Image" x:Key="ImgSquare">
         <Setter Property="Source" Value="Resources/zone-resize-actual.png" />
         <Setter Property="Stretch" Value="None" />
         <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.3"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
     <Style TargetType="Image" x:Key="ImgGenerate">
         <Setter Property="Source" Value="Resources/compile.png" />
         <Setter Property="Stretch" Value="None" />
         <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.3"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
     <ControlTemplate x:Key="BrowseButton">
         <Button>

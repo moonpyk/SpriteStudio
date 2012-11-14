@@ -1,23 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Shell;
 using Newtonsoft.Json;
 using Ookii.Dialogs.Wpf;
 using SpriteGenerator;
+using SpriteStudio.Properties;
 
 namespace SpriteStudio
 {
@@ -34,11 +28,12 @@ namespace SpriteStudio
 
         private readonly VistaSaveFileDialog _sfdOutputCss = new VistaSaveFileDialog
         {
-            Filter = "CSS File|*.css"
+            Filter = Properties.Resources.OutputCssSaveFilter
         };
-        private readonly VistaSaveFileDialog _sfdOutputImage = new VistaSaveFileDialog()
+
+        private readonly VistaSaveFileDialog _sfdOutputImage = new VistaSaveFileDialog
         {
-            Filter = "PNG Image|*.png"
+            Filter = Properties.Resources.OutputImageSaveFilter
         };
 
         private readonly Stopwatch _stopwatch = new Stopwatch();
@@ -62,9 +57,14 @@ namespace SpriteStudio
         {
             set
             {
+                taskbar.ProgressState = value
+                    ? TaskbarItemProgressState.Indeterminate
+                    : TaskbarItemProgressState.None;
+
                 progressWork.Visibility = value
                     ? Visibility.Visible
                     : Visibility.Hidden;
+
                 progressWork.IsIndeterminate = value;
             }
         }
@@ -110,7 +110,7 @@ namespace SpriteStudio
             }
 
             tbInputDirectoryPath.Text = dir;
-            // ValidateImagesDirectory(false);
+            ValidateImagesDirectory(false);
         }
 
         private void BtBrowsePath_Click(object sender, RoutedEventArgs e)
@@ -154,6 +154,14 @@ namespace SpriteStudio
             ValidateOutputCssPath(false);
         }
 
+        private void BtSquare_Click(object sender, RoutedEventArgs e)
+        {
+            ndpImagesInRow.Value = (int)Math.Round(
+                Math.Sqrt(_layoutProperties.InputFilePaths.Count),
+                0
+            );
+        }
+
         private void RbLayout_CheckedChanged(object sender, RoutedEventArgs e)
         {
             var rd = sender as RadioButton;
@@ -172,7 +180,7 @@ namespace SpriteStudio
         {
             RbLayout_CheckedChanged(sender, e);
 
-            var enableAutomaticProps = rbLayoutRectangular.IsChecked != null && rbLayoutRectangular.IsChecked.Value;
+            var enableAutomaticProps = rbLayoutRectangular.IsChecked == true;
 
             ndpImagesInRow.IsEnabled =
                 ndpImagesInColumn.IsEnabled =
@@ -211,14 +219,12 @@ namespace SpriteStudio
                     sprite.Generate();
                 }
                 _stopwatch.Stop();
+
             }).ContinueWith(o =>
             {
-                // var s = Settings.Default;
-                // 
-                // s.LastDirectory = tbInputDirectoryPath.Text;
-                // s.LastOutputCssFile = tbOutputCSSFilePath.Text;
-                // s.LastOutputImageFile = tbOutputImageFilePath.Text;
-                // s.Save();
+                var s = Settings.Default;
+
+                s.Save();
 
                 Working = false;
                 WorkingMessage = string.Format("Spriting done [{0}]", _stopwatch.Elapsed);
@@ -249,8 +255,7 @@ namespace SpriteStudio
             {
                 if (!beSilent)
                 {
-                    // FIXME
-                    //MessageBox.Show(Resources.ErrorMessageOutputImageAndOutCssNotSameDrive);
+                    MessageBox.Show(Properties.Resources.ErrorMessageOutputImageAndOutCssNotSameDrive);
                 }
                 _ready.OutputImagePathOK = false;
                 return false;
@@ -268,8 +273,7 @@ namespace SpriteStudio
             {
                 if (!beSilent)
                 {
-                    // FIXME
-                    // MessageBox.Show(Resources.ErrorMessageOutputImageAndOutCssNotSameDrive);
+                    MessageBox.Show(Properties.Resources.ErrorMessageOutputImageAndOutCssNotSameDrive);
                 }
                 _ready.OutputCssPathOK = false;
                 return false;
@@ -311,8 +315,7 @@ namespace SpriteStudio
             {
                 if (!beSilent)
                 {
-                    // FIXME
-                    // MessageBox.Show(Resources.ErrorDirectoryNoImageFile);
+                    MessageBox.Show(Properties.Resources.ErrorDirectoryNoImageFile);
                 }
                 _ready.ImagePathOK = false;
                 return false;
@@ -342,6 +345,7 @@ namespace SpriteStudio
                     var av = scan.AvailableLayouts;
                     canHorizontal = av.Contains(SpriteLayout.Horizontal);
                     canVertical = av.Contains(SpriteLayout.Vertical);
+
                     _layoutProperties.ImagesHeight = scan.ImagesHeight;
                     _layoutProperties.ImagesWidth = scan.ImagesWidth;
                 }

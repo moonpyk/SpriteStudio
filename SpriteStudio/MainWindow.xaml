@@ -43,12 +43,12 @@
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="File">
-                <MenuItem x:Name="mnRefresh" Header="Refresh" InputGestureText="Ctrl+R" Click="OnRefresh">
+                <MenuItem x:Name="mnRefresh" Header="Refresh" InputGestureText="Ctrl+R" IsEnabled="False" Click="OnRefresh">
                     <MenuItem.Icon>
                         <Image Style="{StaticResource ImgRefresh}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem x:Name="mnGenerate" Header="Generate" InputGestureText="F6" Click="OnGenerate">
+                <MenuItem x:Name="mnGenerate" Header="Generate" InputGestureText="F6" IsEnabled="False" Click="OnGenerate">
                     <MenuItem.Icon>
                         <Image Style="{StaticResource ImgGenerate}" />
                     </MenuItem.Icon>
@@ -88,8 +88,8 @@
                             <Label   Content="Images directory path:" />
                             <TextBox x:Name="tbInputDirectoryPath" Grid.Column="1" Margin="0,3" IsReadOnly="True" />
                             <Button x:Name="btBrowsePath" Grid.Column="2" Template="{StaticResource BrowseButton}" Margin="5,3,3,3" Click="BtBrowsePath_Click" />
-                            <Button Click="OnRefresh" Grid.Column="3" Margin="0,3">
-                                <Image x:Name="btRefresh" Style="{StaticResource ImgRefresh}" />
+                            <Button x:Name="btRefresh" Click="OnRefresh" Grid.Column="3" Margin="0,3" IsEnabled="False">
+                                <Image Style="{StaticResource ImgRefresh}" />
                             </Button>
 
                             <Label   Grid.Row="1" Content="Output image file path:" />
@@ -118,7 +118,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <RadioButton Unchecked="RbLayout_CheckedChanged" Checked="RbLayout_CheckedChanged" x:Name="rbLayoutAutomatic"   Grid.Row="0" Content="Automatic"   Margin="4" Grid.ColumnSpan="5" GroupName="Layout" />
+                            <RadioButton Unchecked="RbLayout_CheckedChanged" Checked="RbLayout_CheckedChanged" x:Name="rbLayoutAutomatic"   Grid.Row="0" Content="Automatic"   Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsChecked="True" />
                             <RadioButton Unchecked="RbLayout_CheckedChanged" Checked="RbLayout_CheckedChanged" x:Name="rbLayoutHorizonal"   Grid.Row="1" Content="Horizontal"  Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsEnabled="False"  />
                             <RadioButton Unchecked="RbLayout_CheckedChanged" Checked="RbLayout_CheckedChanged" x:Name="rbLayoutVertical"    Grid.Row="2" Content="Vertical"    Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsEnabled="False"  />
                             <RadioButton Unchecked="RbLayoutRectangular_CheckedChanged" Checked="RbLayoutRectangular_CheckedChanged" x:Name="rbLayoutRectangular" Grid.Row="3" Content="Rectangular" Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsEnabled="False"  />
@@ -127,8 +127,8 @@
                             <Label x:Name="labelX" Content="x" Grid.Row="4" Grid.Column="1" IsEnabled="False" />
                             <xctk:IntegerUpDown x:Name="ndpImagesInColumn" Grid.Row="4" Grid.Column="2" IsEnabled="False" Margin="0,3" Width="65" Value="0" Minimum="0"  />
                             <Label x:Name="lbSprites" Content="images" Grid.Row="4" Grid.Column="3" Margin="0,3" IsEnabled="False" />
-                            <Button Grid.Row="4" Grid.Column="4" IsEnabled="False" Height="22" Width="22">
-                                <Image x:Name="btSquare" Style="{StaticResource ImgSquare}" />
+                            <Button x:Name="btSquare" Grid.Row="4" Grid.Column="4" IsEnabled="False" Height="22" Width="22" Click="BtSquare_Click">
+                                <Image Style="{StaticResource ImgSquare}" />
                             </Button>
                         </Grid>
                     </GroupBox>
