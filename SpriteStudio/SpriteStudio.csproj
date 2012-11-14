@@ -130,7 +130,7 @@
     <Resource Include="Resources\zone-resize-actual.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SpriteGenerator.Lib\SpriteStudio.Lib.csproj">
+    <ProjectReference Include="..\SpriteStudio.Lib\SpriteStudio.Lib.csproj">
       <Project>{349174d7-027e-46ab-b928-3e14e5619e4d}</Project>
       <Name>SpriteStudio.Lib</Name>
     </ProjectReference>

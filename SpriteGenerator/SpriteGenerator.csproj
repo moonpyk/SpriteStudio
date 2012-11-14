@@ -125,7 +125,7 @@
     <Content Include="spritegenerator.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SpriteGenerator.Lib\SpriteStudio.Lib.csproj">
+    <ProjectReference Include="..\SpriteStudio.Lib\SpriteStudio.Lib.csproj">
       <Project>{349174D7-027E-46AB-B928-3E14E5619E4D}</Project>
       <Name>SpriteStudio.Lib</Name>
     </ProjectReference>
