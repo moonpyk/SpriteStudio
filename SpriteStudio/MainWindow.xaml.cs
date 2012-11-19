@@ -17,12 +17,12 @@ namespace SpriteStudio
     /// <summary>
     /// Logique d'interaction pour MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
-        public static RoutedCommand RefreshRoutedCommand = new RoutedCommand();
-        public static RoutedCommand GenerateRoutedCommand = new RoutedCommand();
-        public static RoutedCommand ExitRoutedCommand = new RoutedCommand();
-        public static RoutedCommand TopMostRoutedCommand = new RoutedCommand();
+        public static RoutedCommand CommandRefresh = new RoutedCommand();
+        public static RoutedCommand CommandGenerate = new RoutedCommand();
+        public static RoutedCommand CommandExit = new RoutedCommand();
+        public static RoutedCommand CommandTopMost = new RoutedCommand();
 
         private readonly GenerationConditions _ready = new GenerationConditions();
 
@@ -41,15 +41,16 @@ namespace SpriteStudio
         public MainWindow()
         {
             InitializeComponent();
+
             Working = false;
             WorkingMessage = string.Empty;
 
-            _layoutProperties.InputFilePaths = new List<string>();
+            LayoutProperties.InputFilePaths = new List<string>();
 
             _ready.PropertyChanged += delegate
             {
-                btRefresh.IsEnabled = mnRefresh.IsEnabled = _ready.ImagePathOK;
-                btGenerate.IsEnabled = mnGenerate.IsEnabled = _ready.IsOK;
+                BtRefresh.IsEnabled = MnRefresh.IsEnabled = _ready.ImagePathOK;
+                BtGenerate.IsEnabled = MnGenerate.IsEnabled = _ready.IsOK;
             };
         }
 
@@ -57,17 +58,17 @@ namespace SpriteStudio
         {
             set
             {
-                taskbar.ProgressState = value
+                Taskbar.ProgressState = value
                     ? TaskbarItemProgressState.Indeterminate
                     : TaskbarItemProgressState.None;
 
-                progressWork.Visibility = value
+                ProgressWork.Visibility = value
                     ? Visibility.Visible
                     : Visibility.Hidden;
 
-                progressWork.IsIndeterminate = value;
+                ProgressWork.IsIndeterminate = value;
 
-                btGenerate.IsEnabled = !value && _ready.IsOK;
+                BtGenerate.IsEnabled = !value && _ready.IsOK;
             }
         }
 
@@ -75,10 +76,10 @@ namespace SpriteStudio
         {
             set
             {
-                lbStatusMessage.Content = value;
+                LbStatusMessage.Content = value;
             }
         }
-        
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             LoadLastSettings();
@@ -111,7 +112,7 @@ namespace SpriteStudio
                 return;
             }
 
-            tbInputDirectoryPath.Text = dir;
+            TbInputDirectoryPath.Text = dir;
             ValidateImagesDirectory(false);
         }
 
@@ -119,7 +120,7 @@ namespace SpriteStudio
         {
             var b = new VistaFolderBrowserDialog
             {
-                SelectedPath = tbInputDirectoryPath.Text,
+                SelectedPath = TbInputDirectoryPath.Text,
             };
 
             if (b.ShowDialog() != true)
@@ -127,7 +128,7 @@ namespace SpriteStudio
                 return;
             }
 
-            tbInputDirectoryPath.Text = b.SelectedPath;
+            TbInputDirectoryPath.Text = b.SelectedPath;
 
             ValidateImagesDirectory(false);
         }
@@ -158,8 +159,8 @@ namespace SpriteStudio
 
         private void BtSquare_Click(object sender, RoutedEventArgs e)
         {
-            ndpImagesInRow.Value = (int)Math.Round(
-                Math.Sqrt(_layoutProperties.InputFilePaths.Count),
+            NdpImagesInRow.Value = (int)Math.Round(
+                Math.Sqrt(LayoutProperties.InputFilePaths.Count),
                 0
             );
         }
@@ -175,26 +176,22 @@ namespace SpriteStudio
             }
 
             _ready.IsLayoutOK = true;
-            _layoutProperties.Layout = SpriteLayoutUtil.FromString(rd.Content as string);
+            LayoutProperties.Layout = SpriteLayoutUtil.FromString(rd.Content as string);
         }
 
         private void RbLayoutRectangular_CheckedChanged(object sender, RoutedEventArgs e)
         {
             RbLayout_CheckedChanged(sender, e);
 
-            var enableAutomaticProps = rbLayoutRectangular.IsChecked == true;
+            var enableAutomaticProps = RbLayoutRectangular.IsChecked == true;
 
-            ndpImagesInRow.IsEnabled =
-                ndpImagesInColumn.IsEnabled =
-                labelX.IsEnabled =
-                lbSprites.IsEnabled =
-                btSquare.IsEnabled = enableAutomaticProps;
+            NdpImagesInRow.IsEnabled = enableAutomaticProps;
 
             // Enabling numericupdowns to select layout dimension.
-            if (rbLayoutRectangular.IsChecked == true)
+            if (RbLayoutRectangular.IsChecked == true)
             {
-                ndpImagesInRow.Maximum =
-                    _layoutProperties.InputFilePaths.Count;
+                NdpImagesInRow.Maximum =
+                    LayoutProperties.InputFilePaths.Count;
             }
         }
 
@@ -205,10 +202,15 @@ namespace SpriteStudio
 
         private void OnGenerate(object sender, RoutedEventArgs e)
         {
-            _layoutProperties.OutputSpriteFilePath = tbOutputImageFilePath.Text;
-            _layoutProperties.OutputCssFilePath = tbOutputCSSFilePath.Text;
-            _layoutProperties.Padding = (int)ndpPadding.Value;
-            _layoutProperties.Margin = (int)ndpMargin.Value;
+            if (NdpPadding.Value == null || NdpMargin.Value == null)
+            {
+                return;
+            }
+
+            LayoutProperties.OutputSpriteFilePath = TbOutputImageFilePath.Text;
+            LayoutProperties.OutputCssFilePath = TbOutputCssFilePath.Text;
+            LayoutProperties.Padding = (int)NdpPadding.Value;
+            LayoutProperties.Margin = (int)NdpMargin.Value;
 
             Working = true;
             WorkingMessage = "Generating sprite...";
@@ -216,7 +218,7 @@ namespace SpriteStudio
             Task.Factory.StartNew(() =>
             {
                 _stopwatch.Start();
-                using (var sprite = new Sprite(_layoutProperties))
+                using (var sprite = new Sprite(LayoutProperties))
                 {
                     sprite.Generate();
                 }
@@ -226,9 +228,9 @@ namespace SpriteStudio
             {
                 var s = Settings.Default;
 
-                s.LastDirectory = tbInputDirectoryPath.Text;
-                s.LastOutputCssFile = tbOutputCSSFilePath.Text;
-                s.LastOutputImageFile = tbOutputImageFilePath.Text;
+                s.LastDirectory = TbInputDirectoryPath.Text;
+                s.LastOutputCssFile = TbOutputCssFilePath.Text;
+                s.LastOutputImageFile = TbOutputImageFilePath.Text;
                 s.Save();
 
                 Working = false;
@@ -236,7 +238,6 @@ namespace SpriteStudio
                 _stopwatch.Reset();
 
             }, TaskScheduler.FromCurrentSynchronizationContext());
-
         }
 
         private void OnExit(object sender, RoutedEventArgs e)
@@ -246,7 +247,7 @@ namespace SpriteStudio
 
         private void OnChangeTopMost(object sender, ExecutedRoutedEventArgs e)
         {
-            mnTopMost.IsChecked = !mnTopMost.IsChecked;
+            MnTopMost.IsChecked = !MnTopMost.IsChecked;
         }
 
         private void OnTopMostChanged(object sender, RoutedEventArgs e)
@@ -263,31 +264,31 @@ namespace SpriteStudio
 
             if (!string.IsNullOrEmpty(settings.LastDirectory))
             {
-                tbInputDirectoryPath.Text = settings.LastDirectory;
+                TbInputDirectoryPath.Text = settings.LastDirectory;
 
                 if (!ValidateImagesDirectory(true))
                 {
-                    tbInputDirectoryPath.Text = settings.LastDirectory = "";
+                    TbInputDirectoryPath.Text = settings.LastDirectory = "";
                 }
             }
 
             if (!string.IsNullOrEmpty(settings.LastOutputCssFile))
             {
-                tbOutputCSSFilePath.Text = _sfdOutputCss.FileName = settings.LastOutputCssFile;
+                TbOutputCssFilePath.Text = _sfdOutputCss.FileName = settings.LastOutputCssFile;
 
                 if (!ValidateOutputCssPath(true))
                 {
-                    tbOutputCSSFilePath.Text = _sfdOutputCss.FileName = settings.LastOutputCssFile = "";
+                    TbOutputCssFilePath.Text = _sfdOutputCss.FileName = settings.LastOutputCssFile = "";
                 }
             }
 
             if (!string.IsNullOrEmpty(settings.LastOutputImageFile))
             {
-                tbOutputImageFilePath.Text = _sfdOutputImage.FileName = settings.LastOutputImageFile;
+                TbOutputImageFilePath.Text = _sfdOutputImage.FileName = settings.LastOutputImageFile;
 
                 if (!ValidateOutputImagePath(true))
                 {
-                    tbOutputImageFilePath.Text = _sfdOutputImage.FileName = settings.LastOutputImageFile = "";
+                    TbOutputImageFilePath.Text = _sfdOutputImage.FileName = settings.LastOutputImageFile = "";
                 }
             }
 
@@ -306,7 +307,7 @@ namespace SpriteStudio
 
         private bool ValidateOutputImagePath(bool beSilent)
         {
-            if (_ready.OutputCssPathOK && !ValidateSameDrive(tbOutputCSSFilePath.Text, _sfdOutputImage.FileName))
+            if (_ready.OutputCssPathOK && !ValidateSameDrive(TbOutputCssFilePath.Text, _sfdOutputImage.FileName))
             {
                 if (!beSilent)
                 {
@@ -317,14 +318,14 @@ namespace SpriteStudio
             }
 
             _ready.OutputImagePathOK = true;
-            tbOutputImageFilePath.Text = _sfdOutputImage.FileName;
+            TbOutputImageFilePath.Text = _sfdOutputImage.FileName;
 
             return true;
         }
 
         private bool ValidateOutputCssPath(bool beSilent)
         {
-            if (_ready.OutputImagePathOK && !ValidateSameDrive(tbOutputImageFilePath.Text, _sfdOutputCss.FileName))
+            if (_ready.OutputImagePathOK && !ValidateSameDrive(TbOutputImageFilePath.Text, _sfdOutputCss.FileName))
             {
                 if (!beSilent)
                 {
@@ -334,7 +335,7 @@ namespace SpriteStudio
                 return false;
             }
 
-            tbOutputCSSFilePath.Text = _sfdOutputCss.FileName;
+            TbOutputCssFilePath.Text = _sfdOutputCss.FileName;
             _ready.OutputCssPathOK = true;
             return true;
         }
@@ -347,9 +348,9 @@ namespace SpriteStudio
 
             try
             {
-                _layoutProperties.InputFilePaths = (
+                LayoutProperties.InputFilePaths = (
                     from filter in filters
-                    from file in Directory.GetFiles(tbInputDirectoryPath.Text).AsParallel()
+                    from file in Directory.GetFiles(TbInputDirectoryPath.Text).AsParallel()
                     where file.EndsWith(filter)
                     select file
                 ).ToList();
@@ -364,7 +365,7 @@ namespace SpriteStudio
             }
 
             // If there is no file with the enabled formats in the choosen directory.
-            var imageFiles = _layoutProperties.InputFilePaths;
+            var imageFiles = LayoutProperties.InputFilePaths;
 
             if (imageFiles.Count == 0)
             {
@@ -379,8 +380,8 @@ namespace SpriteStudio
             // If there are files with the enabled formats in the choosen directory.
             _ready.ImagePathOK = _ready.IsLayoutOK = true;
 
-            rbLayoutAutomatic.IsEnabled = true;
-            rbLayoutAutomatic.IsChecked = true;
+            RbLayoutAutomatic.IsEnabled = true;
+            RbLayoutAutomatic.IsChecked = true;
 
             bool canVertical = true,
                  canHorizontal = true;
@@ -401,37 +402,41 @@ namespace SpriteStudio
                     canHorizontal = av.Contains(SpriteLayout.Horizontal);
                     canVertical = av.Contains(SpriteLayout.Vertical);
 
-                    _layoutProperties.ImagesHeight = scan.ImagesHeight;
-                    _layoutProperties.ImagesWidth = scan.ImagesWidth;
+                    LayoutProperties.ImagesHeight = scan.ImagesHeight;
+                    LayoutProperties.ImagesWidth = scan.ImagesWidth;
                 }
 
                 _stopwatch.Stop();
             })
             .ContinueWith(obj =>
             {
-                rbLayoutHorizonal.IsEnabled = canHorizontal;
-                rbLayoutVertical.IsEnabled = canVertical;
+                RbLayoutHorizonal.IsEnabled = canHorizontal;
+                RbLayoutVertical.IsEnabled = canVertical;
 
                 // Rectangular layout is enabled only when all image heights and all image widths are the same.
-                rbLayoutRectangular.IsEnabled = canHorizontal && canVertical;
+                RbLayoutRectangular.IsEnabled = canHorizontal && canVertical;
 
                 // Setting rectangular layout dimensions.
-                if (rbLayoutRectangular.IsEnabled)
+                if (RbLayoutRectangular.IsEnabled)
                 {
-                    ndpImagesInRow.Minimum = 1;
-                    ndpImagesInRow.Maximum = imageFiles.Count;
-                    _layoutProperties.ImagesInRow = (int)ndpImagesInRow.Value;
-                    _layoutProperties.ImagesInColumn = (int)ndpImagesInColumn.Value;
+                    NdpImagesInRow.Minimum = 1;
+                    NdpImagesInRow.Maximum = imageFiles.Count;
 
-                    if (ndpImagesInRow.Value == 0)
+                    if (NdpImagesInRow.Value != null && NdpImagesInColumn.Value != null)
                     {
-                        ndpImagesInRow.Value = 1;
+                        LayoutProperties.ImagesInRow = (int)NdpImagesInRow.Value;
+                        LayoutProperties.ImagesInColumn = (int)NdpImagesInColumn.Value;
+
+                        if (NdpImagesInRow.Value == 0)
+                        {
+                            NdpImagesInRow.Value = 1;
+                        }
                     }
                 }
                 else
                 {
-                    ndpImagesInRow.Minimum = ndpImagesInColumn.Minimum = 0;
-                    ndpImagesInRow.Value = ndpImagesInColumn.Value = 0;
+                    NdpImagesInRow.Minimum = NdpImagesInColumn.Minimum = 0;
+                    NdpImagesInRow.Value = NdpImagesInColumn.Value = 0;
                 }
 
                 Working = false;
@@ -472,41 +477,47 @@ namespace SpriteStudio
 
         private void NdpImagesInRow_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (_layoutProperties.InputFilePaths == null)
+            if (LayoutProperties.InputFilePaths == null || NdpImagesInRow.Value == null)
             {
                 return;
             }
 
-            var numberOfFiles = _layoutProperties.InputFilePaths.Count;
+            var numberOfFiles = LayoutProperties.InputFilePaths.Count;
 
             // Setting sprites in column numericupdown value
-            var imagesInRow = (int)ndpImagesInRow.Value;
+            var imagesInRow = (int)NdpImagesInRow.Value;
 
             if (imagesInRow > 0)
             {
                 // ReSharper disable PossibleLossOfFraction : Wanted behaviour
-                ndpImagesInColumn.Minimum = numberOfFiles / imagesInRow;
+                NdpImagesInColumn.Minimum = numberOfFiles / imagesInRow;
                 // ReSharper restore PossibleLossOfFraction
-                ndpImagesInColumn.Minimum += (numberOfFiles % imagesInRow) > 0
+                NdpImagesInColumn.Minimum += (numberOfFiles % imagesInRow) > 0
                     ? 1
                     : 0;
             }
             else
             {
-                ndpImagesInColumn.Minimum = 0;
+                NdpImagesInColumn.Minimum = 0;
             }
 
-            ndpImagesInColumn.Maximum = ndpImagesInColumn.Minimum;
-            ndpImagesInColumn.Value = ndpImagesInColumn.Minimum;
+            NdpImagesInColumn.Maximum = NdpImagesInColumn.Minimum;
+            NdpImagesInColumn.Value = NdpImagesInColumn.Minimum;
 
-            _layoutProperties.ImagesInRow = imagesInRow;
-            _layoutProperties.ImagesInColumn = (int)ndpImagesInColumn.Value;
+            LayoutProperties.ImagesInRow = imagesInRow;
+
+            if (NdpImagesInColumn.Value != null)
+            {
+                LayoutProperties.ImagesInColumn = (int)NdpImagesInColumn.Value;
+            }
         }
 
         #region Debugging Tools
 
         [Conditional("DEBUG")]
+        // ReSharper disable UnusedMember.Local
         private static void DebugDragEvent(DragEventArgs e)
+        // ReSharper restore UnusedMember.Local
         {
             Debug.WriteLine("----------------");
             foreach (var f in e.Data.GetFormats())

@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     AllowDrop="True" DragOver="Window_DragOver" Drop="Window_Drop"
-    x:Name="_this"
+    x:Name="This"
     x:Class="SpriteStudio.MainWindow" Title="SpriteStudio" Loaded="Window_Loaded" Icon="Resources/SpriteStudio.ico" 
     Height="410" Width="575" ResizeMode="CanResizeWithGrip">
     <Window.Resources>
@@ -19,22 +19,22 @@
         </ResourceDictionary>
     </Window.Resources>
     <Window.TaskbarItemInfo>
-        <TaskbarItemInfo x:Name="taskbar" />
+        <TaskbarItemInfo x:Name="Taskbar" />
     </Window.TaskbarItemInfo>
     <Window.InputBindings>
-        <KeyBinding Key="R" Modifiers="Control" Command="{x:Static sstdio:MainWindow.RefreshRoutedCommand}" />
-        <KeyBinding Key="Q" Modifiers="Control" Command="{x:Static sstdio:MainWindow.ExitRoutedCommand}" />
-        <KeyBinding Key="T" Modifiers="Alt" Command="{x:Static sstdio:MainWindow.TopMostRoutedCommand}"/>
-        <KeyBinding Key="F6" Command="{x:Static sstdio:MainWindow.GenerateRoutedCommand}" />
+        <KeyBinding Key="R" Modifiers="Control" Command="{x:Static sstdio:MainWindow.CommandRefresh}" />
+        <KeyBinding Key="Q" Modifiers="Control" Command="{x:Static sstdio:MainWindow.CommandExit}" />
+        <KeyBinding Key="T" Modifiers="Alt" Command="{x:Static sstdio:MainWindow.CommandTopMost}"/>
+        <KeyBinding Key="F6" Command="{x:Static sstdio:MainWindow.CommandGenerate}" />
     </Window.InputBindings>
     <Window.CommandBindings>
-        <CommandBinding Executed="OnRefresh" Command="{x:Static sstdio:MainWindow.RefreshRoutedCommand}" />
-        <CommandBinding Executed="OnExit" Command="{x:Static sstdio:MainWindow.ExitRoutedCommand}" />
-        <CommandBinding Executed="OnGenerate" Command="{x:Static sstdio:MainWindow.GenerateRoutedCommand}" />
-        <CommandBinding Executed="OnChangeTopMost" Command="{x:Static sstdio:MainWindow.TopMostRoutedCommand}" />
+        <CommandBinding Executed="OnRefresh" Command="{x:Static sstdio:MainWindow.CommandRefresh}" />
+        <CommandBinding Executed="OnExit" Command="{x:Static sstdio:MainWindow.CommandExit}" />
+        <CommandBinding Executed="OnGenerate" Command="{x:Static sstdio:MainWindow.CommandGenerate}" />
+        <CommandBinding Executed="OnChangeTopMost" Command="{x:Static sstdio:MainWindow.CommandTopMost}" />
     </Window.CommandBindings>
     <Window.DataContext>
-        <sstdiolib:LayoutProperties x:Name="_layoutProperties" />
+        <sstdiolib:LayoutProperties x:Name="LayoutProperties" />
     </Window.DataContext>
     <Grid Background="{StaticResource {x:Static SystemColors.ControlBrushKey}}" >
         <Grid.RowDefinitions>
@@ -45,12 +45,12 @@
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="File">
-                <MenuItem x:Name="mnRefresh" Header="Refresh" InputGestureText="Ctrl+R" IsEnabled="False" Click="OnRefresh">
+                <MenuItem x:Name="MnRefresh" Header="Refresh" InputGestureText="Ctrl+R" IsEnabled="False" Click="OnRefresh">
                     <MenuItem.Icon>
                         <Image Style="{StaticResource ImgRefresh}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem x:Name="mnGenerate" Header="Generate" InputGestureText="F6" IsEnabled="False" Click="OnGenerate">
+                <MenuItem x:Name="MnGenerate" Header="Generate" InputGestureText="F6" IsEnabled="False" Click="OnGenerate">
                     <MenuItem.Icon>
                         <Image Style="{StaticResource ImgGenerate}" />
                     </MenuItem.Icon>
@@ -59,7 +59,7 @@
                 <MenuItem Header="Exit" InputGestureText="Ctrl+Q" Click="OnExit" />
             </MenuItem>
             <MenuItem Header="Display">
-                <MenuItem x:Name="mnTopMost" Checked="OnTopMostChanged" Unchecked="OnTopMostChanged" InputGestureText="Alt+T" Header="Always on top" IsCheckable="True" IsChecked="{Binding Topmost, ElementName=_this}"/>
+                <MenuItem x:Name="MnTopMost" Checked="OnTopMostChanged" Unchecked="OnTopMostChanged" InputGestureText="Alt+T" Header="Always on top" IsCheckable="True" IsChecked="{Binding ElementName=This,Path=Topmost}"/>
             </MenuItem>
         </Menu>
         <TabControl Grid.Row="1" Margin="4" >
@@ -88,19 +88,19 @@
                             </Grid.ColumnDefinitions>
 
                             <Label   Content="Images directory path:" />
-                            <TextBox x:Name="tbInputDirectoryPath" Grid.Column="1" Margin="0,3" IsReadOnly="True" />
-                            <Button  x:Name="btBrowsePath" Grid.Column="2" Template="{StaticResource BrowseButton}" Margin="5,3,3,3" Click="BtBrowsePath_Click" />
-                            <Button  x:Name="btRefresh" Click="OnRefresh" Grid.Column="3" Margin="0,3" IsEnabled="False">
+                            <TextBox x:Name="TbInputDirectoryPath" Grid.Column="1" Margin="0,3" IsReadOnly="True" />
+                            <Button  x:Name="BtBrowsePath" Grid.Column="2" Template="{StaticResource BrowseButton}" Margin="5,3,3,3" Click="BtBrowsePath_Click" />
+                            <Button  x:Name="BtRefresh" Click="OnRefresh" Grid.Column="3" Margin="0,3" IsEnabled="False">
                                 <Image Style="{StaticResource ImgRefresh}" />
                             </Button>
 
                             <Label   Grid.Row="1" Content="Output image file path:" />
-                            <TextBox x:Name="tbOutputImageFilePath" Grid.Row="1" Grid.Column="1" Margin="0,3" IsReadOnly="True" Text="{Binding OutputSpriteFilePath}"  />
-                            <Button  x:Name="btBrowseImage"  Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Template="{StaticResource BrowseButton}" Margin="5,3,0,3" Click="BtBrowseImage_Click"  />
+                            <TextBox x:Name="TbOutputImageFilePath" Grid.Row="1" Grid.Column="1" Margin="0,3" IsReadOnly="True" Text="{Binding OutputSpriteFilePath}"  />
+                            <Button  x:Name="BtBrowseImage"  Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Template="{StaticResource BrowseButton}" Margin="5,3,0,3" Click="BtBrowseImage_Click"  />
 
                             <Label   Grid.Row="2" Content="Output CSS file path:" />
-                            <TextBox x:Name="tbOutputCSSFilePath" Grid.Row="2" Grid.Column="1" Margin="0,3" IsReadOnly="True" Text="{Binding OutputCssFilePath}" />
-                            <Button  x:Name="btBrowseCss"  Grid.Row="2" Content="Button" Grid.Column="2" Grid.ColumnSpan="2" Template="{StaticResource BrowseButton}" Margin="5,3,0,3" Click="BtBrowseCss_Click"  />
+                            <TextBox x:Name="TbOutputCssFilePath" Grid.Row="2" Grid.Column="1" Margin="0,3" IsReadOnly="True" Text="{Binding OutputCssFilePath}" />
+                            <Button  x:Name="BtBrowseCss"  Grid.Row="2" Content="Button" Grid.Column="2" Grid.ColumnSpan="2" Template="{StaticResource BrowseButton}" Margin="5,3,0,3" Click="BtBrowseCss_Click"  />
                         </Grid>
                     </GroupBox>
                     <GroupBox Header="Layout" Grid.Row="1" Margin="0,0,4,0">
@@ -120,17 +120,17 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            
-                            <RadioButton Unchecked="RbLayout_CheckedChanged" Checked="RbLayout_CheckedChanged" x:Name="rbLayoutAutomatic" Grid.Row="0" Content="Automatic"   Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsChecked="True" />
-                            <RadioButton Unchecked="RbLayout_CheckedChanged" Checked="RbLayout_CheckedChanged" x:Name="rbLayoutHorizonal" Grid.Row="1" Content="Horizontal"  Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsEnabled="False" />
-                            <RadioButton Unchecked="RbLayout_CheckedChanged" Checked="RbLayout_CheckedChanged" x:Name="rbLayoutVertical"  Grid.Row="2" Content="Vertical"    Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsEnabled="False" />
-                            <RadioButton Unchecked="RbLayoutRectangular_CheckedChanged" Checked="RbLayoutRectangular_CheckedChanged"      Grid.Row="3" Content="Rectangular" Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsEnabled="False" x:Name="rbLayoutRectangular" />
 
-                            <xctk:IntegerUpDown x:Name="ndpImagesInRow" Grid.Row="4" Margin="0,3" HorizontalAlignment="Left" Width="65" Value="0" Minimum="0" IsEnabled="False" ValueChanged="NdpImagesInRow_ValueChanged"  />
-                            <Label x:Name="labelX" Content="x" Grid.Row="4" Grid.Column="1" IsEnabled="False" />
-                            <xctk:IntegerUpDown x:Name="ndpImagesInColumn" Grid.Row="4" Grid.Column="2" IsEnabled="False" Margin="0,3" Width="65" Value="0" Minimum="0"  />
-                            <Label x:Name="lbSprites" Content="images" Grid.Row="4" Grid.Column="3" Margin="0,3" IsEnabled="False" />
-                            <Button x:Name="btSquare" Grid.Row="4" Grid.Column="4" IsEnabled="False" Height="22" Width="22" Click="BtSquare_Click">
+                            <RadioButton Unchecked="RbLayout_CheckedChanged" Checked="RbLayout_CheckedChanged" x:Name="RbLayoutAutomatic" Grid.Row="0" Content="Automatic"   Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsChecked="True" />
+                            <RadioButton Unchecked="RbLayout_CheckedChanged" Checked="RbLayout_CheckedChanged" x:Name="RbLayoutHorizonal" Grid.Row="1" Content="Horizontal"  Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsEnabled="False" />
+                            <RadioButton Unchecked="RbLayout_CheckedChanged" Checked="RbLayout_CheckedChanged" x:Name="RbLayoutVertical"  Grid.Row="2" Content="Vertical"    Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsEnabled="False" />
+                            <RadioButton Unchecked="RbLayoutRectangular_CheckedChanged" Checked="RbLayoutRectangular_CheckedChanged"      Grid.Row="3" Content="Rectangular" Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsEnabled="False" x:Name="RbLayoutRectangular" />
+
+                            <xctk:IntegerUpDown x:Name="NdpImagesInRow" Grid.Row="4" Margin="0,3" HorizontalAlignment="Left" Width="65" Value="0" Minimum="0" IsEnabled="False" ValueChanged="NdpImagesInRow_ValueChanged"  />
+                            <Label Content="x" Grid.Row="4" Grid.Column="1" IsEnabled="{Binding ElementName=NdpImagesInRow, Path=IsEnabled}" />
+                            <xctk:IntegerUpDown x:Name="NdpImagesInColumn" Grid.Row="4" Grid.Column="2" IsEnabled="{Binding ElementName=NdpImagesInRow, Path=IsEnabled}"  Margin="0,3" Width="65" Value="0" Minimum="0"  />
+                            <Label Content="images" Grid.Row="4" Grid.Column="3" Margin="0,3" IsEnabled="{Binding ElementName=NdpImagesInRow, Path=IsEnabled}"  />
+                            <Button Grid.Row="4" Grid.Column="4" IsEnabled="{Binding ElementName=NdpImagesInRow, Path=IsEnabled}"  Height="22" Width="22" Click="BtSquare_Click">
                                 <Image Style="{StaticResource ImgSquare}" />
                             </Button>
                         </Grid>
@@ -149,11 +149,11 @@
                             </Grid.RowDefinitions>
 
                             <Label Content="Margin:" />
-                            <xctk:IntegerUpDown x:Name="ndpPadding" Grid.Row="1" Grid.Column="1" Margin="0,3" Minimum="0" Maximum="10" Value="{Binding Padding}" />
+                            <xctk:IntegerUpDown x:Name="NdpPadding" Grid.Row="1" Grid.Column="1" Margin="0,3" Minimum="0" Maximum="10" Value="{Binding Padding}" />
                             <Label Content="px" Grid.Row="1" Grid.Column="2" />
 
                             <Label Content="Padding:" Grid.Row="1" />
-                            <xctk:IntegerUpDown x:Name="ndpMargin" Grid.Column="1" Margin="0,3" Minimum="0" Maximum="10" Value="{Binding Margin}" />
+                            <xctk:IntegerUpDown x:Name="NdpMargin" Grid.Column="1" Margin="0,3" Minimum="0" Maximum="10" Value="{Binding Margin}" />
                             <Label Content="px" Grid.Column="2" />
                         </Grid>
                     </GroupBox>
@@ -168,8 +168,8 @@
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <ProgressBar x:Name="progressWork" Margin="0,0,5,0"/>
-            <Button x:Name="btGenerate" Grid.Column="2" Padding="4" IsEnabled="False" Click="OnGenerate">
+            <ProgressBar x:Name="ProgressWork" Margin="0,0,5,0"/>
+            <Button x:Name="BtGenerate" Grid.Column="2" Padding="4" IsEnabled="False" Click="OnGenerate">
                 <StackPanel Orientation="Horizontal">
                     <Image Style="{StaticResource ImgGenerate}" Margin="0,0,5,0" />
                     <TextBlock><Run Text="Generate"/></TextBlock>
@@ -177,7 +177,7 @@
             </Button>
         </Grid>
         <StatusBar Grid.Row="3">
-            <StatusBarItem x:Name="lbStatusMessage" Content="&lt;message&gt;" />
+            <StatusBarItem x:Name="LbStatusMessage" Content="&lt;message&gt;" />
         </StatusBar>
     </Grid>
 </Window>
