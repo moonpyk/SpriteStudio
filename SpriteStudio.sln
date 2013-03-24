@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteStudio.Lib", "SpriteStudio.Lib\SpriteStudio.Lib.csproj", "{349174D7-027E-46AB-B928-3E14E5619E4D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteStudio", "SpriteStudio\SpriteStudio.csproj", "{D2C1E75E-8FAA-4952-80D1-017BA24ED8C1}"
