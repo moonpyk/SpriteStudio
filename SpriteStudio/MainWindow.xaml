@@ -11,13 +11,6 @@
     x:Name="This"
     x:Class="SpriteStudio.MainWindow" Title="SpriteStudio" Loaded="Window_Loaded" Icon="Resources/SpriteStudio.ico" 
     Height="410" Width="575" ResizeMode="CanResizeWithGrip">
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries >
-                <ResourceDictionary Source="Resources.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo x:Name="Taskbar" />
     </Window.TaskbarItemInfo>
@@ -88,22 +81,22 @@
                             </Grid.ColumnDefinitions>
 
                             <Label   Content="Images directory path:" />
-                            <TextBox x:Name="TbInputDirectoryPath" Grid.Column="1" Margin="0,3" IsReadOnly="True" />
-                            <Button  x:Name="BtBrowsePath" Grid.Column="2" Template="{StaticResource BrowseButton}" Margin="5,3,3,3" Click="BtBrowsePath_Click" />
-                            <Button  x:Name="BtRefresh" Click="OnRefresh" Grid.Column="3" Margin="0,3" IsEnabled="False">
+                            <TextBox x:Name="TbInputDirectoryPath" Grid.Row="0" Grid.Column="1" Margin="0,3" IsReadOnly="True" />
+                            <Button  x:Name="BtBrowsePath" Grid.Row="0" Grid.Column="2" Template="{StaticResource BrowseButton}" Margin="5,3,3,3" Click="BtBrowsePath_Click" />
+                            <Button  x:Name="BtRefresh" Click="OnRefresh" Grid.Row="0" Grid.Column="3" Margin="0,3" IsEnabled="False">
                                 <Image Style="{StaticResource ImgRefresh}" />
                             </Button>
 
-                            <Label   Grid.Row="1" Content="Output image file path:" />
+                            <Label   Grid.Row="1" Grid.Column="0" Content="Output image file path:" />
                             <TextBox x:Name="TbOutputImageFilePath" Grid.Row="1" Grid.Column="1" Margin="0,3" IsReadOnly="True" Text="{Binding OutputSpriteFilePath}"  />
                             <Button  x:Name="BtBrowseImage"  Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Template="{StaticResource BrowseButton}" Margin="5,3,0,3" Click="BtBrowseImage_Click"  />
 
-                            <Label   Grid.Row="2" Content="Output CSS file path:" />
+                            <Label   Grid.Row="2" Grid.Column="0" Content="Output CSS file path:" />
                             <TextBox x:Name="TbOutputCssFilePath" Grid.Row="2" Grid.Column="1" Margin="0,3" IsReadOnly="True" Text="{Binding OutputCssFilePath}" />
                             <Button  x:Name="BtBrowseCss"  Grid.Row="2" Content="Button" Grid.Column="2" Grid.ColumnSpan="2" Template="{StaticResource BrowseButton}" Margin="5,3,0,3" Click="BtBrowseCss_Click"  />
                         </Grid>
                     </GroupBox>
-                    <GroupBox Header="Layout" Grid.Row="1" Margin="0,0,4,0">
+                    <GroupBox Header="Layout" Grid.Row="1" Grid.Column="0" Margin="0,0,4,0">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -122,11 +115,14 @@
                             </Grid.RowDefinitions>
 
                             <RadioButton Unchecked="RbLayout_CheckedChanged" Checked="RbLayout_CheckedChanged" x:Name="RbLayoutAutomatic" Grid.Row="0" Content="Automatic"   Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsChecked="True" />
-                            <RadioButton Unchecked="RbLayout_CheckedChanged" Checked="RbLayout_CheckedChanged" x:Name="RbLayoutHorizonal" Grid.Row="1" Content="Horizontal"  Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsEnabled="False" />
-                            <RadioButton Unchecked="RbLayout_CheckedChanged" Checked="RbLayout_CheckedChanged" x:Name="RbLayoutVertical"  Grid.Row="2" Content="Vertical"    Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsEnabled="False" />
-                            <RadioButton Unchecked="RbLayoutRectangular_CheckedChanged" Checked="RbLayoutRectangular_CheckedChanged"      Grid.Row="3" Content="Rectangular" Margin="4" Grid.ColumnSpan="5" GroupName="Layout" IsEnabled="False" x:Name="RbLayoutRectangular" />
+                            <RadioButton Unchecked="RbLayout_CheckedChanged" Checked="RbLayout_CheckedChanged" x:Name="RbLayoutHorizonal" Grid.Row="1" Content="Horizontal"  Margin="4" Grid.ColumnSpan="5"
+                                         Grid.Column="0" GroupName="Layout" IsEnabled="False" />
+                            <RadioButton Unchecked="RbLayout_CheckedChanged" Checked="RbLayout_CheckedChanged" x:Name="RbLayoutVertical"  Grid.Row="2" Content="Vertical"    Margin="4" Grid.ColumnSpan="5"
+                                         Grid.Column="0" GroupName="Layout" IsEnabled="False" />
+                            <RadioButton Unchecked="RbLayoutRectangular_CheckedChanged" Checked="RbLayoutRectangular_CheckedChanged"      Grid.Row="3" Content="Rectangular" Margin="4" Grid.ColumnSpan="5"
+                                         Grid.Column="0" GroupName="Layout" IsEnabled="False" x:Name="RbLayoutRectangular" />
 
-                            <xctk:IntegerUpDown x:Name="NdpImagesInRow" Grid.Row="4" Margin="0,3" HorizontalAlignment="Left" Width="65" Value="0" Minimum="0" IsEnabled="False" ValueChanged="NdpImagesInRow_ValueChanged"  />
+                            <xctk:IntegerUpDown x:Name="NdpImagesInRow" Grid.Row="4" Grid.Column="0" Margin="0,3" HorizontalAlignment="Left" Width="65" Value="0" Minimum="0" IsEnabled="False" ValueChanged="NdpImagesInRow_ValueChanged"  />
                             <Label Content="x" Grid.Row="4" Grid.Column="1" IsEnabled="{Binding ElementName=NdpImagesInRow, Path=IsEnabled}" />
                             <xctk:IntegerUpDown x:Name="NdpImagesInColumn" Grid.Row="4" Grid.Column="2" IsEnabled="{Binding ElementName=NdpImagesInRow, Path=IsEnabled}"  Margin="0,3" Width="65" Value="0" Minimum="0"  />
                             <Label Content="images" Grid.Row="4" Grid.Column="3" Margin="0,3" IsEnabled="{Binding ElementName=NdpImagesInRow, Path=IsEnabled}"  />
@@ -152,9 +148,9 @@
                             <xctk:IntegerUpDown x:Name="NdpPadding" Grid.Row="1" Grid.Column="1" Margin="0,3" Minimum="0" Maximum="10" Value="{Binding Padding}" />
                             <Label Content="px" Grid.Row="1" Grid.Column="2" />
 
-                            <Label Content="Padding:" Grid.Row="1" />
-                            <xctk:IntegerUpDown x:Name="NdpMargin" Grid.Column="1" Margin="0,3" Minimum="0" Maximum="10" Value="{Binding Margin}" />
-                            <Label Content="px" Grid.Column="2" />
+                            <Label Content="Padding:" Grid.Row="1" Grid.Column="0" />
+                            <xctk:IntegerUpDown x:Name="NdpMargin" Grid.Row="0" Grid.Column="1" Margin="0,3" Minimum="0" Maximum="10" Value="{Binding Margin}" />
+                            <Label Content="px" Grid.Row="0" Grid.Column="2" />
                         </Grid>
                     </GroupBox>
                 </Grid>
@@ -169,7 +165,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <ProgressBar x:Name="ProgressWork" Margin="0,0,5,0"/>
-            <Button x:Name="BtGenerate" Grid.Column="2" Padding="4" IsEnabled="False" Click="OnGenerate">
+            <Button x:Name="BtGenerate" Grid.Column="1" Padding="4" IsEnabled="False" Click="OnGenerate">
                 <StackPanel Orientation="Horizontal">
                     <Image Style="{StaticResource ImgGenerate}" Margin="0,0,5,0" />
                     <TextBlock><Run Text="Generate"/></TextBlock>

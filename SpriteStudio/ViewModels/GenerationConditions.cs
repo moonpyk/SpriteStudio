@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using SpriteStudio.Properties;
 
-namespace SpriteStudio
+namespace SpriteStudio.ViewModels
 {
     class GenerationConditions : INotifyPropertyChanged
     {

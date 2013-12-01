@@ -11,6 +11,7 @@ using System.Windows.Shell;
 using Newtonsoft.Json;
 using Ookii.Dialogs.Wpf;
 using SpriteStudio.Properties;
+using SpriteStudio.ViewModels;
 
 namespace SpriteStudio
 {
@@ -19,10 +20,10 @@ namespace SpriteStudio
     /// </summary>
     public partial class MainWindow
     {
-        public static RoutedCommand CommandRefresh = new RoutedCommand();
+        public static RoutedCommand CommandRefresh  = new RoutedCommand();
         public static RoutedCommand CommandGenerate = new RoutedCommand();
-        public static RoutedCommand CommandExit = new RoutedCommand();
-        public static RoutedCommand CommandTopMost = new RoutedCommand();
+        public static RoutedCommand CommandExit     = new RoutedCommand();
+        public static RoutedCommand CommandTopMost  = new RoutedCommand();
 
         private readonly GenerationConditions _ready = new GenerationConditions();
 
