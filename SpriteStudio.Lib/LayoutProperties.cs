@@ -11,7 +11,7 @@ namespace SpriteStudio
         private int _imagesInColumn;
         private int _imagesInRow;
         private int _imagesWidth;
-        private SpriteLayout _layout;
+        private SpriteLayoutEnum _layout;
         private int _margin;
         private string _outputCssFilePath;
         private string _outputSpriteFilePath;
@@ -19,7 +19,7 @@ namespace SpriteStudio
 
         public LayoutProperties()
         {
-            Layout = SpriteLayout.None;
+            Layout = SpriteLayoutEnum.None;
             InputFilePaths = null;
             AdditionalCss = null;
 
@@ -69,7 +69,7 @@ namespace SpriteStudio
             }
         }
 
-        public SpriteLayout Layout
+        public SpriteLayoutEnum Layout
         {
             get { return _layout; }
             set

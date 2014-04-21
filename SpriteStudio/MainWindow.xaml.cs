@@ -177,7 +177,7 @@ namespace SpriteStudio
             }
 
             _ready.IsLayoutOK = true;
-            LayoutProperties.Layout = SpriteLayoutUtil.FromString(rd.Content as string);
+            LayoutProperties.Layout = SpriteLayoutExtensions.FromString(rd.Content as string);
         }
 
         private void RbLayoutRectangular_CheckedChanged(object sender, RoutedEventArgs e)
@@ -400,8 +400,8 @@ namespace SpriteStudio
                 var scan = Scanner.ScanImages(new List<string>(imageFiles));
 
                 var av = scan.AvailableLayouts;
-                canHorizontal = av.Contains(SpriteLayout.Horizontal);
-                canVertical = av.Contains(SpriteLayout.Vertical);
+                canHorizontal = av.Contains(SpriteLayoutEnum.Horizontal);
+                canVertical = av.Contains(SpriteLayoutEnum.Vertical);
 
                 LayoutProperties.ImagesHeight = scan.ImagesHeight;
                 LayoutProperties.ImagesWidth = scan.ImagesWidth;

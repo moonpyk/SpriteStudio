@@ -83,23 +83,23 @@ namespace SpriteStudio
                 }
             });
 
-            var availableLayouts = new List<SpriteLayout> {
-                SpriteLayout.Automatic
+            var availableLayouts = new List<SpriteLayoutEnum> {
+                SpriteLayoutEnum.Automatic
             };
 
             if (canHorizontal)
             {
-                availableLayouts.Add(SpriteLayout.Horizontal);
+                availableLayouts.Add(SpriteLayoutEnum.Horizontal);
             }
 
             if (canVertical)
             {
-                availableLayouts.Add(SpriteLayout.Vertical);
+                availableLayouts.Add(SpriteLayoutEnum.Vertical);
             }
 
             if (canVertical && canHorizontal)
             {
-                availableLayouts.Add(SpriteLayout.Rectangular);
+                availableLayouts.Add(SpriteLayoutEnum.Rectangular);
             }
 
             return new ScannerResult

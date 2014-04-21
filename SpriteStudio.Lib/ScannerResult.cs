@@ -7,7 +7,7 @@ namespace SpriteStudio
     {
         public const int NoCommonImageSize = -1;
 
-        public IList<SpriteLayout> AvailableLayouts
+        public IList<SpriteLayoutEnum> AvailableLayouts
         {
             get;
             internal set;

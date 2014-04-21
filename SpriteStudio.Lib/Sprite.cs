@@ -70,19 +70,19 @@ namespace SpriteStudio
 
             switch (_properties.Layout)
             {
-                case SpriteLayout.Automatic:
+                case SpriteLayoutEnum.Automatic:
                     b = new AutomaticBuilder(_map, _properties);
                     break;
 
-                case SpriteLayout.Horizontal:
+                case SpriteLayoutEnum.Horizontal:
                     b = new HorizontalBuilder(_map, _properties);
                     break;
 
-                case SpriteLayout.Vertical:
+                case SpriteLayoutEnum.Vertical:
                     b = new VerticalBuilder(_map, _properties);
                     break;
 
-                case SpriteLayout.Rectangular:
+                case SpriteLayoutEnum.Rectangular:
                     b = new RectangularBuilder(_map, _properties);
                     break;
             }
