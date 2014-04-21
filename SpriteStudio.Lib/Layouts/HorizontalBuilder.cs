@@ -13,7 +13,7 @@ namespace SpriteStudio.Layouts
         public override void Generate()
         {
             var padding = Properties.Padding;
-            var margin = Properties.Margin;
+            var margin  = Properties.Margin;
 
             // Calculating result image dimension.
             var width = Images.Values.Sum(_ => _.Width + padding);
@@ -23,12 +23,12 @@ namespace SpriteStudio.Layouts
             var height = Properties.ImagesHeight + 2 * margin;
 
             // Creating an empty result image.
-            ResultImage = new Bitmap(width, height);
+            ResultImage  = new Bitmap(width, height);
             var graphics = Graphics.FromImage(ResultImage);
 
             // Initial coordinates.
             var actualXCoordinate = margin;
-            var yCoordinate = margin;
+            var yCoordinate       = margin;
 
             // Drawing images into the result image, writing CSS lines and increasing X coordinate.
             foreach (var i in Images.Keys)

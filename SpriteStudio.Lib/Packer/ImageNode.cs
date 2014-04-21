@@ -92,9 +92,9 @@ namespace SpriteStudio.Packer
         /// <param name="graphics">The <see cref="Graphics"/> instance to draw on</param>
         public Rectangle Draw(Graphics graphics)
         {
-            var realX = X + _margin;
-            var realY = Y + _margin;
-            var realWidth = _image.Width;
+            var realX      = X + _margin;
+            var realY      = Y + _margin;
+            var realWidth  = _image.Width;
             var realHeight = _image.Height;
 
             graphics.DrawImage(

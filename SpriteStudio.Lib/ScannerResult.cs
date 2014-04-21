@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace SpriteStudio
 {
-    public class ScannerResult : IDisposable {
+    public class ScannerResult
+    {
         public const int NoCommonImageSize = -1;
 
         public IList<SpriteLayout> AvailableLayouts
@@ -29,24 +30,5 @@ namespace SpriteStudio
             get;
             internal set;
         }
-
-        #region IDisposable Members
-
-        public void Dispose()
-        {
-            if (AvailableLayouts != null)
-            {
-                AvailableLayouts.Clear();
-                AvailableLayouts = null;
-            }
-
-            if (FileList != null)
-            {
-                FileList.Clear();
-                FileList = null;
-            }
-        }
-
-        #endregion
     }
 }

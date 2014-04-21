@@ -108,7 +108,7 @@ namespace SpriteStudio.Layouts
             };
 
             int height = Properties.ImagesHeight,
-                width = Properties.ImagesWidth;
+                width  = Properties.ImagesWidth;
 
             // Images have a common width, let's put the width definition on the top
             if (width != ScannerResult.NoCommonImageSize)

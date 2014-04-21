@@ -23,15 +23,15 @@ namespace SpriteStudio.Packer
             {
                 var firstImage = _blocks.First();
 
-                width = firstImage.Width;
+                width  = firstImage.Width;
                 height = firstImage.Height;
             }
 
             _root = new ImageNode
             {
-                X = 0,
-                Y = 0,
-                Width = width,
+                X      = 0,
+                Y      = 0,
+                Width  = width,
                 Height = height
             };
         }
@@ -115,17 +115,17 @@ namespace SpriteStudio.Packer
 
             n.Down = new ImageNode
             {
-                X = n.X,
-                Y = n.Y + h,
-                Width = n.Width,
+                X      = n.X,
+                Y      = n.Y + h,
+                Width  = n.Width,
                 Height = n.Height - h
             };
 
             n.Right = new ImageNode
             {
-                X = n.X + w,
-                Y = n.Y,
-                Width = n.Width - w,
+                X      = n.X + w,
+                Y      = n.Y,
+                Width  = n.Width - w,
                 Height = h
             };
         }
@@ -171,17 +171,17 @@ namespace SpriteStudio.Packer
         {
             return new ImageNode
             {
-                Used = true,
-                X = 0,
-                Y = 0,
-                Width = root.Width + w,
+                Used   = true,
+                X      = 0,
+                Y      = 0,
+                Width  = root.Width + w,
                 Height = root.Height,
-                Down = root,
-                Right = new ImageNode
+                Down   = root,
+                Right  = new ImageNode
                 {
-                    X = root.Width,
-                    Y = 0,
-                    Width = w,
+                    X      = root.Width,
+                    Y      = 0,
+                    Width  = w,
                     Height = root.Height
                 }
             };
@@ -191,16 +191,16 @@ namespace SpriteStudio.Packer
         {
             return new ImageNode
             {
-                Used = true,
-                X = 0,
-                Y = 0,
-                Width = root.Width,
+                Used   = true,
+                X      = 0,
+                Y      = 0,
+                Width  = root.Width,
                 Height = root.Height + h,
-                Down = new ImageNode
+                Down   = new ImageNode
                 {
-                    X = 0,
-                    Y = root.Height,
-                    Width = root.Width,
+                    X      = 0,
+                    Y      = root.Height,
+                    Width  = root.Width,
                     Height = h
                 },
                 Right = root

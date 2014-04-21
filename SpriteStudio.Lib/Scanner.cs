@@ -59,7 +59,7 @@ namespace SpriteStudio
 
             using (var firstImage = Image.FromFile(images.First()))
             {
-                width = firstImage.Width;
+                width  = firstImage.Width;
                 height = firstImage.Height;
             }
 
@@ -105,9 +105,9 @@ namespace SpriteStudio
             return new ScannerResult
             {
                 AvailableLayouts = availableLayouts,
-                ImagesWidth = canVertical ? width : ScannerResult.NoCommonImageSize,
-                ImagesHeight = canHorizontal ? height : ScannerResult.NoCommonImageSize,
-                FileList = images,
+                ImagesWidth      = canVertical ? width : ScannerResult.NoCommonImageSize,
+                ImagesHeight     = canHorizontal ? height : ScannerResult.NoCommonImageSize,
+                FileList         = images,
             };
         }
     }
