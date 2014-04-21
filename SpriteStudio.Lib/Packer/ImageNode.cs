@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace SpriteStudio.Packer
 {
-    public class ImageNode
+    internal class ImageNode
     {
         private readonly Image _image;
         private readonly int _margin;

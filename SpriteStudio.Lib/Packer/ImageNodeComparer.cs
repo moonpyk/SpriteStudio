@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SpriteStudio.Packer
 {
-    public class ImageNodeComparer : IComparer<ImageNode>
+    internal class ImageNodeComparer : IComparer<ImageNode>
     {
         private static readonly Comparer<int> C = Comparer<int>.Default;
 

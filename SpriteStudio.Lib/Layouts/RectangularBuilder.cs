@@ -2,7 +2,7 @@
 
 namespace SpriteStudio.Layouts
 {
-    public class RectangularBuilder : LayoutBuilderBase
+    internal class RectangularBuilder : LayoutBuilderBase
     {
         public RectangularBuilder(ImageCssMap map, LayoutProperties props)
             : base(map, props)

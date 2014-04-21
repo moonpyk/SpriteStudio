@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SpriteStudio.Layouts
 {
-    public abstract class LayoutBuilderBase : IDisposable
+    internal abstract class LayoutBuilderBase : IDisposable
     {
         private readonly StringBuilder _cssBuilder = new StringBuilder();
 

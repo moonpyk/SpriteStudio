@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace SpriteStudio.Layouts
 {
-    public class HorizontalBuilder : LayoutBuilderBase
+    internal class HorizontalBuilder : LayoutBuilderBase
     {
         public HorizontalBuilder(ImageCssMap map, LayoutProperties props)
             : base(map, props)

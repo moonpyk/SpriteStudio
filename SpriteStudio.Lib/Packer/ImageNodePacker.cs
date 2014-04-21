@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SpriteStudio.Packer
 {
-    public class ImageNodePacker
+    internal class ImageNodePacker
     {
         private readonly List<ImageNode> _blocks;
         private ImageNode _root;

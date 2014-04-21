@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace SpriteStudio
 {
-    public class ImageCssMap : Tuple<IDictionary<int, Image>, IDictionary<int, string>>
+    internal class ImageCssMap : Tuple<IDictionary<int, Image>, IDictionary<int, string>>
     {
         public ImageCssMap(IDictionary<int, Image> images, IDictionary<int, string> items)
             : base(images, items)

@@ -9,7 +9,8 @@ namespace SpriteStudio
 {
     public class Scanner
     {
-        public static readonly string[] Filter = new[] {
+        public static readonly string[] Filter =
+        {
             ".png", ".jpg", ".jpeg", ".gif",
         };
 

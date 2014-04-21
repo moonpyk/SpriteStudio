@@ -5,7 +5,7 @@ using SpriteStudio.Packer;
 
 namespace SpriteStudio.Layouts
 {
-    public class AutomaticBuilder : LayoutBuilderBase
+    internal class AutomaticBuilder : LayoutBuilderBase
     {
         private readonly List<ImageNode> _nodes;
 
