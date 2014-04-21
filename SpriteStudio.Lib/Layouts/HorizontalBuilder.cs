@@ -24,27 +24,28 @@ namespace SpriteStudio.Layouts
 
             // Creating an empty result image.
             ResultImage  = new Bitmap(width, height);
-            var graphics = Graphics.FromImage(ResultImage);
 
-            // Initial coordinates.
-            var actualXCoordinate = margin;
-            var yCoordinate       = margin;
-
-            // Drawing images into the result image, writing CSS lines and increasing X coordinate.
-            foreach (var i in Images.Keys)
+            using (var graphics = Graphics.FromImage(ResultImage))
             {
-                var currentImage = Images[i];
+                var actualXCoordinate = margin;
+                var yCoordinate       = margin;
 
-                var rectangle = new Rectangle(
-                    actualXCoordinate,
-                    yCoordinate,
-                    currentImage.Width,
-                    currentImage.Height
-                );
+                // Drawing images into the result image, writing CSS lines and increasing X coordinate.
+                foreach (var i in Images.Keys)
+                {
+                    var currentImage = Images[i];
 
-                graphics.DrawImage(currentImage, rectangle);
-                CssBuilder.AppendLine(CssLine(CssClassNames[i], rectangle));
-                actualXCoordinate += currentImage.Width + padding;
+                    var rectangle = new Rectangle(
+                        actualXCoordinate,
+                        yCoordinate,
+                        currentImage.Width,
+                        currentImage.Height
+                        );
+
+                    graphics.DrawImage(currentImage, rectangle);
+                    CssBuilder.AppendLine(CssLine(CssClassNames[i], rectangle));
+                    actualXCoordinate += currentImage.Width + padding;
+                }
             }
         }
     }

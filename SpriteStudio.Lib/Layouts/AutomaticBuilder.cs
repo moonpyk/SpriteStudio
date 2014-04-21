@@ -33,14 +33,14 @@ namespace SpriteStudio.Layouts
                 packer.Height + addedMargin
             );
 
-            var graphics = Graphics.FromImage(ResultImage);
-
-            // Drawing images into the result image in the original order and writing CSS lines.
-            foreach (var m in final)
+            using (var graphics = Graphics.FromImage(ResultImage))
             {
-                var rect = m.Draw(graphics);
+                foreach (var m in final)
+                {
+                    var rect = m.Draw(graphics);
 
-                CssBuilder.AppendLine(CssLine(CssClassNames[m.Name], rect));
+                    CssBuilder.AppendLine(CssLine(CssClassNames[m.Name], rect));
+                }
             }
         }
     }

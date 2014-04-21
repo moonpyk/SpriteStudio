@@ -397,15 +397,15 @@ namespace SpriteStudio
             {
                 _stopwatch.Start();
 
-                using (var scan = Scanner.ScanImages(new List<string>(imageFiles)))
-                {
-                    var av = scan.AvailableLayouts;
-                    canHorizontal = av.Contains(SpriteLayout.Horizontal);
-                    canVertical = av.Contains(SpriteLayout.Vertical);
+                var scan = Scanner.ScanImages(new List<string>(imageFiles));
 
-                    LayoutProperties.ImagesHeight = scan.ImagesHeight;
-                    LayoutProperties.ImagesWidth = scan.ImagesWidth;
-                }
+                var av = scan.AvailableLayouts;
+                canHorizontal = av.Contains(SpriteLayout.Horizontal);
+                canVertical = av.Contains(SpriteLayout.Vertical);
+
+                LayoutProperties.ImagesHeight = scan.ImagesHeight;
+                LayoutProperties.ImagesWidth = scan.ImagesWidth;
+
 
                 _stopwatch.Stop();
             })

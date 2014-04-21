@@ -25,32 +25,33 @@ namespace SpriteStudio.Layouts
 
             // Creating an empty result image.
             ResultImage = new Bitmap(width, height);
-            var graphics = Graphics.FromImage(ResultImage);
 
-            // Initial coordinates.
-            var actualYCoordinate = margin;
-            var actualXCoordinate = margin;
-
-            // Drawing images into the result image, writing CSS lines and increasing coordinates.
-            for (var i = 0; i < imagesInColumn; i++)
+            using (var graphics = Graphics.FromImage(ResultImage))
             {
-                for (var j = 0; (i * imagesInRow) + j < Images.Count && j < imagesInRow; j++)
+                var actualYCoordinate = margin;
+                var actualXCoordinate = margin;
+
+                // Drawing images into the result image, writing CSS lines and increasing coordinates.
+                for (var i = 0; i < imagesInColumn; i++)
                 {
-                    var rectangle = new Rectangle(
-                        actualXCoordinate,
-                        actualYCoordinate,
-                        imageWidth,
-                        imageHeight
-                    );
+                    for (var j = 0; (i * imagesInRow) + j < Images.Count && j < imagesInRow; j++)
+                    {
+                        var rectangle = new Rectangle(
+                            actualXCoordinate,
+                            actualYCoordinate,
+                            imageWidth,
+                            imageHeight
+                            );
 
-                    graphics.DrawImage(Images[i * imagesInRow + j], rectangle);
-                    CssBuilder.AppendLine(CssLine(CssClassNames[i * imagesInRow + j], rectangle));
+                        graphics.DrawImage(Images[i * imagesInRow + j], rectangle);
+                        CssBuilder.AppendLine(CssLine(CssClassNames[i * imagesInRow + j], rectangle));
 
-                    actualXCoordinate += imageWidth + padding;
+                        actualXCoordinate += imageWidth + padding;
+                    }
+
+                    actualYCoordinate += imageHeight + padding;
+                    actualXCoordinate = margin;
                 }
-
-                actualYCoordinate += imageHeight + padding;
-                actualXCoordinate = margin;
             }
         }
     }

@@ -56,11 +56,11 @@ namespace SpriteStudio
 
         /// <summary>
         /// Generates the CSS Sprite image and stylesheet using the <see cref="LayoutProperties"/>
-        /// given during instanciation.
+        /// given during instantiation.
         /// </summary>
         /// <exception cref="Exception">
         /// If invalid SpriteLayout mode selected (None usually).
-        /// If underlaying imaging library (GDI+ on Windows) ecounters an exception
+        /// If underlaying imaging library (GDI+ on Windows) encounters an exception
         /// </exception>
         public void Generate()
         {
@@ -154,10 +154,10 @@ namespace SpriteStudio
         }
 
         /// <summary>
-        /// Fills images and class names dictionnaries with needed data. Depending of the IDictionary type used under the hood
+        /// Fills images and class names dictionaries with needed data. Depending of the IDictionary type used under the hood
         /// an exception may be thrown.
         /// </summary>
-        /// <exception cref="Exception">Error during dictionnarie populating</exception>
+        /// <exception cref="Exception">Error during dictionary populating</exception>
         private static void PopulateDictionaries(IList<string> inputFilePaths, int i, IDictionary<int, Image> images, IDictionary<int, string> cssClassNames)
         {
             try
