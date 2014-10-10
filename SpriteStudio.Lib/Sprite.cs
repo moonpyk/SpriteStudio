@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using SpriteStudio.Layouts;
@@ -111,7 +112,7 @@ namespace SpriteStudio
                 {
                     b.ResultImage.Save(outImage, ImageFormat.Png);
                 }
-                catch (System.Runtime.InteropServices.ExternalException ex)
+                catch (ExternalException ex)
                 {
                     throw new Exception("Underlaying imaging library encountered an error", ex);
                 }
